@@ -1,10 +1,11 @@
-import ParticlesBackground from "./components/ParticlesBackground";
+import ParticlesBackgroundClient from './components/ParticlesBackgroundClient';
 
 export default function Home() {
   return (
     <>
-      <ParticlesBackground />
+       <ParticlesBackgroundClient />
       <main>
+
       </main>
     </>
   );

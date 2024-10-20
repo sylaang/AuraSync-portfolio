@@ -1,8 +1,8 @@
-"use client";
+"use client"; // Indique que ce composant doit être rendu côté client
 
 import { useEffect } from "react";
 
-const ParticlesBackground = () => {
+const ParticlesBackgroundClient = () => {
   useEffect(() => {
     const initParticles = async () => {
       await import("particles.js");
@@ -72,7 +72,7 @@ const ParticlesBackground = () => {
     initParticles();
   }, []);
 
-  return <div id="particles-js" style={{ position: 'absolute', width: '100%', height: '100%', zIndex: -1 }}></div>;
+  return <div id="particles-js"></div>;
 };
 
-export default ParticlesBackground;
+export default ParticlesBackgroundClient;
