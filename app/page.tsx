@@ -1,12 +1,12 @@
 import ParticlesBackgroundClient from './components/ParticlesBackgroundClient';
-import CustomCanvas from './components/CustomCanvas';
+import PlanetServer from './components/PlanetServer';
 
 export default function Home() {
   return (
     <>
        <ParticlesBackgroundClient />
       <main>
-      <CustomCanvas />
+      <PlanetServer />
       </main>
     </>
   );
