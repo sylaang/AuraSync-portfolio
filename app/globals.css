@@ -15,6 +15,9 @@ html, body {
   margin: 0;
   padding: 0;
 }
+html  {
+  scroll-behavior: smooth;
+}
 
 main {
   position: relative;
@@ -24,4 +27,33 @@ main {
   padding: 20px;
 }
 
+#app { /* ou le sélecteur approprié pour votre conteneur principal */
+  overflow-y: auto; /* Permettre le défilement vertical */
+  height: 100vh; /* Utiliser 100vh pour utiliser toute la hauteur de la fenêtre */
+}
 
+.no-scroll {
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.element {
+  cursor: none; /* Masque le curseur de la souris */
+  scrollbar-width: none;
+}
+
+.loadpage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Assurez-vous que le loader soit au-dessus des autres éléments */
+}
