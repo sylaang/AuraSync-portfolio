@@ -1,0 +1,56 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    backdrop-filter: blur(10px);
+    background-color: transparent;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 5em;
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 40%;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  .navbar-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .navbar-title {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #fff;
+  }
+  
+  .navbar-right {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    max-width: 40%;
+  }
+  
+  .navbar-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+  
+  .navbar-link:hover {
+    color: #ccc;
+  }
+  

@@ -4,6 +4,7 @@ import ParticlesBackgroundClient from './components/ParticlesBackgroundClient'; 
 import PlanetServer from './components/PlanetServer';
 import Logo from './components/Logo';
 import PlanetBackgroundServer from './components/PlanetBackgroundServer';
+import NavBar from './components/NavBar';
 
 const Page: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +26,7 @@ const Page: React.FC = () => {
         </div>
       )}
       <div className='element'>
+        < NavBar />
         <ParticlesBackgroundClient />
         <div style={{ minHeight: '100vh' }}>
           <PlanetServer />
