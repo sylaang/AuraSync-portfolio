@@ -6,7 +6,7 @@ const NavBar: React.FC = () => {
       <nav className="navbar">
         <div className="navbar-left">
           <span className="navbar-name">Hachem Mehdi</span>
-          <span className="navbar-title">Développeur Full Stack</span>
+          <span className="navbar-title">Développeur Web Full Stack</span>
         </div>
         <div className="navbar-right">
           <a href="#work" className="navbar-link">Work</a>
