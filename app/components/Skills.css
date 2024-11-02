@@ -20,14 +20,6 @@
     height: auto;
 }
 
-.title {
-    color: #fff; /* Couleur du texte */
-    font-size: var(--fs);
-    font-weight: 800;
-    letter-spacing: var(--ls);
-    position: relative;
-    margin: 0;
-}
 
 .aurora {
     position: absolute; /* Absolue pour recouvrir le texte */

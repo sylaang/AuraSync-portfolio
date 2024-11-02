@@ -9,189 +9,200 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import Logo from './Logo'; // Import du composant Logo pour l'affichage du logo.
 
 const PlanetClient = () => {
-  // Références pour les éléments de la scène
-  const canvasRef = useRef<HTMLDivElement | null>(null); // Référence pour le conteneur du canevas.
-  const planetRef = useRef<THREE.Group | null>(null); // Référence pour le modèle de la planète.
-  const sunRef = useRef<THREE.Group | null>(null); // Référence pour le modèle du soleil.
-  const directionalLightRef = useRef<THREE.DirectionalLight | null>(null); // Référence pour la lumière directionnelle.
-  const [sunPosition, setSunPosition] = useState({ x: 0, y: 0, z: 0 }); // État pour stocker la position du soleil.
-
-  const angleRef = useRef(0); // Référence pour stocker l'angle de rotation.
-  const modelsLoadedRef = useRef(false); // Référence pour vérifier si les modèles sont chargés.
-
+  const canvasRef = useRef<HTMLDivElement | null>(null);
+  const planetRef = useRef<THREE.Group | null>(null);
+  const sunRef = useRef<THREE.Group | null>(null);
+  const directionalLightRef = useRef<THREE.DirectionalLight | null>(null);
+  const [sunPosition, setSunPosition] = useState<{ x: number; y: number; z: number }>({ x: 0, y: 0, z: 0 });
+  const isWheelUsedRef = useRef(false);
+  const angleRef = useRef(0);
+  const modelsLoadedRef = useRef(false);
+  const isPausedRef = useRef(false); // État pour vérifier si le soleil est en pause
+  const sunPositionVector = new THREE.Vector3();
+  const directionalLightPositionVector = new THREE.Vector3();
 
   useEffect(() => {
-    // Créer une nouvelle scène Three.js.
     const scene = new THREE.Scene();
-    scene.background = null; // Définir l'arrière-plan de la scène sur null.
+    scene.background = null;
 
-    // Créer une caméra perspective.
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true }); // Créer un rendu WebGL avec un fond transparent.
-    renderer.setSize(window.innerWidth, window.innerHeight); // Définir la taille du rendu.
-    renderer.setPixelRatio(window.devicePixelRatio); // Ajuster le rapport de pixels pour le rendu.
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
 
-    // Composer pour ajouter des effets visuels.
     const composer = new EffectComposer(renderer);
-    const renderPass = new RenderPass(scene, camera); // Passer la scène et la caméra au rendu.
-    composer.addPass(renderPass); // Ajouter le rendu de base à la composition.
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
 
-    // Créer un effet de lueur.
     const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight), // Dimensions de la scène.
-      1.5, // Force de l'effet de lueur.
-      1.4, // Flou de l'effet de lueur.
-      0.85 // Seuil de l'effet de lueur.
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.5,
+      1.4,
+      0.85
     );
-    composer.addPass(bloomPass); // Ajouter l'effet de lueur à la composition.
+    composer.addPass(bloomPass);
 
-    // Vérifier si le conteneur du canevas est présent et ajouter le rendu au DOM.
     if (canvasRef.current) {
-      canvasRef.current.appendChild(renderer.domElement); // Ajouter l'élément du rendu au canevas.
+      canvasRef.current.appendChild(renderer.domElement);
     }
 
-    // Créer une lumière ambiante pour la scène.
-    const ambientLight = new THREE.AmbientLight(0x404040, 2); // Couleur de la lumière ambiante.
-    scene.add(ambientLight); // Ajouter la lumière ambiante à la scène.
+    const ambientLight = new THREE.AmbientLight(0x404040, 2);
+    scene.add(ambientLight);
 
-    // Charger le modèle du soleil.
-    const sunLoader = new GLTFLoader(); // Initialiser le chargeur GLTF.
+    const sunLoader = new GLTFLoader();
     sunLoader.load('/sun.glb', (gltf) => {
-      sunRef.current = gltf.scene; // Stocker le modèle du soleil.
-      sunRef.current.scale.set(3, 3, 3); // Échelle du soleil.
-      scene.add(sunRef.current); // Ajouter le soleil à la scène.
+      sunRef.current = gltf.scene;
+      sunRef.current.scale.set(3, 3, 3);
+      scene.add(sunRef.current);
 
-      const sunnyLight = new THREE.AmbientLight(0xffddaa, 10); // Créer une lumière ambiante pour le soleil.
-      sunRef.current.add(sunnyLight); // Ajouter la lumière ambiante au soleil.
+      const sunnyLight = new THREE.AmbientLight(0xffddaa, 10);
+      sunRef.current.add(sunnyLight);
 
-      directionalLightRef.current = new THREE.DirectionalLight(0xffddaa, 5.5); // Créer une lumière directionnelle pour simuler la lumière du soleil.
-      scene.add(directionalLightRef.current); // Ajouter la lumière directionnelle à la scène.
+      directionalLightRef.current = new THREE.DirectionalLight(0xffddaa, 5.5);
+      scene.add(directionalLightRef.current);
 
-      modelsLoadedRef.current = true; // Indiquer que les modèles sont chargés.
+      modelsLoadedRef.current = true;
     }, undefined, (error) => {
-      console.error('Erreur lors du chargement du soleil :', error); // Gérer les erreurs de chargement.
+      console.error('Erreur lors du chargement du soleil :', error);
     });
 
-    // Charger le modèle de la planète.
-    const loader = new GLTFLoader(); // Initialiser un autre chargeur GLTF.
+    const loader = new GLTFLoader();
     loader.load('/space_object_005_stone_planet.glb', (gltf) => {
-      planetRef.current = gltf.scene; // Stocker le modèle de la planète.
-      planetRef.current.position.set(0, 0, 0); // Positionner la planète.
-      planetRef.current.scale.set(1.5, 1.5, 1.5); // Échelle de la planète.
-      scene.add(planetRef.current); // Ajouter la planète à la scène.
+      planetRef.current = gltf.scene;
+      planetRef.current.position.set(0, 0, 0);
+      planetRef.current.scale.set(1.5, 1.5, 1.5);
+      scene.add(planetRef.current);
 
-      modelsLoadedRef.current = true; // Indiquer que les modèles sont chargés.
+      modelsLoadedRef.current = true;
     }, undefined, (error) => {
-      console.error('Erreur lors du chargement de la planète :', error); // Gérer les erreurs de chargement.
+      console.error('Erreur lors du chargement de la planète :', error);
     });
 
-    // Positionner la caméra.
-    camera.position.set(0, 5, 10); // Définir la position de la caméra.
-    camera.lookAt(0, 0, 0); // Faire en sorte que la caméra regarde le centre de la scène.
+    camera.position.set(0, 5, 10);
+    camera.lookAt(0, 0, 0);
 
-    // Fonction d'animation
-    const animate = () => {
-      requestAnimationFrame(animate); // Appeler la fonction d'animation à chaque frame.
-
-      if (modelsLoadedRef.current) { // Vérifier si les modèles sont chargés.
-        if (planetRef.current) {
-          planetRef.current.rotation.y += 0.001; // Faire tourner la planète.
-        }
-        if (sunRef.current) {
-          sunRef.current.rotation.z += 0.005; // Faire tourner le soleil.
-        }
-
-        if (sunRef.current) {
-          const radius = 950; // Définir le rayon du mouvement du soleil.
-          const x = radius * Math.cos(angleRef.current + Math.PI / 5); // Calculer la position x du soleil.
-          const z = radius * Math.sin(angleRef.current + Math.PI / 5); // Calculer la position z du soleil.
-          const y = Math.sin(angleRef.current) * 256; // Calculer la position y du soleil.
-
-          sunRef.current.position.set(x, y, z); // Définir la position du soleil.
-          setSunPosition({ x, y, z }); // Mettre à jour l'état de la position du soleil.
-          window.dispatchEvent(new CustomEvent('sunPositionUpdate', { detail: { x, y, z } }));
-          // console.log(sunRef.current.position);
-        }
-
-        // Mettre à jour la position de la lumière directionnelle pour suivre le soleil.
-        if (sunRef.current && directionalLightRef.current) {
-          directionalLightRef.current.position.copy(sunRef.current.position); // Copier la position du soleil à la lumière directionnelle.
-        }
+    const handleWheel = (event: WheelEvent) => {
+      if (event.deltaY > 0) {
+        isPausedRef.current = false; // Le soleil reprend son mouvement
+        isWheelUsedRef.current = true; // Indique que la molette a été utilisée
       }
-
-      composer.render(); // Rendre la scène avec les effets visuels.
     };
 
+    const animate = () => {
+      requestAnimationFrame(animate);
 
-    animate(); // Démarrer l'animation.
+      if (modelsLoadedRef.current) {
+        if (planetRef.current) {
+          planetRef.current.rotation.y -= 0.001; // Rotation de la planète
+        }
 
-    // Gérer le défilement de la souris.
-
-    // Créez une variable pour suivre si le défilement est désactivé
-    let isScrollingDisabled = false;
-
-    document.body.style.overflow = 'hidden';
-    const handleScroll = (event: WheelEvent) => {
-      const scrollSpeed = 0.001; // Définir la vitesse de défilement.
-      angleRef.current -= event.deltaY * scrollSpeed; // Modifier l'angle en fonction du défilement de la souris.
-      const posY = -898.7128817066788;
-      const posX = 209.4789404324893;
-      const posZ = 307.9206979962166;
-      
-      if (window.scrollY < 2) {
-        // Désactiver le défilement
-        document.body.style.overflow = 'hidden';
-      
         if (sunRef.current) {
-          // Condition pour débloquer le défilement
-          if (
-            Math.abs(sunRef.current.position.x + 924.9638360244014) < 0.01 &&
-            Math.abs(sunRef.current.position.y - 193.74143879882993) < 0.01 &&
-            Math.abs(sunRef.current.position.z - 216.6607995162584) < 0.01
-          ) {
-            // Réactiver le défilement
-            document.body.style.overflow = 'auto';
-            isScrollingDisabled = false; // Mettre à jour l'état
-          }
-      
-          // Vérifiez si le soleil est à une position spécifique
-          if (
-      Math.abs(sunRef.current.position.x - posY) < 0.01 &&
-      Math.abs(sunRef.current.position.y - posX) < 0.01 &&
-      Math.abs(sunRef.current.position.z - posZ) < 0.01
-    ) {
-            // Si le défilement est désactivé, ne rien faire
-            if (isScrollingDisabled) {
-              return true; // Sortir de la fonction
+          // Si le soleil n'est pas en pause, continuez à le faire tourner
+          if (!isPausedRef.current) {
+            sunRef.current.rotation.z += 0.005;
+
+            const radius = 950;
+            const x = radius * Math.cos(angleRef.current + Math.PI / 5);
+            const z = radius * Math.sin(angleRef.current + Math.PI / 5);
+            const y = Math.sin(angleRef.current) * 256;
+
+            sunPositionVector.set(x, y, z);
+            sunRef.current.position.copy(sunPositionVector);
+            setSunPosition({ x, y, z });
+
+            // Cible et tolérance
+            const targetPosition = { x: 571.2257063020214, y: -255.96388992494303, z: -759.0791740390174 };
+            const secondTargetPosition = { x: -877.5570477604809, y: 59.67405581827602, z: -363.859351846162 };
+            const tolerance = 0.1;
+
+            const reachedTarget =
+              Math.abs(sunRef.current.position.x - targetPosition.x) < tolerance &&
+              Math.abs(sunRef.current.position.y - targetPosition.y) < tolerance &&
+              Math.abs(sunRef.current.position.z - targetPosition.z) < tolerance;
+
+            const reachedSecondTarget =
+              Math.abs(sunRef.current.position.x - secondTargetPosition.x) < tolerance &&
+              Math.abs(sunRef.current.position.y - secondTargetPosition.y) < tolerance &&
+              Math.abs(sunRef.current.position.z - secondTargetPosition.z) < tolerance;
+
+            if (reachedTarget) {
+              isPausedRef.current = true; // Arrêtez le mouvement du soleil
+              sunRef.current.rotation.z = 0; // Arrêtez la rotation du soleil
+            }
+            const smoothScrollTo = (targetY: number, duration: number) => {
+              const startY = window.scrollY; // Position actuelle de la scrollbar
+              const distance = targetY - startY; // Distance à parcourir
+              let startTime: number | null = null;
+            
+              const animation = (currentTime: number) => {
+                if (startTime === null) startTime = currentTime;
+                const elapsed = currentTime - startTime; // Temps écoulé depuis le début
+            
+                // Calculez le progress pour déterminer la fraction du déplacement
+                const progress = Math.min(elapsed / duration, 1);
+                const easing = 0.5 - Math.cos(progress * Math.PI) / 2; // Fonction d'assouplissement (ease-in-out)
+            
+                window.scrollTo(0, startY + distance * easing); // Appliquez le décalage
+            
+                if (elapsed < duration) {
+                  requestAnimationFrame(animation); // Continuez l'animation
+                }
+              };
+            
+              requestAnimationFrame(animation);
+            };
+            if (reachedSecondTarget) {
+              document.body.style.overflow = 'scroll';
+              smoothScrollTo(900, 4000); // Défilement vers 900 en 2000 ms (2 secondes)
             }
           }
+          console.log('Position de la scrollbar:', window.scrollY);
+
+          // Logic pour reprendre le mouvement en douceur
+          if (isWheelUsedRef.current) {
+            isPausedRef.current = false; // Reprenez le mouvement du soleil
+            isWheelUsedRef.current = false; // Réinitialisez le flag de molette
+            angleRef.current -= 0.0028; // Ajustez ici pour contrôler la vitesse de mouvement
+          } else if (!isPausedRef.current) {
+            angleRef.current -= 0.0028; // Ajustez ici pour la vitesse de rotation
+          }
+
+          // Mise à jour de la lumière directionnelle
+          if (directionalLightRef.current) {
+            directionalLightPositionVector.copy(sunRef.current.position);
+            directionalLightRef.current.position.copy(directionalLightPositionVector);
+          }
         }
-      } else {
-        // Si on n'est pas en haut de la page, réactiver le défilement
-        document.body.style.overflow = 'auto';
-        isScrollingDisabled = false; // Permettre le défilement
       }
 
+      composer.render();
     };
 
-    // Rendre les événements comme auparavant
-    window.addEventListener('wheel', handleScroll); // Ajouter l'écouteur d'événements pour le défilement.
+    // Ajouter l'écouteur d'événements pour la molette
+    window.addEventListener('wheel', handleWheel);
 
-    // Fonction de nettoyage lors de la destruction du composant.
+    animate();
+
+    // Code de nettoyage lors du démontage du composant
+    document.body.style.overflow = 'hidden';
+
     return () => {
       if (canvasRef.current) {
-        canvasRef.current.removeChild(renderer.domElement); // Retirer l'élément du rendu du canevas.
+        canvasRef.current.removeChild(renderer.domElement);
       }
-      window.removeEventListener('wheel', handleScroll); // Retirer l'écouteur d'événements pour le défilement.
+      // Retirer l'écouteur d'événements lors du démontage du composant
+      window.removeEventListener('wheel', handleWheel);
+      // Réinitialiser l'overflow du corps
+      document.body.style.overflow = '';
     };
 
-  }, []); // Le tableau vide [] indique que cet effet ne doit s'exécuter qu'une fois lors du montage.
+  }, []); // Aucune dépendance car nous ne devons pas re-exécuter l'effet.
 
   return (
     <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-      <Logo sunPosition={sunPosition} /> {/* Rendre le composant Logo avec la position du soleil */}
+      <Logo sunPosition={sunPosition} />
     </div>
   );
 };
 
-export default PlanetClient; // Exporter le composant PlanetClient pour qu'il puisse être utilisé ailleurs.
+export default PlanetClient;

@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './Skills.css';
+import './Contact.css';
+
 
 const Skills: React.FC = () => {
+    const titleRef = useRef<HTMLDivElement | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+    console.log("isVisible:", isVisible);
     const skills = [
         "HTML, CSS, JavaScript, TypeScript, PHP, Python, C++, C#.",
         "Symfony, ReactJS, Next.js.",
@@ -14,22 +19,41 @@ const Skills: React.FC = () => {
     // Initialiser AOS
     useEffect(() => {
         AOS.init();
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    console.log("Entry:", entry);
+                    if (entry.isIntersecting) {
+                        setIsVisible(false);  // Supprime la classe pour réinitialiser
+                        setTimeout(() => setIsVisible(true), 50);  // Réapplique la classe avec un délai pour redémarrer l'animation
+                    } else {
+                        setIsVisible(false); // Cache l'animation si l'élément n'est plus visible
+                    }
+                });
+            },
+            { threshold: 0.5 } // Déclenchement lorsque 50% de l'élément est visible
+        );
+        if (titleRef.current) {
+            observer.observe(titleRef.current);
+        }
+
+        return () => {
+            if (titleRef.current) {
+                observer.unobserve(titleRef.current);
+            }
+        };
     }, []);
 
     return (
         <div
-            // Ajout de la classe content ici
-            data-aos="zoom-in" // Ajouter l'animation AOS
-            data-aos-duration="3000" // Durée de l'animation (en millisecondes)
-            data-aos-easing="ease-in-out" // Type d easing pour l'animation
-        >
+            data-aos="zoom-in" data-aos-duration="2000" data-aos-easing="ease-in-out">
             <div style={{ marginTop: '40vh'}}>
 
-                <h1 style={{ fontSize: '4em', marginRight: '30%' }}>Langages de programmation</h1>
+                <h1 ref={titleRef} className={`title-animated ${isVisible ? 'animate' : ''}`}>Langages de programmation</h1>
                 <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', margin: '0 10vw' }}>
 
                     {/* Liste des catégories */}
-                    <ul style={{ listStyleType: 'none', padding: 0, fontSize: '2em', textAlign: 'left', marginRight: '4%' }}>
+                    <ul className={`title-animated ${isVisible ? 'animate' : ''}`} style={{ listStyleType: 'none', padding: 0, fontSize: '2em', textAlign: 'left', marginRight: '4%' }}>
                         <li>Langages :</li>
                         <li>Frameworks :</li>
                         <li>Bibliothèques :</li>

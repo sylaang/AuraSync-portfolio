@@ -9,9 +9,9 @@ const NavBar: React.FC = () => {
           <span className="navbar-title">Développeur Web Full Stack</span>
         </div>
         <div className="navbar-right">
-          <a href="#work" className="navbar-link">Work</a>
-          <a href="#about" className="navbar-link">About</a>
-          <a href="#contact" className="navbar-link">Contact</a>
+          <a href="#work" className="navbar-link"><span>Work</span> </a>
+          <a href="#about" className="navbar-link"><span>About</span> </a>
+          <a href="#contact" className="navbar-link"><span>Contact</span> </a>
         </div>
       </nav>
     );

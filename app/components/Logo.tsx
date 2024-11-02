@@ -1,52 +1,53 @@
-// Logo.tsx
 import React, { useEffect, useState } from 'react';
+import './Logo.css';
 
 interface LogoProps {
-  sunPosition: { x: number; y: number; z: number }; // Propriétés de position du soleil
+  sunPosition: { x: number; y: number; z: number };
 }
 
 const Logo: React.FC<LogoProps> = ({ sunPosition }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [animationClass, setAnimationClass] = useState<string>('appear');
 
   useEffect(() => {
-    // Vérifiez si la position du soleil correspond à celle d'apparition du logo
-    const isSunAtStartPosition =
-      Math.abs(sunPosition.x - 454.71613702041384) < 0.01 &&
-      Math.abs(sunPosition.y - -253.86619147583195) < 0.01 &&
-      Math.abs(sunPosition.z - -834.1062490673668) < 0.01;
+    const isSunAtStartPosition = { x: 843.660027618048, y: -228.84169696670804, z: -436.73534068073127 };
+    const isSunAtEndPosition = { x: -746.0965185612918, y: -10.03075087932467, z: -588.0816142260528 };
+    const tolerance = 0.1;
 
-    // Vérifiez si la position du soleil correspond à celle de disparition du logo
-    const isSunAtEndPosition =
-      Math.abs(sunPosition.x - -682.073869786835) < 0.01 &&
-      Math.abs(sunPosition.y - -36.12672206332601) < 0.01 &&
-      Math.abs(sunPosition.z - -661.2679004412747) < 0.01;
+    const reachedStartTarget =
+      Math.abs(sunPosition.x - isSunAtStartPosition.x) < tolerance &&
+      Math.abs(sunPosition.y - isSunAtStartPosition.y) < tolerance &&
+      Math.abs(sunPosition.z - isSunAtStartPosition.z) < tolerance;
+      
+    const reachedEndTarget =
+      Math.abs(sunPosition.x - isSunAtEndPosition.x) < tolerance &&
+      Math.abs(sunPosition.y - isSunAtEndPosition.y) < tolerance &&
+      Math.abs(sunPosition.z - isSunAtEndPosition.z) < tolerance;
 
-    // Mettez à jour l'état de visibilité
-    if (isSunAtStartPosition) {
-      setIsVisible(true); // Montre le logo lorsque le soleil atteint la première position
-    } else if (isSunAtEndPosition) {
-      setIsVisible(false); // Cache le logo lorsque le soleil atteint la seconde position
+    if (reachedStartTarget) {
+      setAnimationClass('appear');
+      setIsVisible(true);
+    } else if (reachedEndTarget) {
+      setAnimationClass('disappear');
+
+      // Temporisation pour permettre l'animation de disparition avant de cacher le logo
+      setTimeout(() => setIsVisible(false), 1000); // Durée de l'animation de disparition
     }
 
-    // Affichez la position du soleil dans la console
     console.log(`Position du soleil : ${sunPosition.x}, ${sunPosition.y}, ${sunPosition.z}`);
   }, [sunPosition]);
 
   return (
     <>
       {isVisible && (
-        <div style={{ 
-          position: 'fixed', 
-          top: '50%', 
-          left: '50%', 
-          transform: 'translate(-50%, -50%)', 
-          pointerEvents: 'none' // Empêche le logo d'interférer avec les événements de souris
-        }}>
-          <img 
-            src="/logo3.png" 
-            alt="Logo" 
-            style={{ height: '300px', width: 'auto' }} 
-          />
+        <div className="logo-container">
+          <div className="logo">
+            <img
+              className={`imgLogo ${animationClass}`} // Ajout de animationClass dynamiquement
+              src="/logo3.png"
+              alt="Logo"
+            />
+          </div>
         </div>
       )}
     </>

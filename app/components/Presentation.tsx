@@ -1,11 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import './Contact.css';
 
 const Presentation: React.FC = () => {
-    const [isWelcomeVisible, setIsWelcomeVisible] = useState(false); // État pour la section "Bienvenue"
+    const [isWelcomeVisible, setIsWelcomeVisible] = useState(false);
     const [textIndex, setTextIndex] = useState(0);
-    const welcomeRef = useRef<HTMLDivElement>(null); // Référence pour la section "Bienvenue"
+    const welcomeRef = useRef<HTMLDivElement>(null);
+    const [isVisible, setIsVisible] = useState(false);
+    const [titleAnimationFinished, setTitleAnimationFinished] = useState(false); // Nouvel état
+    console.log("isVisible:", isVisible);
 
     const text = `Je suis Mehdi Hachem, développeur web full stack.
     Passionné par la technologie, j'allie théorie et pratique pour transformer des idées en projets
@@ -17,7 +21,14 @@ const Presentation: React.FC = () => {
         const welcomeObserver = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
-                    setIsWelcomeVisible(entry.isIntersecting); // Met à jour selon la visibilité de "Bienvenue"
+                    console.log("Entry:", entry);
+                    if (entry.isIntersecting) {
+                        setIsWelcomeVisible(true);
+                        setIsVisible(true);
+                    } else {
+                        setIsWelcomeVisible(false);
+                        setIsVisible(false);
+                    }
                 });
             },
             { threshold: 0.9 }
@@ -31,19 +42,22 @@ const Presentation: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (isWelcomeVisible && textIndex < text.length) {
+        if (titleAnimationFinished && textIndex < text.length) {
             const timeout = setTimeout(() => {
                 setTextIndex((prevIndex) => prevIndex + 1);
-            }, 10);
+            }, 10); // Vitesse d'apparition du texte
             return () => clearTimeout(timeout);
         }
-    }, [isWelcomeVisible, textIndex]);
+    }, [titleAnimationFinished, textIndex]);
 
     return (
         <div>
             {/* Section Bienvenue */}
             <div
                 ref={welcomeRef}
+                data-aos="zoom-in"
+                data-aos-duration="2000"
+                data-aos-easing="ease-in-out"
                 style={{
                     opacity: isWelcomeVisible ? 1 : 0,
                     transform: isWelcomeVisible ? 'translateY(0)' : 'translateY(-20px)',
@@ -54,8 +68,13 @@ const Presentation: React.FC = () => {
                     backgroundColor: 'transparent',
                 }}
             >
-                <div data-aos="zoom-in" data-aos-duration="3000">
-                    <h1 style={{ fontSize: '4em' }}>Bienvenue</h1>
+                <div>
+                    <h1 
+                        className={`title-animated ${isVisible ? 'animate' : ''}`} 
+                        onAnimationEnd={() => setTitleAnimationFinished(true)} // Déclenche la fin de l'animation
+                    >
+                        Bienvenue
+                    </h1>
                     <div>
                         <p style={{ fontSize: '2em', whiteSpace: 'pre-wrap' }}>
                             {text.substring(0, textIndex)}
