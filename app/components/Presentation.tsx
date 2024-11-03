@@ -9,7 +9,7 @@ const Presentation: React.FC = () => {
     const welcomeRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
     const [titleAnimationFinished, setTitleAnimationFinished] = useState(false); // Nouvel état
-    console.log("isVisible:", isVisible);
+    // console.log("isVisible:", isVisible);
 
     const text = `Je suis Mehdi Hachem, développeur web full stack.
     Passionné par la technologie, j'allie théorie et pratique pour transformer des idées en projets
@@ -21,7 +21,7 @@ const Presentation: React.FC = () => {
         const welcomeObserver = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
-                    console.log("Entry:", entry);
+                    // console.log("Entry:", entry);
                     if (entry.isIntersecting) {
                         setIsWelcomeVisible(true);
                         setIsVisible(true);

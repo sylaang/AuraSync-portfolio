@@ -1,140 +1,279 @@
-'use client';
+  'use client';
 
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { useSunPosition } from './UseSunPosition';
+  import { useEffect, useRef } from 'react';
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+  import { useSunPosition } from './UseSunPosition';
 
-const PlanetBackgroundClient = () => {
-  const sunPosition = useSunPosition();
-  const canvasRef = useRef<HTMLDivElement | null>(null);
-  const planetRef = useRef<THREE.Group | null>(null);
-  const sunRef = useRef<THREE.Group | null>(null);
-  const directionalLightRef = useRef<THREE.DirectionalLight | null>(null);
-  const modelsLoadedRef = useRef(false);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Ref pour le renderer
+  const PlanetBackgroundClient = () => {
+    // const sunPosition = useSunPosition();
+    const canvasRef = useRef<HTMLDivElement | null>(null);
+    const earthMixerRef = useRef<THREE.AnimationMixer | null>(null); // Ref pour le mixer
+    const earthRef = useRef<THREE.Group | null>(null);
+    const stationMixerRef = useRef<THREE.AnimationMixer | null>(null); // Ref pour le mixer
+    const stationRef = useRef<THREE.Group | null>(null);
+    const nebularRef = useRef<THREE.Group | null>(null);
+    const sunRef = useRef<THREE.Group | null>(null);
+    const directionalLightRef = useRef<THREE.DirectionalLight | null>(null);
+    const modelsLoadedRef = useRef(false);
+    const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+    const rendererRef = useRef<THREE.WebGLRenderer | null>(null); // Ref pour le renderer
 
-  useEffect(() => {
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 5, 10);
-    camera.lookAt(0, 0, 0);
-    cameraRef.current = camera;
+    
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    rendererRef.current = renderer; // Stocker le renderer dans la référence
+    useEffect(() => {
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 5, 10);
+      camera.lookAt(0, 0, 0);
+      cameraRef.current = camera;
 
-    if (canvasRef.current) {
-      canvasRef.current.appendChild(renderer.domElement);
-    }
+      const renderer = new THREE.WebGLRenderer({ alpha: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      rendererRef.current = renderer; // Stocker le renderer dans la référence
 
-    const ambientLight = new THREE.AmbientLight(0x404040, 2);
-    scene.add(ambientLight);
-
-    const sunLoader = new GLTFLoader();
-    sunLoader.load(
-      '/sun.glb',
-      (gltf) => {
-        sunRef.current = gltf.scene;
-        sunRef.current.scale.set(0.1, 0.1, 0.1);
-        scene.add(sunRef.current);
-        sunRef.current.position.set(6, 0, 10);
-
-        directionalLightRef.current = new THREE.DirectionalLight(0xffddaa, 5.5);
-        scene.add(directionalLightRef.current);
-        modelsLoadedRef.current = true;
-      },
-      undefined,
-      (error) => {
-        console.error('Erreur lors du chargement du soleil :', error);
-      }
-    );
-
-    const loader = new GLTFLoader();
-    loader.load(
-      '/space_object_005_stone_planet.glb',
-      (gltf) => {
-        planetRef.current = gltf.scene;
-        planetRef.current.position.set(7, -20, 3);
-        planetRef.current.scale.set(2, 2, 2);
-        scene.add(planetRef.current);
-        modelsLoadedRef.current = true;
-      },
-      undefined,
-      (error) => {
-        console.error('Erreur lors du chargement de la planète :', error);
-      }
-    );
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      if (modelsLoadedRef.current) {
-        if (planetRef.current) {
-          planetRef.current.rotation.y += 0.001;
-        }
-        if (sunRef.current) {
-          sunRef.current.rotation.z += 0.005;
-        }
-
-        if (sunRef.current && directionalLightRef.current) {
-          directionalLightRef.current.position.copy(sunRef.current.position);
-        }
-      }
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    return () => {
       if (canvasRef.current) {
-        canvasRef.current.removeChild(renderer.domElement);
+        canvasRef.current.appendChild(renderer.domElement);
       }
-    };
-  }, []);
 
-  // Gestion du redimensionnement de la fenêtre
-  useEffect(() => {
-    const handleResize = () => {
-      if (cameraRef.current && rendererRef.current) {
-        rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-        cameraRef.current.aspect = window.innerWidth / window.innerHeight;
-        cameraRef.current.updateProjectionMatrix();
-      }
-    };
+      const ambientLight = new THREE.AmbientLight(0x404040, 2);
+      scene.add(ambientLight);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+      const sunLoader = new GLTFLoader();
+      sunLoader.load(
+        `/sun.glb?nocache=${Date.now()}`,
+        (gltf) => {
+          sunRef.current = gltf.scene;
+          sunRef.current.scale.set(0.1, 0.1, 0.1);
+          scene.add(sunRef.current);
+          sunRef.current.position.set(6, 0, 10);
 
-  // Gestion du défilement avec interpolation
-  let targetY = 5;
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      targetY = 5 - scrollY * 0.01;
-    };
+          directionalLightRef.current = new THREE.DirectionalLight(0xffddaa, 5.5);
+          scene.add(directionalLightRef.current);
+          modelsLoadedRef.current = true;
+        },
+        undefined,
+        (error) => {
+          console.error('Erreur lors du chargement du soleil :', error);
+        }
+      );
 
-    const updateCameraPosition = () => {
-      if (cameraRef.current) {
-        cameraRef.current.position.y += (targetY - cameraRef.current.position.y) * 0.05;
-      }
-      requestAnimationFrame(updateCameraPosition);
-    };
+      const loader = new GLTFLoader();
+      loader.load(
+        `/earth.glb?nocache=${Date.now()}`,
+        (gltf) => {
+          earthRef.current = gltf.scene;
+          earthRef.current.position.set(7, -20, 3);
+          earthRef.current.scale.set(1, 1, 1);
+          scene.add(earthRef.current);
+      
+          // Vérifiez que planetRef est bien défini avant d'utiliser AnimationMixer
+          if (earthRef.current && gltf.animations && gltf.animations.length > 0) {
+            const mixer = new THREE.AnimationMixer(earthRef.current);
+            earthMixerRef.current = mixer;
+      
+            gltf.animations.forEach((clip) => {
+              const action = mixer.clipAction(clip);
+              action.play();
+              console.log('Animation de la planète démarrée.');
+              action.timeScale = 0.2; // Changez cette valeur pour ajuster la vitesse
+            });
+          } else {
+            console.warn('Aucune animation trouvée pour le modèle earth');
+          }
+          console.log('Earth Ref:', earthRef.current);
+          console.log('Earth Mixer Ref:', earthMixerRef.current);
+          console.log('Animations:', gltf.animations);
+          modelsLoadedRef.current = true;
+        },
+        undefined,
+        (error) => {
+          console.error('Erreur lors du chargement de la planète :', error);
+        }
+      );
 
-    window.addEventListener('scroll', handleScroll);
-    updateCameraPosition();
+      const additionalLoader = new GLTFLoader();
+      additionalLoader.load(
+        `/need_some_space.glb?nocache=${Date.now()}`,
+        (gltf) => {
+          nebularRef.current = gltf.scene;
+          nebularRef.current.position.set(-6, -38.5, 10); // Position initiale du modèle
+          nebularRef.current.scale.set(4, 4, 4); // Échelle du modèle
+          scene.add(nebularRef.current);
+          modelsLoadedRef.current = true;
+        },
+        undefined,
+        (error) => {
+          console.error('Erreur lors du chargement du modèle need_some_space :', error);
+        }
+      );
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+      const stationLoader = new GLTFLoader();
+      stationLoader.load(
+        '/space_station.glb',
+        (gltf) => {
+          stationRef.current = gltf.scene;
+          stationRef.current.position.set(50, -60, -80);
+          stationRef.current.scale.set(1.5, 1.5, 1.5);
+          scene.add(stationRef.current);
+      
+          // Vérifiez s'il y a des animations
+          if (gltf.animations && gltf.animations.length > 0) {
+            const mixer = new THREE.AnimationMixer(stationRef.current);
+            stationMixerRef.current = mixer;
+      
+            gltf.animations.forEach((clip) => {
+              const action = mixer.clipAction(clip);
+              action.play();
+            });
+          } else {
+            console.warn('Aucune animation trouvée pour le modèle space_station');
+          }
+      
+          modelsLoadedRef.current = true;
+        },
+        undefined,
+        (error) => {
+          console.error('Erreur lors du chargement du modèle space_station :', error);
+        }
+      );
+      
+      const clock = new THREE.Clock();
+      let animationId: number; // Variable pour stocker l'identifiant d'animation
+      const animate = () => {
+        animationId = requestAnimationFrame(animate);
+        const delta = clock.getDelta(); // Délai entre les frames pour l'animation
 
-  return <div ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh' }} />;
-};
+        if (modelsLoadedRef.current) {
+          if (sunRef.current) {
+            sunRef.current.rotation.z += 0.005;
+          }
 
-export default PlanetBackgroundClient;
+          // Mise à jour du mixer pour jouer les animations
+          if (stationMixerRef.current) {
+            stationMixerRef.current.update(delta);
+          }
+
+          if (earthMixerRef.current) {
+            earthMixerRef.current.update(delta);
+          }
+
+          if (sunRef.current && directionalLightRef.current) {
+            directionalLightRef.current.position.copy(sunRef.current.position);
+          }
+        }
+
+        renderer.render(scene, camera);
+      };
+
+      animate();
+
+      return () => {
+        cancelAnimationFrame(animationId); // Annuler l'animation avec l'identifiant
+        // Nettoyage des éléments
+        if (canvasRef.current) {
+          canvasRef.current.removeChild(renderer.domElement);
+        }
+  
+        // Dispose du renderer
+        if (rendererRef.current) {
+          rendererRef.current.dispose();
+          rendererRef.current = null; // Nettoyez la référence
+        }
+  
+        // Dispose des lumières
+        directionalLightRef.current = null;
+        ambientLight.dispose();
+  
+        // Dispose des groupes de scène
+        if (sunRef.current) {
+          scene.remove(sunRef.current);
+          sunRef.current = null;
+        }
+        if (earthRef.current) {
+          scene.remove(earthRef.current);
+          earthRef.current = null;
+        }
+        if (stationRef.current) {
+          scene.remove(stationRef.current);
+          stationRef.current = null;
+        }
+        if (nebularRef.current) {
+          scene.remove(nebularRef.current);
+          nebularRef.current = null;
+        }
+  
+        // Arrêtez l'animation
+      };
+    }, []);
+
+    // Gestion du redimensionnement de la fenêtre
+    useEffect(() => {
+      const handleResize = () => {
+        if (cameraRef.current && rendererRef.current) {
+          rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+          cameraRef.current.aspect = window.innerWidth / window.innerHeight;
+          cameraRef.current.updateProjectionMatrix();
+        }
+      };
+
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    // Gestion du défilement avec interpolation
+    let targetY = 5;
+    const maxScrollY = 3600; // Limite de défilement maximale
+    const initialCameraZ = 10; // Position Z initiale de la caméra
+    const zoomFactor = 0.005; // Facteur de zoom pour un zoom plus lent
+    const maxZoomDistance = 10; // Distance de zoom maximale (ajustez selon vos besoins)
+    
+    useEffect(() => {
+      const handleScroll = () => {
+        const scrollY = window.scrollY;
+    
+        // Vérifier si l'utilisateur essaie de défiler vers le bas
+        if (scrollY >= maxScrollY) {
+          // Rester à maxScrollY sans retour en arrière
+          // window.scrollTo(0, maxScrollY); 
+    
+          // Calculer le montant de zoom basé sur la position de défilement
+          const zoomAmount = Math.min((scrollY - maxScrollY) * zoomFactor, maxZoomDistance);
+          if (cameraRef.current) {
+            // Appliquer le zoom progressif
+            cameraRef.current.position.z = initialCameraZ - zoomAmount; // Zoomer vers l'image
+    
+            // Ajustez le FOV pour un effet de zoom
+            cameraRef.current.fov = 50 - (zoomAmount * 5); // Ajuster le FOV pour un effet de zoom plus doux
+            cameraRef.current.updateProjectionMatrix(); // Mettre à jour la matrice de projection
+          }
+        } else {
+          targetY = 5 - scrollY * 0.01; // Calculer la nouvelle position de la caméra
+        }
+    
+        console.log('Position de défilement Y:', scrollY); // Ajout de console.log ici
+      };
+    
+      const updateCameraPosition = () => {
+        if (cameraRef.current) {
+          cameraRef.current.position.y += (targetY - cameraRef.current.position.y) * 0.05;
+        }
+        requestAnimationFrame(updateCameraPosition);
+      };
+    
+      // Écoutez l'événement de défilement
+      window.addEventListener('scroll', handleScroll);
+      updateCameraPosition();
+    
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, []);
+    
+    
+
+    return <div ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh' }} />;
+  };
+
+  export default PlanetBackgroundClient;

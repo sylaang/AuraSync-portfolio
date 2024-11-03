@@ -34,7 +34,7 @@ const Logo: React.FC<LogoProps> = ({ sunPosition }) => {
       setTimeout(() => setIsVisible(false), 1000); // Durée de l'animation de disparition
     }
 
-    console.log(`Position du soleil : ${sunPosition.x}, ${sunPosition.y}, ${sunPosition.z}`);
+    // console.log(`Position du soleil : ${sunPosition.x}, ${sunPosition.y}, ${sunPosition.z}`);
   }, [sunPosition]);
 
   return (

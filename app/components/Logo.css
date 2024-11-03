@@ -16,12 +16,12 @@
 
 /* Animation d'apparition */
 .appear {
-    animation: spaceEntrance 5s ease-out forwards;
+    animation: spaceEntrance 3.5s ease-out forwards;
 }
 
 /* Animation de disparition */
 .disappear {
-    animation: spaceExit 5s ease-out forwards;
+    animation: spaceExit 3.5s ease-out forwards;
 }
 
 @keyframes spaceEntrance {

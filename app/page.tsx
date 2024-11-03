@@ -1,35 +1,41 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import ParticlesBackgroundClient from './components/ParticlesBackgroundClient'; // Assurez-vous que ces importations sont correctes
-import PlanetServer from './components/PlanetServer';
-import Logo from './components/Logo';
-import PlanetBackgroundServer from './components/PlanetBackgroundServer';
+import React, { useEffect, useState, Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import ParticlesBackgroundClient from './components/ParticlesBackgroundClient'; 
 import NavBar from './components/NavBar';
-import Presentation from './components/Presentation';
 import Head from 'next/head';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import Skills from './components/Skills';
+import Project from './components/Project';
+
+// Chargement paresseux des composants
+const LoadingPage = dynamic(() => import('./components/LoadingPage'), {
+  ssr: false, // Désactiver le rendu côté serveur pour ce composant
+});
+const PlanetServer = dynamic(() => import('./components/PlanetServer'));
+const Logo = dynamic(() => import('./components/Logo'));
+const PlanetBackgroundServer = dynamic(() => import('./components/PlanetBackgroundServer'));
+const Presentation = dynamic(() => import('./components/Presentation'));
+const Skills = dynamic(() => import('./components/Skills'));
 
 const Page: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simuler un chargement, par exemple avec une durée de 2 secondes
     const timer = setTimeout(() => {
-      setIsLoading(false); // Mettre à jour l'état de chargement
-    }, 5000); // Remplacez par la logique de chargement de votre contenu si nécessaire
+      setIsLoading(false);
+    }, 17000); // Réduire le temps de chargement à 2 secondes pour le test
 
-    return () => clearTimeout(timer); // Nettoyer le timer au démontage du composant
+    return () => clearTimeout(timer);
   }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <>
-     <Head>
-        {/* Lien vers Font Awesome */}
+      <Head>
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -37,15 +43,12 @@ const Page: React.FC = () => {
       </Head>
       {isLoading && (
         <div className="loadpage">
-          <div className="loader">
-            <h1>Chargement</h1>
-            <span className="loader__element"></span>
-            <span className="loader__element"></span>
-            <span className="loader__element"></span>
-          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <LoadingPage />
+          </Suspense>
         </div>
       )}
-      < NavBar />
+      <NavBar />
       <div className='element'>
         <ParticlesBackgroundClient />
         <div style={{ minHeight: '100vh' }}>
@@ -57,10 +60,11 @@ const Page: React.FC = () => {
         </div>
         <Logo sunPosition={{ x: 0, y: 0, z: 0 }} />
         <main>
-          <div id="app" style={{ minHeight: '500vh' }}>
+          <div id="app">
             <PlanetBackgroundServer />
-          <Presentation />
-          <Skills />
+            <Presentation />
+            <Skills />
+            <Project />
           </div>
         </main>
       </div>

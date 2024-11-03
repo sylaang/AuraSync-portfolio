@@ -18,6 +18,7 @@ const PlanetClient = () => {
   const angleRef = useRef(0);
   const modelsLoadedRef = useRef(false);
   const isPausedRef = useRef(false); // État pour vérifier si le soleil est en pause
+  const hasScrolledRef = useRef(false); // Nouveau drapeau pour contrôler le défilement
   const sunPositionVector = new THREE.Vector3();
   const directionalLightPositionVector = new THREE.Vector3();
 
@@ -151,12 +152,13 @@ const PlanetClient = () => {
             
               requestAnimationFrame(animation);
             };
-            if (reachedSecondTarget) {
+            if (reachedSecondTarget && !hasScrolledRef.current) {
               document.body.style.overflow = 'scroll';
-              smoothScrollTo(900, 4000); // Défilement vers 900 en 2000 ms (2 secondes)
+              smoothScrollTo(900, 4000); // Défilement vers 900 en 4000 ms
+              hasScrolledRef.current = true; // Empêcher les défilements futurs
             }
           }
-          console.log('Position de la scrollbar:', window.scrollY);
+          // console.log('Position de la scrollbar:', window.scrollY);
 
           // Logic pour reprendre le mouvement en douceur
           if (isWheelUsedRef.current) {
