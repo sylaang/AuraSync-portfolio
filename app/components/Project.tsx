@@ -23,7 +23,7 @@ const Project: React.FC = () => {
       }
 
       // Bloque temporairement le défilement lorsque scrollY est supérieur ou égal à 5096
-      if (window.scrollY >= 5096) {
+      if (window.scrollY === 5096) {
         document.body.style.overflow = 'hidden';
       }
     };
