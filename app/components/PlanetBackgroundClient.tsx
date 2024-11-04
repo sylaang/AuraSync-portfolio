@@ -76,15 +76,15 @@
             gltf.animations.forEach((clip) => {
               const action = mixer.clipAction(clip);
               action.play();
-              console.log('Animation de la planète démarrée.');
+              // console.log('Animation de la planète démarrée.');
               action.timeScale = 0.2; // Changez cette valeur pour ajuster la vitesse
             });
           } else {
-            console.warn('Aucune animation trouvée pour le modèle earth');
+            // console.warn('Aucune animation trouvée pour le modèle earth');
           }
-          console.log('Earth Ref:', earthRef.current);
-          console.log('Earth Mixer Ref:', earthMixerRef.current);
-          console.log('Animations:', gltf.animations);
+          // console.log('Earth Ref:', earthRef.current);
+          // console.log('Earth Mixer Ref:', earthMixerRef.current);
+          // console.log('Animations:', gltf.animations);
           modelsLoadedRef.current = true;
         },
         undefined,
@@ -114,7 +114,7 @@
         '/space_station.glb',
         (gltf) => {
           stationRef.current = gltf.scene;
-          stationRef.current.position.set(50, -60, -80);
+          stationRef.current.position.set(0, -75, -80);
           stationRef.current.scale.set(1.5, 1.5, 1.5);
           scene.add(stationRef.current);
       
@@ -252,7 +252,7 @@
           targetY = 5 - scrollY * 0.01; // Calculer la nouvelle position de la caméra
         }
     
-        console.log('Position de défilement Y:', scrollY); // Ajout de console.log ici
+        // console.log('Position de défilement Y:', scrollY); // Ajout de console.log ici
       };
     
       const updateCameraPosition = () => {
