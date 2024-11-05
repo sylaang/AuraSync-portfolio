@@ -1,15 +1,17 @@
 'use client';
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import ParticlesBackgroundClient from './components/ParticlesBackgroundClient'; 
 import NavBar from './components/NavBar';
 import Head from 'next/head';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import Project from './components/Project';
 
 // Chargement paresseux des composants
 const LoadingPage = dynamic(() => import('./components/LoadingPage'), {
+  ssr: false, // Désactiver le rendu côté serveur pour ce composant
+});
+const Project = dynamic(() => import('./components/Project'), {
   ssr: false, // Désactiver le rendu côté serveur pour ce composant
 });
 const PlanetServer = dynamic(() => import('./components/PlanetServer'));
@@ -21,11 +23,11 @@ const Skills = dynamic(() => import('./components/Skills'));
 const Page: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  useEffect(() => { 
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 17000); // Réduire le temps de chargement à 2 secondes pour le test
-
+    
     return () => clearTimeout(timer);
   }, []);
 
@@ -62,7 +64,7 @@ const Page: React.FC = () => {
         <main>
           <div id="app">
             <PlanetBackgroundServer />
-            <Presentation />
+            <Presentation  />
             <Skills />
             <Project />
           </div>

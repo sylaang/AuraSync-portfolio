@@ -16,16 +16,16 @@ const Project: React.FC = () => {
       }
 
       // Affiche les projets lorsque scrollY est entre 5096 et 5296
-      if (window.scrollY >= 5096 && window.scrollY <= 5296) {
+      if (window.scrollY >= 5096 && window.scrollY <= 5496) {
         setAfficherProjectScroll(true);
       } else {
         setAfficherProjectScroll(false);
       }
 
       // Bloque temporairement le défilement lorsque scrollY est supérieur ou égal à 5096
-      if (window.scrollY === 5096) {
-        document.body.style.overflow = 'hidden';
-      }
+      // if (window.scrollY >= 5096) {
+      //   document.body.style.overflow = 'hidden';
+      // }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -36,21 +36,6 @@ const Project: React.FC = () => {
     };
   }, []);
 
-  const handleContinue = () => {
-    // Fonction pour défiler en douceur vers 5296
-    window.scrollTo({
-      top: 5296,
-      behavior: 'smooth',
-    });
-  };
-
-  const handleBack = () => {
-    window.scrollTo({
-      top: 3600,
-      behavior: 'smooth',
-    });
-  };
-
   return (
     <div style={{
       backgroundColor: 'transparent',
@@ -58,9 +43,7 @@ const Project: React.FC = () => {
       justifyContent: 'center',
       alignItems: 'center',
     }}>
-      <h1 style={{ textAlign: 'center', color: 'white', fontSize: '50px', position: 'absolute', top: '520vh' }}>
-        Projets
-      </h1>
+
 
       {/* Affiche "scroll/zoom" si afficherMessageScroll est true */}
       {afficherMessageScroll && (
@@ -75,43 +58,11 @@ const Project: React.FC = () => {
           scroll/zoom
         </span>
       )}
-
-      {/* Affiche le bouton "Continuer" si nous sommes à 5096 */}
-
-
+      
       {/* Affiche les projets si afficherProjectScroll est true */}
       {afficherProjectScroll && (
         <>
-                <button 
-          onClick={handleContinue}
-          style={{
-            position: 'fixed',
-            bottom: '10%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            padding: '10px 20px',
-            fontSize: '20px',
-            cursor: 'pointer',
-            zIndex: 1000, // Pour s'assurer qu'il est au-dessus d'autres éléments
-          }}
-        >
-          Continuer
-        </button>
-                <button 
-          onClick={handleBack}
-          style={{
-            position: 'fixed',
-            bottom: '10%',
-            left: '30%',
-            transform: 'translateX(-50%)',
-            padding: '10px 20px',
-            fontSize: '20px',
-            cursor: 'pointer',
-            zIndex: 1000, // Pour s'assurer qu'il est au-dessus d'autres éléments
-          }}
-        >
-          Retour
-        </button>
+              <h1 style={{ textAlign: 'center', color: 'white', fontSize: '50px', position: 'fixed', top: '5vh' }}>Projets</h1>
           <div style={{ background: 'white', height: '500px', width: '500px', position: 'fixed', top: '50vh', left: '5%', cursor: 'pointer' }}>
           </div>
           <div style={{ background: 'red', height: '500px', width: '500px', position: 'fixed', top: '50vh', left: '37%', cursor: 'pointer' }}>
