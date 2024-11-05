@@ -42,6 +42,8 @@ const Project: React.FC = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      position:'relative',
+      zIndex:'59'
     }}>
 
 
@@ -63,12 +65,12 @@ const Project: React.FC = () => {
       {afficherProjectScroll && (
         <>
               <h1 style={{ textAlign: 'center', color: 'white', fontSize: '50px', position: 'fixed', top: '5vh' }}>Projets</h1>
-          <div style={{ background: 'white', height: '500px', width: '500px', position: 'fixed', top: '50vh', left: '5%', cursor: 'pointer' }}>
+          {/* <div style={{ background: 'white', height: '500px', width: '500px', position: 'fixed', top: '50vh', left: '5%', cursor: 'pointer' }}>
           </div>
           <div style={{ background: 'red', height: '500px', width: '500px', position: 'fixed', top: '50vh', left: '37%', cursor: 'pointer' }}>
           </div>
           <div style={{ background: 'purple', height: '500px', width: '500px', position: 'fixed', top: '50vh', right: '5%', cursor: 'pointer' }}>
-          </div>
+          </div> */}
         </>
       )}
     </div>

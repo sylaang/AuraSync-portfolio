@@ -186,7 +186,7 @@ const PlanetClient = () => {
     animate();
 
     // Code de nettoyage lors du démontage du composant
-    document.body.style.overflow = 'hidden';
+    // document.body.style.overflow = 'hidden';
 
     return () => {
       if (canvasRef.current) {
@@ -201,7 +201,7 @@ const PlanetClient = () => {
   }, []); // Aucune dépendance car nous ne devons pas re-exécuter l'effet.
 
   return (
-    <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+    <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',zIndex:'56' }}>
       <Logo sunPosition={sunPosition} />
     </div>
   );
