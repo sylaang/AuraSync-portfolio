@@ -12,6 +12,7 @@ const PlanetBackgroundClient = () => {
   const earthRef = useRef<THREE.Group | null>(null);
   const stationMixerRef = useRef<THREE.AnimationMixer | null>(null); // Ref pour le mixer
   const phoneRef = useRef<THREE.Group | null>(null);
+  const remoteRef = useRef<THREE.Group | null>(null);
   const monitorRef = useRef<THREE.Group | null>(null);
   const stationRef = useRef<THREE.Group | null>(null);
   const nebularRef = useRef<THREE.Group | null>(null);
@@ -117,7 +118,7 @@ const PlanetBackgroundClient = () => {
       '/space_station.glb',
       (gltf) => {
         stationRef.current = gltf.scene;
-        stationRef.current.position.set(0, -75, -100);
+        stationRef.current.position.set(0, -75, -180);
         stationRef.current.scale.set(1.5, 1.5, 1.5);
         scene.add(stationRef.current);
 
@@ -148,28 +149,30 @@ const PlanetBackgroundClient = () => {
     const phoneLoader = new GLTFLoader();
     phoneLoader.load('/phone.glb', (gltf) => {
       phoneRef.current = gltf.scene;
-
+    
       if (phoneRef.current) {
-        phoneRef.current.position.set(5, -72.5, -78);
-        phoneRef.current.scale.set(2, 2, 2);
+        // Position et échelle de base
+        phoneRef.current.position.set(400, -73.5, -78);
+        phoneRef.current.scale.set(1, 1, 1);
         scene.add(phoneRef.current);
-
+    
         phoneRef.current.rotation.x = THREE.MathUtils.degToRad(-25); // Incliner vers l'avant
         phoneRef.current.rotation.y = THREE.MathUtils.degToRad(-5); // Incliner vers la droite
+    
+        // Charger et appliquer la texture
         const textureLoader = new THREE.TextureLoader();
         textureLoader.load('/ddinteriorshomePhone.png', (texture) => {
+          texture.repeat.set(1, 1); // Ajuste la répétition (pour un étirement ou un rétrécissement)
+          texture.offset.set(0.1, 0.1); // Décalage de la texture pour un meilleur cadrage
           if (phoneRef.current) {
-            // Appliquer l'inclinaison souhaitée une seule fois
-        
-            // Parcourir les enfants pour appliquer la texture et le matériau
             phoneRef.current.traverse((child) => {
               if (child instanceof THREE.Mesh) {
                 child.material = new THREE.MeshStandardMaterial({
                   map: texture, // Appliquer la texture chargée
                   color: new THREE.Color(1, 1, 1), // Couleur de base
-                  roughness: 0.1, // Valeur de rugosité
+                  roughness: 0.5, // Valeur de rugosité
                   emissive: new THREE.Color(0xffffff), // Couleur émissive
-                  emissiveIntensity: 0.000001, // Intensité émissive
+                  emissiveIntensity: 0.000000001, // Intensité émissive
                   transparent: false, // Pas de transparence
                 });
                 child.material.needsUpdate = true; // Mettre à jour le matériau
@@ -177,62 +180,200 @@ const PlanetBackgroundClient = () => {
             });
           }
         });
-
-        // Créer une lumière directionnelle
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.00005); // Augmentez l'intensité
-        directionalLight.position.set(2, 2, 2); // Ajustez la position pour éclairer l'écran
-
-
-        // Ajoutez la lumière directionnelle à la scène
-        scene.add(directionalLight);
+    
+        // Position cible et vitesse de l'animation
+        let targetPosition = 400; // Position cible pour l'animation
+        const speed = 0.05; // Vitesse de l'animation
+    
+        // Ajouter un écouteur pour le défilement de la page
+        window.addEventListener('scroll', () => {
+          if (phoneRef.current) {
+            if (window.scrollY >= 4300) {
+              targetPosition = 2; // Nouvelle position cible
+            } else {
+              targetPosition = 400; // Position par défaut
+            }
+          }
+        });
+    
+        // Animation progressive de la position
+        const animatePosition = () => {
+          if (phoneRef.current) {
+            // Interpolation progressive vers la position cible
+            phoneRef.current.position.x += (targetPosition - phoneRef.current.position.x) * speed;
+          }
+          requestAnimationFrame(animatePosition);
+        };
+    
+        animatePosition(); // Démarre l'animation
       }
     }, undefined, (error) => {
       console.error('Erreur lors du chargement du modèle phone :', error);
     });
 
+    
+    const remoteLoader = new GLTFLoader();
+    remoteLoader.load('/AppleTV_Remote_modelOnly.glb', (gltf) => {
+      remoteRef.current = gltf.scene;
+    
+      if (remoteRef.current) {
+        // Position et échelle de base
+        remoteRef.current.position.set(400, -70.5, -70);
+        remoteRef.current.scale.set(1, 1, 1);
+        scene.add(remoteRef.current);
+    
+        remoteRef.current.rotation.x = THREE.MathUtils.degToRad(0); // Incliner vers l'avant
+        remoteRef.current.rotation.y = THREE.MathUtils.degToRad(20); // Incliner vers la droite
+    
+        // Parcours du modèle pour explorer les objets
+        remoteRef.current.traverse((child) => {
+          if (child.name === 'button' && child instanceof THREE.Mesh) {  // Cible uniquement l'objet nommé 'button' et vérifie s'il est un Mesh
+            console.log("Objet 'button' trouvé :", child);
+        
+            // Appliquer un matériau émissif rouge sur le bouton
+            child.material = new THREE.MeshStandardMaterial({
+              color: 0x00008b, // Vert lumineux
+              roughness: 0.5,
+              emissive: new THREE.Color(0x00ff00), // Émissif vert
+              emissiveIntensity: 2, // Intensité émissive pour plus de luminosité
+            });
+        
+            // Assurer que le matériau soit mis à jour
+            child.material.needsUpdate = true;
+        
+            // Créer une lumière ponctuelle pour l'objet 'button'
+            const buttonLight = new THREE.PointLight(0x00008b, 5, 1); // Couleur rouge, intensité et portée
+            buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Placer la lumière à l'emplacement du bouton
+            scene.add(buttonLight); // Ajouter la lumière à la scène
+        
+            // Animation de pulsation pour la lumière
+            const animateLight = () => {
+              const time = Date.now() * 0.005; // Récupère l'heure pour une animation fluide
+              buttonLight.intensity = 5 + Math.sin(time) * 3; // Pulsation de l'intensité
+              buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Assure que la lumière suit le bouton
+              requestAnimationFrame(animateLight); // Boucle d'animation
+            };
+        
+            animateLight(); // Démarre l'animation
+          }
+          if (child.name === 'button003' && child instanceof THREE.Mesh) {  // Cible uniquement l'objet nommé 'button' et vérifie s'il est un Mesh
+            console.log("Objet 'button' trouvé :", child);
+        
+            // Appliquer un matériau émissif rouge sur le bouton
+            child.material = new THREE.MeshStandardMaterial({
+              color: 0x00ff00, // Vert lumineux
+              roughness: 0.5,
+              emissive: new THREE.Color(0x00ff00), // Émissif vert
+              emissiveIntensity: 2, // Intensité émissive pour plus de luminosité
+            });
+        
+            // Assurer que le matériau soit mis à jour
+            child.material.needsUpdate = true;
+        
+            // Créer une lumière ponctuelle pour l'objet 'button'
+            const buttonLight = new THREE.PointLight(0x00ff00, 5, 1); // Couleur rouge, intensité et portée
+            buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Placer la lumière à l'emplacement du bouton
+            scene.add(buttonLight); // Ajouter la lumière à la scène
+        
+            // Animation de pulsation pour la lumière
+            const animateLight = () => {
+              const time = Date.now() * 0.005; // Récupère l'heure pour une animation fluide
+              buttonLight.intensity = 5 + Math.sin(time) * 3; // Pulsation de l'intensité
+              buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Assure que la lumière suit le bouton
+              requestAnimationFrame(animateLight); // Boucle d'animation
+            };
+        
+            animateLight(); // Démarre l'animation
+          }
+        });
+        
+        
+    
+        // Position cible et vitesse de l'animation
+        let targetPosition = 400; // Position cible pour l'animation
+        const speed = 0.05; // Vitesse de l'animation
+    
+        // Ajouter un écouteur pour le défilement de la page
+        window.addEventListener('scroll', () => {
+          if (remoteRef.current) {
+            if (window.scrollY >= 4300) {
+              targetPosition = 5; // Nouvelle position cible
+            } else {
+              targetPosition = 400; // Position par défaut
+            }
+          }
+        });
+    
+        // Animation progressive de la position
+        const animatePosition = () => {
+          if (remoteRef.current) {
+            remoteRef.current.position.x += (targetPosition - remoteRef.current.position.x) * speed;
+          }
+          requestAnimationFrame(animatePosition);
+        };
+    
+        animatePosition(); // Démarre l'animation
+      }
+    }, undefined, (error) => {
+      console.error('Erreur lors du chargement du modèle phone :', error);
+    });
+    
+
 
 
     
     const monitorLoader = new GLTFLoader();
-    monitorLoader.load('/monitor.glb', (gltf) => {
+    monitorLoader.load('/ultrawide_monitor.glb', (gltf) => {
       monitorRef.current = gltf.scene;
-
+    
       if (monitorRef.current) {
-        monitorRef.current.position.set(-5, -72.5, -80);
-        monitorRef.current.scale.set(4, 4, 4);
+        // Position et échelle de base
+        monitorRef.current.position.set(-400, -130.5, -200);
+        monitorRef.current.scale.set(2, 2, 2);
+        monitorRef.current.rotation.x = THREE.MathUtils.degToRad(160);
+        monitorRef.current.rotation.y = THREE.MathUtils.degToRad(180);
         scene.add(monitorRef.current);
-
-        monitorRef.current.rotation.x = THREE.MathUtils.degToRad(-25); // Incliner vers l'avant
-        monitorRef.current.rotation.y = THREE.MathUtils.degToRad(-45); // Incliner vers la droite
+    
+        // Charger et appliquer la texture
         const textureLoader = new THREE.TextureLoader();
         textureLoader.load('/ddinteriorshomeMonitor.png', (texture) => {
           if (monitorRef.current) {
-            // Appliquer l'inclinaison souhaitée une seule fois
-        
-            // Parcourir les enfants pour appliquer la texture et le matériau
             monitorRef.current.traverse((child) => {
-              if (child instanceof THREE.Mesh) {
-                child.material = new THREE.MeshStandardMaterial({
-                  map: texture, // Appliquer la texture chargée
-                  color: new THREE.Color(1, 1, 1), // Couleur de base
-                  roughness: 0.1, // Valeur de rugosité
-                  emissive: new THREE.Color(0xffffff), // Couleur émissive
-                  emissiveIntensity: 0.000001, // Intensité émissive
-                  transparent: false, // Pas de transparence
+              if (child instanceof THREE.Mesh && child.name.includes("Screen")) {
+                child.material = new THREE.MeshBasicMaterial({
+                  map: texture,
                 });
-                child.material.needsUpdate = true; // Mettre à jour le matériau
+                child.material.needsUpdate = true;
               }
             });
           }
         });
-
-        // Créer une lumière directionnelle
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.00005); // Augmentez l'intensité
-        directionalLight.position.set(2, 2, 2); // Ajustez la position pour éclairer l'écran
-
-
-        // Ajoutez la lumière directionnelle à la scène
-        scene.add(directionalLight);
+    
+        // Position cible et vitesse de l'animation
+        let targetPosition = -400; // Position cible pour l'animation
+        const speed = 0.03; // Vitesse de l'animation
+    
+        // Ajouter un écouteur pour le défilement de la page
+        window.addEventListener('scroll', () => {
+          if (monitorRef.current) {
+            if (window.scrollY >= 4300) {
+              targetPosition = 0; // Nouvelle position cible
+            } else {
+              targetPosition = -400; // Position par défaut
+            }
+          }
+        });
+    
+        // Animation progressive de la position
+        const animatePosition = () => {
+          if (monitorRef.current) {
+            // Interpolation progressive vers la position cible
+            monitorRef.current.position.x += (targetPosition - monitorRef.current.position.x) * speed;
+          }
+          requestAnimationFrame(animatePosition);
+        };
+    
+        animatePosition(); // Démarre l'animation
       }
     }, undefined, (error) => {
       console.error('Erreur lors du chargement du modèle monitor :', error);
