@@ -76,7 +76,7 @@ const Presentation: React.FC = () => {
                         Bienvenue
                     </h1>
                     <div>
-                        <p style={{ fontSize: '2em', whiteSpace: 'pre-wrap' }}>
+                        <p style={{ fontSize: '2em', textAlign:'start', marginLeft:'10%' }}>
                             {text.substring(0, textIndex)}
                         </p>
                     </div>

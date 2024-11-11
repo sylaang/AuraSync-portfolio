@@ -1,11 +1,13 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import ParticlesBackgroundClient from './components/ParticlesBackgroundClient'; 
 import NavBar from './components/NavBar';
 import Head from 'next/head';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import Contact from './components/Contact';
+
 
 // Chargement paresseux des composants
 const LoadingPage = dynamic(() => import('./components/LoadingPage'), {
@@ -26,7 +28,7 @@ const Page: React.FC = () => {
   useEffect(() => { 
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 17000); // Réduire le temps de chargement à 2 secondes pour le test
+    }, 17000);
     
     return () => clearTimeout(timer);
   }, []);
@@ -67,6 +69,7 @@ const Page: React.FC = () => {
             <Presentation  />
             <Skills />
             <Project />
+            <Contact />
           </div>
         </main>
       </div>

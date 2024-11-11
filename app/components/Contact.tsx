@@ -1,100 +1,157 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import './Contact.css';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useEffect, useState } from 'react';
 
 const Contact: React.FC = () => {
-    const titleRef = useRef<HTMLDivElement | null>(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const canvasRef = useRef<HTMLDivElement | null>(null); // Référence pour le canvas
-    const [cameraZ, setCameraZ] = useState(0); // État pour la position Z de la caméra
+    const [afficherMessageScroll, setAfficherMessageScroll] = useState(false);
+    const [afficherProjectScroll, setAfficherProjectScroll] = useState(false);
 
     useEffect(() => {
-        AOS.init();
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        setIsVisible(false);  // Supprime la classe pour réinitialiser
-                        setTimeout(() => setIsVisible(true), 50);  // Réapplique la classe avec un délai pour redémarrer l'animation
-                    } else {
-                        setIsVisible(false); // Cache l'animation si l'élément n'est plus visible
-                    }
-                });
-            },
-            { threshold: 0.5 } // Déclenchement lorsque 50% de l'élément est visible
-        );
+        const handleScroll = () => {
+            console.log('Position de défilement Y:', window.scrollY);
 
-        if (titleRef.current) {
-            observer.observe(titleRef.current);
-        }
 
-        return () => {
-            if (titleRef.current) {
-                observer.unobserve(titleRef.current);
+            // Affiche les projets lorsque scrollY est entre 5096 et 5296
+            if (window.scrollY >= 5600) {
+                setAfficherProjectScroll(true);
+            } else {
+                setAfficherProjectScroll(false);
             }
-        };
-    }, []);
 
-    useEffect(() => {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(1.5, 1.5, 3); // Position initiale de la caméra
-
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setClearColor(0x000000, 0); // 0 pour la transparence totale
-
-        if (canvasRef.current) {
-            canvasRef.current.appendChild(renderer.domElement);
-        }
-
-        const ambientLight = new THREE.AmbientLight(0x404040, 2);
-        scene.add(ambientLight);
-
-        // Charger le modèle need_some_space.glb
-        const spaceLoader = new GLTFLoader();
-        spaceLoader.load('/need_some_space.glb', (gltf) => {
-            const spaceModel = gltf.scene;
-            spaceModel.position.set(0, 0, 2); // Ajustez la position si nécessaire
-            scene.add(spaceModel); // Ajoutez le modèle à la scène
-        }, undefined, (error) => {
-            console.error('Erreur lors du chargement de need_some_space :', error);
-        });
-
-        const animate = () => {
-            requestAnimationFrame(animate);
-            camera.position.z -= 0.01; // Zoom avant
-            if (camera.position.z < 0.00001) camera.position.z = 0.00001;
-            renderer.render(scene, camera);
+            // Bloque temporairement le défilement lorsque scrollY est supérieur ou égal à 5096
+            // if (window.scrollY >= 5096) {
+            //   document.body.style.overflow = 'hidden';
+            // }
         };
 
-        animate();
+        window.addEventListener('scroll', handleScroll);
 
+        // Nettoyage lors du démontage
         return () => {
-            if (canvasRef.current) {
-                canvasRef.current.removeChild(renderer.domElement);
-            }
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
     return (
-        <div>
-            <div data-aos="zoom-in" data-aos-duration="1000" data-aos-easing="ease-in-out"
-                ref={titleRef}
-                // style={{ marginTop: '100vh' }}
-                className={`title-animated ${isVisible ? 'animate' : ''}`}
-            >
-                Contact
-            </div>
-            {/* Div fait un effet zoom comme si la caméra plongeait dans mon image 3D ici */}
-            <div ref={canvasRef} style={{ position: 'relative', height: '100%', width: '100%' }} /> {/* Ajustez la taille du canvas */}
+        <div 
+        style={{
+            backgroundColor: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+            zIndex: '59'
+        }}>
+
+
+            {/* Affiche les projets si afficherProjectScroll est true */}
+            {afficherProjectScroll && (
+                <>
+                    <div
+                        style={{
+                            background: 'black',
+                            height: '150vh',
+                            width: '100%',
+                            position: 'absolute',
+                            top: '330vh',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 1
+                        }}
+                    >
+                        <h1
+                            style={{
+                                color: 'white',
+                                fontSize: '50px',
+                                marginBottom: '20px',
+                                textAlign: 'center',
+                                transition: 'all 0.3s ease',
+                            }}
+                        >
+                            Contact
+                        </h1>
+
+                        <div
+                            style={{
+                                color: 'white',
+                                fontSize: '18px',
+                                marginTop: '30px',
+                                textAlign: 'center',
+                            }}
+                        >
+                            <p>
+                                <a
+                                    href="https://www.linkedin.com/in/mehdi-hachem-54a8672b0/"
+                                    style={{
+                                        color: 'white',
+                                        textDecoration: 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
+                                    }}
+                                >
+                                    <img
+                                        src="/icone/linkedin.png"
+                                        alt="LinkedIn"
+                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
+                                    />
+                                    LinkedIn
+                                </a>
+                            </p>
+                            <p>
+                                <a href="https://github.com/sylaang/"
+                                    style={{
+                                        color: 'white',
+                                        textDecoration: 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
+                                    }}
+                                    >
+                                         <img
+                                        src="/icone/github.png"
+                                        alt="LinkedIn"
+                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
+                                    />
+                                    GitHub
+                                </a>
+                            </p>
+                            <p>
+                                <a href="mailto:mehdi.hachem.syl@gmail.com"
+                                     style={{
+                                        color: 'white',
+                                        textDecoration: 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
+                                    }}
+                                    >
+                                          <img
+                                        src="/icone/email.png"
+                                        alt="LinkedIn"
+                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
+                                    />
+                                    mehdi.hachem.syl@gmail.com
+                                </a>
+                            </p>
+                            <p  style={{
+                                        color: 'white',
+                                        textDecoration: 'none',
+                                        display: 'flex',
+                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
+                                    }}
+                                    >
+                                         <img
+                                        src="/icone/telephone.png"
+                                        alt="LinkedIn"
+                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
+                                    />
+                                0777777777
+                            </p>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
-}
+};
 
 export default Contact;

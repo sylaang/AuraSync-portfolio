@@ -16,7 +16,7 @@ const Project: React.FC = () => {
       }
 
       // Affiche les projets lorsque scrollY est entre 5096 et 5296
-      if (window.scrollY >= 5096 && window.scrollY <= 5496) {
+      if (window.scrollY >= 5096 && window.scrollY <= 5400) {
         setAfficherProjectScroll(true);
       } else {
         setAfficherProjectScroll(false);

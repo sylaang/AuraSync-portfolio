@@ -32,7 +32,7 @@ main {
 
 #app { /* ou le sélecteur approprié pour votre conteneur principal */
   overflow-y: auto; /* Permettre le défilement vertical */
-  min-height: 600vh; /* Utiliser 100vh pour utiliser toute la hauteur de la fenêtre */
+  min-height: 610vh; /* Utiliser 100vh pour utiliser toute la hauteur de la fenêtre */
 }
 
 .no-scroll {

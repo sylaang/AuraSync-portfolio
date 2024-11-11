@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from 'react'; // Import des hooks React nécessaires.
 import * as THREE from 'three'; // Import de la bibliothèque Three.js pour la création de graphiques 3D.
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'; // Import du chargeur GLTF pour charger des modèles 3D.
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'; // Import pour la composition d'effets visuels.
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'; // Import pour le rendu de scène.
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'; // Import pour l'effet de lueur (bloom).
+  import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'; // Import pour la composition d'effets visuels.
+  import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'; // Import pour le rendu de scène.
+  import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'; // Import pour l'effet de lueur (bloom).
 import Logo from './Logo'; // Import du composant Logo pour l'affichage du logo.
 
 const PlanetClient = () => {
@@ -152,9 +152,9 @@ const PlanetClient = () => {
             
               requestAnimationFrame(animation);
             };
-            if (reachedSecondTarget && !hasScrolledRef.current) {
+            if (reachedSecondTarget && !hasScrolledRef.current && window.scrollY <= 900) {
               document.body.style.overflow = 'scroll';
-              smoothScrollTo(900, 4000); // Défilement vers 900 en 4000 ms
+              smoothScrollTo(900, 2000); // Défilement vers 900 en 4000 ms
               hasScrolledRef.current = true; // Empêcher les défilements futurs
             }
           }
