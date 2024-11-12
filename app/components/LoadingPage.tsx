@@ -101,7 +101,7 @@ const LoadingPage: React.FC = React.memo(() => {
                             clearInterval(interval);
                             return prev;
                         }
-                        return Math.min(prev + (100 / 200), 100); // Augmenter le pourcentage sur 18 secondes
+                        return Math.min(prev + 2, 100); // Augmenter de 2 % à chaque intervalle
                     });
                 }, 100); // Mettre à jour toutes les 100 ms
 

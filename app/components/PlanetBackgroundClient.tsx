@@ -151,12 +151,12 @@ const PlanetBackgroundClient = () => {
  
     let currentTextureIndex = 0;
     const texturesMonitor = [
-      '/ddinteriorshomeMonitor.png',
-      '/phillipePopieulMonitor.png',
+      '/pictures/ddinteriorshomeMonitor.png',
+      '/pictures/phillipePopieulMonitor.png',
     ];
     const texturesPhone = [
-      '/ddinteriorshomePhone.png',
-      '/phillipePopieulPhone.png',
+      '/pictures/ddinteriorshomePhone.png',
+      '/pictures/phillipePopieulPhone.png',
     ];
     const phoneLoader = new GLTFLoader();
     phoneLoader.load('/phone.glb', (gltf) => {

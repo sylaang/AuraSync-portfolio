@@ -144,7 +144,7 @@ const Contact: React.FC = () => {
                                         alt="LinkedIn"
                                         style={{ marginRight: '10px', width: '25px', height: '25px' }}
                                     />
-                                0777777777
+                                07 78 35 68 35
                             </p>
                         </div>
                     </div>

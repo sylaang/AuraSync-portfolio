@@ -2,6 +2,13 @@ import React from 'react';
 import './NavBar.css';
 
 const NavBar: React.FC = () => {
+  function setOverflowAuto(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) {
+    event.preventDefault(); // Empêche la redirection immédiate
+    document.body.style.overflow = 'auto'; // Change l'overflow du body en auto
+
+    // Redirige après avoir défini l'overflow
+    // window.location.href = event.currentTarget.href;
+}
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -12,6 +19,7 @@ const NavBar: React.FC = () => {
         <a
           className="navbar-link"
           onClick={(e) => {
+            setOverflowAuto(e); // Appel de la fonction pour mettre overflow à auto
             e.preventDefault();
 
             // Premier défilement à la position 3600
@@ -34,6 +42,7 @@ const NavBar: React.FC = () => {
         <a
           className="navbar-link"
           onClick={(e) => {
+            setOverflowAuto(e); // Appel de la fonction pour mettre overflow à auto
             e.preventDefault();
             window.scrollTo({
               top: 900,   // La position verticale à laquelle vous voulez arriver
@@ -46,6 +55,7 @@ const NavBar: React.FC = () => {
         <a
           className="navbar-link"
           onClick={(e) => {
+            setOverflowAuto(e); // Appel de la fonction pour mettre overflow à auto
             e.preventDefault();
 
             // Premier défilement à la position 3600
@@ -54,13 +64,13 @@ const NavBar: React.FC = () => {
               behavior: 'smooth'
             });
 
-            // Après un délai, défilement à la position 4996
+            // Après un délai, défilement à la position 5600
             setTimeout(() => {
               window.scrollTo({
                 top: 5600,
                 behavior: 'smooth'
               });
-            }, 1000); // Délai de 1000ms (1 seconde) avant de scroller à la position 4996
+            }, 1000); // Délai de 1000ms (1 seconde) avant de scroller à la position 5600
           }}
         >
           <span>Contact</span>

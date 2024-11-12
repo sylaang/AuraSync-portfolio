@@ -186,7 +186,7 @@ const PlanetClient = () => {
     animate();
 
     // Code de nettoyage lors du démontage du composant
-    // document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 
     return () => {
       if (canvasRef.current) {
