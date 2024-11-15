@@ -1,12 +1,12 @@
 "use client"; // Indique que ce fichier doit être traité comme un composant client (React).
 
-import { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import Logo from './Logo';
+import { useEffect, useRef, useState } from 'react'; // Import des hooks React nécessaires.
+import * as THREE from 'three'; // Import de la bibliothèque Three.js pour la création de graphiques 3D.
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'; // Import du chargeur GLTF pour charger des modèles 3D.
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'; // Import pour la composition d'effets visuels.
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'; // Import pour le rendu de scène.
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'; // Import pour l'effet de lueur (bloom).
+import Logo from './Logo'; // Import du composant Logo pour l'affichage du logo.
 
 const PlanetClient = () => {
   const canvasRef = useRef<HTMLDivElement | null>(null);
@@ -82,10 +82,11 @@ const PlanetClient = () => {
     camera.position.set(0, 5, 10);
     camera.lookAt(0, 0, 0);
 
-
     const handleWheel = (event: WheelEvent) => {
-      isPausedRef.current = false;
-      isWheelUsedRef.current = true;
+      if (event.deltaY > 0) {
+        isPausedRef.current = false;
+        isWheelUsedRef.current = true;
+      }
     };
 
     const animate = () => {
@@ -127,26 +128,25 @@ const PlanetClient = () => {
               isPausedRef.current = true;
               sunRef.current.rotation.z = 0;
             }
-
             const smoothScrollTo = (targetY: number, duration: number) => {
               const startY = window.scrollY;
               const distance = targetY - startY;
               let startTime: number | null = null;
-
+            
               const animation = (currentTime: number) => {
                 if (startTime === null) startTime = currentTime;
                 const elapsed = currentTime - startTime;
-
+            
                 const progress = Math.min(elapsed / duration, 1);
                 const easing = 0.5 - Math.cos(progress * Math.PI) / 2;
-
+            
                 window.scrollTo(0, startY + distance * easing);
-
+            
                 if (elapsed < duration) {
                   requestAnimationFrame(animation);
                 }
               };
-
+            
               requestAnimationFrame(animation);
             };
             if (reachedSecondTarget && !hasScrolledRef.current && window.scrollY <= 900) {
@@ -157,11 +157,11 @@ const PlanetClient = () => {
           }
 
           if (isWheelUsedRef.current) {
-            isPausedRef.current = false;
-            isWheelUsedRef.current = false;
-            angleRef.current -= 0.0028;
+            isPausedRef.current = false; 
+            isWheelUsedRef.current = false; 
+            angleRef.current -= 0.0028; 
           } else if (!isPausedRef.current) {
-            angleRef.current -= 0.0028;
+            angleRef.current -= 0.0028; 
           }
 
           if (directionalLightRef.current) {
@@ -173,9 +173,8 @@ const PlanetClient = () => {
 
       composer.render();
     };
-
     if (canvasRef.current) {
-      canvasRef.current.addEventListener('wheel', handleWheel);
+    canvasRef.current.addEventListener('wheel', handleWheel);
     }
 
     animate();
@@ -189,6 +188,7 @@ const PlanetClient = () => {
       }
       document.body.style.overflow = '';
     };
+
   }, []);
 
   return (
