@@ -180,7 +180,7 @@ const PlanetClient = () => {
     };
     if (canvasRef.current) {
     canvasRef.current.addEventListener('wheel', handleWheel);
-    canvasRef.current.removeEventListener('click', handleClick);
+    canvasRef.current.addEventListener('click', handleClick);
     }
 
     animate();
@@ -191,7 +191,7 @@ const PlanetClient = () => {
       if (canvasRef.current) {
         canvasRef.current.removeChild(renderer.domElement);
         canvasRef.current.removeEventListener('wheel', handleWheel);
-        canvasRef.current.addEventListener('click', handleClick);
+        canvasRef.current.removeEventListener('click', handleClick);
       }
       document.body.style.overflow = '';
     };
