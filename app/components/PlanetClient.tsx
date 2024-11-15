@@ -83,13 +83,13 @@ const PlanetClient = () => {
     camera.lookAt(0, 0, 0);
 
     // Gestion de la molette
-    const handleWheel = (_: WheelEvent) => {
+    const handleWheel = (event: WheelEvent) => {
       isPausedRef.current = false;
       isWheelUsedRef.current = true;
     };
 
     // Gestion du tapotement pour mobile/tablette
-    const handleTouchStart = (_: TouchEvent) => {
+    const handleTouchStart = (event: TouchEvent) => {
       isPausedRef.current = false;
       isWheelUsedRef.current = true;
     };
