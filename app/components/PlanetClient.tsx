@@ -19,6 +19,7 @@ const PlanetClient = () => {
   const modelsLoadedRef = useRef(false);
   const isPausedRef = useRef(false);
   const hasScrolledRef = useRef(false);
+  const [isButtonVisible, setButtonVisible] = useState(false);
   const sunPositionVector = new THREE.Vector3();
   const directionalLightPositionVector = new THREE.Vector3();
 
@@ -76,7 +77,6 @@ const PlanetClient = () => {
 
       modelsLoadedRef.current = true;
     }, undefined, (error) => {
-      console.error('Erreur lors du chargement de la planète :', error);
     });
 
     camera.position.set(0, 5, 10);
@@ -125,8 +125,12 @@ const PlanetClient = () => {
               Math.abs(sunRef.current.position.z - secondTargetPosition.z) < tolerance;
 
             if (reachedTarget) {
+              console.log('Soleil atteint la position cible');
               isPausedRef.current = true;
               sunRef.current.rotation.z = 0;
+              setButtonVisible(true);
+            } else {
+              setButtonVisible(false);
             }
             const smoothScrollTo = (targetY: number, duration: number) => {
               const startY = window.scrollY;
@@ -191,9 +195,39 @@ const PlanetClient = () => {
 
   }, []);
 
+  const handleResumeSun = () => {
+    isPausedRef.current = false;
+    setButtonVisible(false);
+    isWheelUsedRef.current = true;
+  };
+
   return (
-    <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '56' }}>
-      <Logo sunPosition={sunPosition} />
+    <div>
+      <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '56' }}>
+        <Logo sunPosition={sunPosition} />
+      </div>
+
+      
+      {isButtonVisible && (
+        <button className='animate-charcter'
+        style={{
+          position: 'fixed', // Position fixe pour qu'il reste visible à l'écran
+          top: '60%',
+          left: '50%',
+          transform: 'translateX(-50%)', // Centrer le bouton horizontalement
+          zIndex: 1000, // Pour s'assurer qu'il est au-dessus de tout autre élément
+          backgroundColor: 'rgba(0, 0, 0, 0.1)', // Fond sombre pour contraste
+          color: 'white',
+          padding: '15px 30px', // Augmenter la taille du bouton
+          fontSize: '18px', // Plus grand pour mobile
+          cursor: 'none',
+          border: 'none',
+        }}
+          onClick={handleResumeSun}
+        >
+          Continuer
+        </button>
+      )}
     </div>
   );
 };
