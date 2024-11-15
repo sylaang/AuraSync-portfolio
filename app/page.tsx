@@ -17,7 +17,7 @@ const Page: React.FC = () => {
         />
       </Head>
 
-      {/* Charger la partie client de la page */}
+      
       <PageClient />
     </>
   );

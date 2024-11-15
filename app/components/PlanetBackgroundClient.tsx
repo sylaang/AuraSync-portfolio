@@ -243,7 +243,7 @@ const PlanetBackgroundClient = () => {
         // Parcours du modÃ¨le pour explorer les objets
         remoteRef.current.traverse((child) => {
           if (child.name === 'button' && child instanceof THREE.Mesh) {  // Cible uniquement l'objet nommÃ© 'button' et vÃ©rifie s'il est un Mesh
-            console.log("Objet 'button' trouvÃ© :", child);
+            // console.log("Objet 'button' trouvÃ© :", child);
 
             // Appliquer un matÃ©riau Ã©missif rouge sur le bouton
             child.material = new THREE.MeshStandardMaterial({
@@ -272,7 +272,7 @@ const PlanetBackgroundClient = () => {
             animateLight(); // DÃ©marre l'animation
           }
           if (child.name === 'button003' && child instanceof THREE.Mesh) {  // Cible uniquement l'objet nommÃ© 'button003' et vÃ©rifie s'il est un Mesh
-            console.log("Objet 'button003' trouvÃ© :", child);
+            // console.log("Objet 'button003' trouvÃ© :", child);
 
             // Appliquer un matÃ©riau Ã©missif rouge sur le bouton
             child.material = new THREE.MeshStandardMaterial({
@@ -286,7 +286,7 @@ const PlanetBackgroundClient = () => {
             child.material.needsUpdate = true;
 
             child.userData.onClick = () => {
-              console.log('Changing phone texture...');
+              // console.log('Changing phone texture...');
               currentTextureIndex = (currentTextureIndex + 1) % texturesPhone.length; // Passe Ã  l'image suivante dans le tableau
 
               textureLoader.load(texturesPhone[currentTextureIndex], (texture) => {

@@ -43,50 +43,16 @@ const Contact: React.FC = () => {
             {/* Affiche les projets si afficherProjectScroll est true */}
             {afficherProjectScroll && (
                 <>
-                    <div
-                        style={{
-                            background: 'black',
-                            height: '150vh',
-                            width: '100%',
-                            position: 'absolute',
-                            top: '330vh',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            zIndex: 1,
-                        }}
-                    >
-                        <h1
-                            style={{
-                                color: 'white',
-                                fontSize: '50px',
-                                marginBottom: '20px',
-                                textAlign: 'center',
-                                transition: 'all 0.3s ease',
-                            }}
-                        >
+                    <div className='section hide-cursor'>
+                        <h1 className='h1-section'>
                             Contact
                         </h1>
 
-                        <div
-                            style={{
-                                color: 'white',
-                                fontSize: '18px',
-                                marginTop: '30px',
-                                textAlign: 'center',
-                            }}
-                        >
+                        <div className='second-section'>
                             <p>
                                 <a
                                     href="https://www.linkedin.com/in/mehdi-hachem-54a8672b0/"
-                                    style={{
-                                        color: 'white',
-                                        textDecoration: 'none',
-                                        display: 'flex',
-                                        alignItems: 'center', // Aligne verticalement l'icône et le texte
-                                    }}
+                                    className='href-section'
                                 >
                                     <Image
                                         src="/icone/linkedin.png"
@@ -101,12 +67,7 @@ const Contact: React.FC = () => {
                             <p>
                                 <a
                                     href="https://github.com/sylaang/"
-                                    style={{
-                                        color: 'white',
-                                        textDecoration: 'none',
-                                        display: 'flex',
-                                        alignItems: 'center', // Aligne verticalement l'icône et le texte
-                                    }}
+                                    className='href-section'
                                 >
                                     <Image
                                         src="/icone/github.png"
@@ -121,12 +82,7 @@ const Contact: React.FC = () => {
                             <p>
                                 <a
                                     href="mailto:mehdi.hachem.syl@gmail.com"
-                                    style={{
-                                        color: 'white',
-                                        textDecoration: 'none',
-                                        display: 'flex',
-                                        alignItems: 'center', // Aligne verticalement l'icône et le texte
-                                    }}
+                                    className='href-section'
                                 >
                                     <Image
                                         src="/icone/email.png"
@@ -138,14 +94,7 @@ const Contact: React.FC = () => {
                                     mehdi.hachem.syl@gmail.com
                                 </a>
                             </p>
-                            <p
-                                style={{
-                                    color: 'white',
-                                    textDecoration: 'none',
-                                    display: 'flex',
-                                    alignItems: 'center', // Aligne verticalement l'icône et le texte
-                                }}
-                            >
+                            <p className='href-section'>
                                 <Image
                                     src="/icone/telephone.png"
                                     alt="Téléphone"

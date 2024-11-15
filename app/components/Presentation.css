@@ -1,0 +1,30 @@
+.container {
+    opacity: 0; /* Par défaut */
+    transform: translateY(-20px); /* Par défaut */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    margin-top: 20vh;
+    height: 50vh;
+    width: 50vw;
+    background-color: transparent;
+}
+
+/* Ajoute une classe active pour appliquer les changements dynamiques */
+.container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.presentation-text {
+    font-size: 2em;
+    text-align: start;
+    margin-left: 10%;
+}
+
+@media (max-width: 769px) {
+    .container {
+        width: 100%;
+    }
+    .presentation-text {
+        font-size: 1em;
+    }
+  }

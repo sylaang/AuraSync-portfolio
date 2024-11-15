@@ -1,4 +1,7 @@
 
+
+
+
 #particles-js {
   position: fixed;
   width: 100%;
@@ -50,7 +53,7 @@ main {
 
 .loadpage {
   position: absolute;
-  z-index: 9999;
+  z-index: 9998;
 }
 
 .animate-charcter

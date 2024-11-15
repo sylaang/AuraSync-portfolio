@@ -4,7 +4,7 @@ import 'aos/dist/aos.css';
 import './Contact.css';
 import './Skills.css';
 
-const Presentation: React.FC = () => {
+const Skills: React.FC = () => {
     const [isWelcomeVisible, setIsWelcomeVisible] = useState<boolean>(false);
     const [typedLanguages, setTypedLanguages] = useState<string>('');
     const [typedFrameworks, setTypedFrameworks] = useState<string>('');
@@ -55,7 +55,7 @@ const Presentation: React.FC = () => {
     
         const interval = setInterval(() => {
             if (index < text.length) {
-                console.log(`Adding character: ${text.charAt(index)} at index: ${index}`); // Ajoute ce log
+                // console.log(`Adding character: ${text.charAt(index)} at index: ${index}`); // Ajoute ce log
                 setText((prev) => prev + text.charAt(index));
                 index++;
             } else {
@@ -88,38 +88,30 @@ const Presentation: React.FC = () => {
             {/* Section Bienvenue */}
             <div
                 ref={welcomeRef}
+                className={`welcome-section ${isWelcomeVisible ? 'visible' : ''}`}
                 data-aos="zoom-in"
                 data-aos-duration="2000"
                 data-aos-easing="ease-in-out"
-                style={{
-                    opacity: isWelcomeVisible ? 1 : 0,
-                    transform: isWelcomeVisible ? 'translateY(0)' : 'translateY(-20px)',
-                    transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                    marginTop: '20vh',
-                    height: '50vh',
-                    width: '70vw',
-                    backgroundColor: 'transparent',
-                }}
             >
                 <h1 className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>
                     Langages de programmation
                 </h1>
-                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <h2 style={{ fontSize: '2em', marginRight: '10px' }} className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Languages:</h2>
-                        <p style={{ fontSize: '2em'}}>{typedLanguages}</p>
+                <div className="section-container">
+                    <div className="section-item">
+                        <h2 className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Languages:</h2>
+                        <p>{typedLanguages}</p>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <h2 style={{ fontSize: '2em', marginRight: '10px' }} className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Frameworks:</h2>
-                        <p style={{ fontSize: '2em'}}>{typedFrameworks}</p>
+                    <div className="section-item">
+                        <h2 className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Frameworks:</h2>
+                        <p>{typedFrameworks}</p>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <h2 style={{ fontSize: '2em', marginRight: '10px' }} className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Bibliothèques:</h2>
-                        <p style={{ fontSize: '2em'}}>{typedBibliothèques}</p>
+                    <div className="section-item">
+                        <h2 className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Bibliothèques:</h2>
+                        <p>{typedBibliothèques}</p>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <h2 style={{ fontSize: '2em', marginRight: '10px' }} className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Base de données:</h2>
-                        <p style={{ fontSize: '2em'}}>{typedBdd}</p>
+                    <div className="section-item">
+                        <h2 className={`title-animated ${isWelcomeVisible ? 'animate' : ''}`}>Base de données:</h2>
+                        <p>{typedBdd}</p>
                     </div>
                 </div>
             </div>
@@ -127,4 +119,4 @@ const Presentation: React.FC = () => {
     );
 };
 
-export default Presentation;
+export default Skills;

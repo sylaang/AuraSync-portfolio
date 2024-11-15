@@ -6,7 +6,7 @@ const Project: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      console.log('Position de défilement Y:', window.scrollY);
+      // console.log('Position de défilement Y:', window.scrollY);
 
       // Affiche le message "scroll/zoom" lorsque scrollY atteint 3600
       if (window.scrollY >= 3600) {

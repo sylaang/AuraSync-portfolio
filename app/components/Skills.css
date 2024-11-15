@@ -1,0 +1,63 @@
+/* Section Bienvenue */
+.welcome-section {
+    margin-top: 20vh;
+    height: 50vh;
+    width: 70vw;
+    background-color: transparent;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.welcome-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Conteneur des sous-sections */
+.section-container {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Chaque ligne de sous-section */
+.section-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Titre des sous-sections */
+.section-item h2 {
+    font-size: 2em;
+    margin-right: 10px;
+}
+
+/* Texte des sous-sections */
+.section-item p {
+    font-size: 2em;
+}
+
+@media (max-width: 769px) {
+    .welcome-section {
+        width: 100%;
+    }
+    .section-item h2 {
+        font-size: 1em;
+    }
+    .section-item p {
+        font-size: 1em;
+    }
+  }

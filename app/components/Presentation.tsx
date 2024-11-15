@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import 'aos/dist/aos.css'; // Importation du CSS dans le fichier React
 import AOS from 'aos';
 import './Contact.css';
+import './Presentation.css';
 
 const Presentation: React.FC = () => {
     const [isWelcomeVisible, setIsWelcomeVisible] = useState(false);
@@ -35,58 +36,48 @@ const Presentation: React.FC = () => {
             { threshold: 0.9 }
         );
 
-        const currentRef = welcomeRef.current; // Copie la valeur du ref dans une variable locale
+        const currentRef = welcomeRef.current;
 
         if (currentRef) welcomeObserver.observe(currentRef);
 
         return () => {
-            if (currentRef) welcomeObserver.unobserve(currentRef); // Cleanup de l'observer
+            if (currentRef) welcomeObserver.unobserve(currentRef);
         };
-    }, []); // On garde cette liste de dépendances vide car l'observer ne dépend que du cycle de vie du composant
+    }, []);
 
-    // Animer le texte avec un index qui avance
+   
     useEffect(() => {
         if (titleAnimationFinished && textIndex < text.length) {
             const timeout = setTimeout(() => {
                 setTextIndex((prevIndex) => prevIndex + 1);
-            }, 10); // Vitesse d'apparition du texte
+            }, 10);
             return () => clearTimeout(timeout);
         }
-    }, [titleAnimationFinished, textIndex, text.length]); // Ajoutez `text.length` dans les dépendances
+    }, [titleAnimationFinished, textIndex, text.length]);
 
     return (
-        <div>
-            {/* Section Bienvenue */}
+        <>
             <div
                 ref={welcomeRef}
                 data-aos="zoom-in"
                 data-aos-duration="2000"
-                data-aos-easing="ease-in-out"
-                style={{
-                    opacity: isWelcomeVisible ? 1 : 0,
-                    transform: isWelcomeVisible ? 'translateY(0)' : 'translateY(-20px)',
-                    transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
-                    marginTop: '20vh',
-                    height: '50vh',
-                    width: '50vw',
-                    backgroundColor: 'transparent',
-                }}
-            >
+                data-aos-easing="ease-in-out" 
+                className={`container ${isWelcomeVisible ? 'visible' : ''}`}>
                 <div>
                     <h1
                         className={`title-animated ${isVisible ? 'animate' : ''}`}
-                        onAnimationEnd={() => setTitleAnimationFinished(true)} // Déclenche la fin de l'animation
+                        onAnimationEnd={() => setTitleAnimationFinished(true)}
                     >
                         Bienvenue
                     </h1>
                     <div>
-                        <p style={{ fontSize: '2em', textAlign: 'start', marginLeft: '10%' }}>
+                        <p className='presentation-text'>
                             {text.substring(0, textIndex)}
                         </p>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

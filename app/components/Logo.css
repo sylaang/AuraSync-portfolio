@@ -1,3 +1,4 @@
+
 /* Centrage du conteneur */
 .logo-container {
     position: absolute;
@@ -58,3 +59,12 @@
         transform: scale(0.5);
     }
 }
+
+
+
+@media (max-width: 769px) {
+    .imgLogo {
+     max-width: 300px;
+     max-height: 300px;
+    }
+  }
