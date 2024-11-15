@@ -17,8 +17,8 @@ const PlanetClient = () => {
   const isWheelUsedRef = useRef(false);
   const angleRef = useRef(0);
   const modelsLoadedRef = useRef(false);
-  const isPausedRef = useRef(false); // État pour vérifier si le soleil est en pause
-  const hasScrolledRef = useRef(false); // Nouveau drapeau pour contrôler le défilement
+  const isPausedRef = useRef(false);
+  const hasScrolledRef = useRef(false);
   const sunPositionVector = new THREE.Vector3();
   const directionalLightPositionVector = new THREE.Vector3();
 
@@ -84,9 +84,14 @@ const PlanetClient = () => {
 
     const handleWheel = (event: WheelEvent) => {
       if (event.deltaY > 0) {
-        isPausedRef.current = false; // Le soleil reprend son mouvement
-        isWheelUsedRef.current = true; // Indique que la molette a été utilisée
+        isPausedRef.current = false;
+        isWheelUsedRef.current = true;
       }
+    };
+
+    const handleClick = (event: MouseEvent) => {
+        isPausedRef.current = false;
+        isWheelUsedRef.current = true;
     };
 
     const animate = () => {
@@ -94,11 +99,10 @@ const PlanetClient = () => {
 
       if (modelsLoadedRef.current) {
         if (planetRef.current) {
-          planetRef.current.rotation.y -= 0.001; // Rotation de la planète
+          planetRef.current.rotation.y -= 0.001;
         }
 
         if (sunRef.current) {
-          // Si le soleil n'est pas en pause, continuez à le faire tourner
           if (!isPausedRef.current) {
             sunRef.current.rotation.z += 0.005;
 
@@ -126,25 +130,25 @@ const PlanetClient = () => {
               Math.abs(sunRef.current.position.z - secondTargetPosition.z) < tolerance;
 
             if (reachedTarget) {
-              isPausedRef.current = true; // Arrêtez le mouvement du soleil
-              sunRef.current.rotation.z = 0; // Arrêtez la rotation du soleil
+              isPausedRef.current = true;
+              sunRef.current.rotation.z = 0;
             }
             const smoothScrollTo = (targetY: number, duration: number) => {
-              const startY = window.scrollY; // Position actuelle de la scrollbar
-              const distance = targetY - startY; // Distance à parcourir
+              const startY = window.scrollY;
+              const distance = targetY - startY;
               let startTime: number | null = null;
             
               const animation = (currentTime: number) => {
                 if (startTime === null) startTime = currentTime;
-                const elapsed = currentTime - startTime; // Temps écoulé depuis le début
+                const elapsed = currentTime - startTime;
             
                 const progress = Math.min(elapsed / duration, 1);
-                const easing = 0.5 - Math.cos(progress * Math.PI) / 2; // Fonction d'assouplissement (ease-in-out)
+                const easing = 0.5 - Math.cos(progress * Math.PI) / 2;
             
-                window.scrollTo(0, startY + distance * easing); // Appliquez le décalage
+                window.scrollTo(0, startY + distance * easing);
             
                 if (elapsed < duration) {
-                  requestAnimationFrame(animation); // Continuez l'animation
+                  requestAnimationFrame(animation);
                 }
               };
             
@@ -152,8 +156,8 @@ const PlanetClient = () => {
             };
             if (reachedSecondTarget && !hasScrolledRef.current && window.scrollY <= 900) {
               document.body.style.overflow = 'scroll';
-              smoothScrollTo(900, 2000); // Défilement vers 900 en 4000 ms
-              hasScrolledRef.current = true; // Empêcher les défilements futurs
+              smoothScrollTo(900, 2000);
+              hasScrolledRef.current = true;
             }
           }
 
@@ -174,8 +178,10 @@ const PlanetClient = () => {
 
       composer.render();
     };
-
-    window.addEventListener('wheel', handleWheel);
+    if (canvasRef.current) {
+    canvasRef.current.addEventListener('wheel', handleWheel);
+    canvasRef.current.removeEventListener('click', handleClick);
+    }
 
     animate();
 
@@ -184,8 +190,9 @@ const PlanetClient = () => {
     return () => {
       if (canvasRef.current) {
         canvasRef.current.removeChild(renderer.domElement);
+        canvasRef.current.removeEventListener('wheel', handleWheel);
+        canvasRef.current.addEventListener('click', handleClick);
       }
-      window.removeEventListener('wheel', handleWheel);
       document.body.style.overflow = '';
     };
 
