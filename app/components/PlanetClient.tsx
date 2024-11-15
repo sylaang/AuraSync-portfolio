@@ -81,6 +81,7 @@ const PlanetClient = () => {
 
     camera.position.set(0, 5, 10);
     camera.lookAt(0, 0, 0);
+    const canvasElement = canvasRef.current; // Capture la référence
 
     const handleWheel = (event: WheelEvent) => {
       if (event.deltaY > 0) {
@@ -178,7 +179,7 @@ const PlanetClient = () => {
       composer.render();
     };
     if (canvasRef.current) {
-    canvasRef.current.addEventListener('wheel', handleWheel);
+      canvasElement?.addEventListener('wheel', handleWheel);
     }
 
     animate();
@@ -188,7 +189,7 @@ const PlanetClient = () => {
     return () => {
       if (canvasRef.current) {
         canvasRef.current.removeChild(renderer.domElement);
-        canvasRef.current.removeEventListener('wheel', handleWheel);
+        canvasElement?.removeEventListener('wheel', handleWheel);
       }
       document.body.style.overflow = '';
     };
