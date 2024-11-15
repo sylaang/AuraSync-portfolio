@@ -89,9 +89,9 @@ const PlanetClient = () => {
       }
     };
 
-    const handleClick = (event: MouseEvent) => {
-        isPausedRef.current = false;
-        isWheelUsedRef.current = true;
+    const handleTouchStart = (event: TouchEvent) => {
+      isPausedRef.current = false;
+      isWheelUsedRef.current = true;
     };
 
     const animate = () => {
@@ -180,7 +180,7 @@ const PlanetClient = () => {
     };
     if (canvasRef.current) {
     canvasRef.current.addEventListener('wheel', handleWheel);
-    canvasRef.current.addEventListener('click', handleClick);
+    canvasRef.current.addEventListener('touchstart', handleTouchStart);
     }
 
     animate();
@@ -191,7 +191,7 @@ const PlanetClient = () => {
       if (canvasRef.current) {
         canvasRef.current.removeChild(renderer.domElement);
         canvasRef.current.removeEventListener('wheel', handleWheel);
-        canvasRef.current.removeEventListener('click', handleClick);
+        canvasRef.current.removeEventListener('touchstart', handleTouchStart);
       }
       document.body.style.overflow = '';
     };
