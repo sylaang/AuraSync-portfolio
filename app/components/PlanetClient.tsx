@@ -77,6 +77,7 @@ const PlanetClient = () => {
 
       modelsLoadedRef.current = true;
     }, undefined, (error) => {
+      console.error('Erreur lors du chargement de la planete :', error);
     });
 
     camera.position.set(0, 5, 10);
