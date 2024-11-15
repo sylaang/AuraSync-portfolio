@@ -82,14 +82,8 @@ const PlanetClient = () => {
     camera.position.set(0, 5, 10);
     camera.lookAt(0, 0, 0);
 
-    // Gestion de la molette
-    const handleWheel = (event: WheelEvent) => {
-      isPausedRef.current = false;
-      isWheelUsedRef.current = true;
-    };
 
-    // Gestion du tapotement pour mobile/tablette
-    const handleTouchStart = (event: TouchEvent) => {
+    const handleWheel = (event: WheelEvent) => {
       isPausedRef.current = false;
       isWheelUsedRef.current = true;
     };
@@ -182,7 +176,6 @@ const PlanetClient = () => {
 
     if (canvasRef.current) {
       canvasRef.current.addEventListener('wheel', handleWheel);
-      canvasRef.current.addEventListener('touchstart', handleTouchStart);
     }
 
     animate();
@@ -193,7 +186,6 @@ const PlanetClient = () => {
       if (canvasRef.current) {
         canvasRef.current.removeChild(renderer.domElement);
         canvasRef.current.removeEventListener('wheel', handleWheel);
-        canvasRef.current.removeEventListener('touchstart', handleTouchStart);
       }
       document.body.style.overflow = '';
     };
