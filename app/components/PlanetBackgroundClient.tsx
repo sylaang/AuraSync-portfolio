@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 // import { useSunPosition } from './UseSunPosition';
@@ -40,7 +40,7 @@ const PlanetBackgroundClient = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     rendererRef.current = renderer; // Stocker le renderer dans la rÃ©fÃ©rence
 
-    if (canvasRef.current) {
+    if (canvasRef.current && !canvasRef.current.contains(renderer.domElement)) {
       canvasRef.current.appendChild(renderer.domElement);
     }
 
@@ -148,7 +148,7 @@ const PlanetBackgroundClient = () => {
     );
 
 
- 
+
     let currentTextureIndex = 0;
     const texturesMonitor = [
       '/pictures/ddinteriorshomeMonitor.png',
@@ -161,16 +161,16 @@ const PlanetBackgroundClient = () => {
     const phoneLoader = new GLTFLoader();
     phoneLoader.load('/phone.glb', (gltf) => {
       phoneRef.current = gltf.scene;
-    
+
       if (phoneRef.current) {
         // Position et Ã©chelle de base
         phoneRef.current.position.set(400, -73.5, -78);
         phoneRef.current.scale.set(3, 3, 3);
         scene.add(phoneRef.current);
-    
+
         phoneRef.current.rotation.x = THREE.MathUtils.degToRad(-25); // Incliner vers l'avant
         phoneRef.current.rotation.y = THREE.MathUtils.degToRad(-5); // Incliner vers la droite
-    
+
         // Charger et appliquer la texture
         const textureLoader = new THREE.TextureLoader();
         textureLoader.load(texturesPhone[currentTextureIndex], (texture) => {
@@ -192,11 +192,11 @@ const PlanetBackgroundClient = () => {
             });
           }
         });
-    
+
         // Position cible et vitesse de l'animation
         let targetPosition = 400; // Position cible pour l'animation
         const speed = 0.05; // Vitesse de l'animation
-    
+
         // Ajouter un Ã©couteur pour le dÃ©filement de la page
         window.addEventListener('scroll', () => {
           if (phoneRef.current) {
@@ -207,7 +207,7 @@ const PlanetBackgroundClient = () => {
             }
           }
         });
-    
+
         // Animation progressive de la position
         const animatePosition = () => {
           if (phoneRef.current) {
@@ -216,35 +216,35 @@ const PlanetBackgroundClient = () => {
           }
           requestAnimationFrame(animatePosition);
         };
-    
+
         animatePosition(); // DÃ©marre l'animation
       }
     }, undefined, (error) => {
       console.error('Erreur lors du chargement du modÃ¨le phone :', error);
     });
 
-    
+
 
     const remoteLoader = new GLTFLoader();
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     remoteLoader.load('/AppleTV_Remote_modelOnly.glb', (gltf) => {
       remoteRef.current = gltf.scene;
-    
+
       if (remoteRef.current) {
         // Position et Ã©chelle de base
         remoteRef.current.position.set(400, -70.5, -70);
         remoteRef.current.scale.set(1, 1, 1);
         scene.add(remoteRef.current);
-    
+
         remoteRef.current.rotation.x = THREE.MathUtils.degToRad(0); // Incliner vers l'avant
         remoteRef.current.rotation.y = THREE.MathUtils.degToRad(20); // Incliner vers la droite
-    
+
         // Parcours du modÃ¨le pour explorer les objets
         remoteRef.current.traverse((child) => {
           if (child.name === 'button' && child instanceof THREE.Mesh) {  // Cible uniquement l'objet nommÃ© 'button' et vÃ©rifie s'il est un Mesh
             console.log("Objet 'button' trouvÃ© :", child);
-    
+
             // Appliquer un matÃ©riau Ã©missif rouge sur le bouton
             child.material = new THREE.MeshStandardMaterial({
               color: 0x00008b, // Vert lumineux
@@ -252,15 +252,15 @@ const PlanetBackgroundClient = () => {
               emissive: new THREE.Color(0x00ff00), // Ã‰missif vert
               emissiveIntensity: 2, // IntensitÃ© Ã©missive pour plus de luminositÃ©
             });
-    
+
             // Assurer que le matÃ©riau soit mis Ã  jour
             child.material.needsUpdate = true;
-    
+
             // CrÃ©er une lumiÃ¨re ponctuelle pour l'objet 'button'
             const buttonLight = new THREE.PointLight(0x00008b, 5, 1); // Couleur rouge, intensitÃ© et portÃ©e
             buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Placer la lumiÃ¨re Ã  l'emplacement du bouton
             scene.add(buttonLight); // Ajouter la lumiÃ¨re Ã  la scÃ¨ne
-    
+
             // Animation de pulsation pour la lumiÃ¨re
             const animateLight = () => {
               const time = Date.now() * 0.005; // RÃ©cupÃ¨re l'heure pour une animation fluide
@@ -268,12 +268,12 @@ const PlanetBackgroundClient = () => {
               buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Assure que la lumiÃ¨re suit le bouton
               requestAnimationFrame(animateLight); // Boucle d'animation
             };
-    
+
             animateLight(); // DÃ©marre l'animation
           }
           if (child.name === 'button003' && child instanceof THREE.Mesh) {  // Cible uniquement l'objet nommÃ© 'button003' et vÃ©rifie s'il est un Mesh
             console.log("Objet 'button003' trouvÃ© :", child);
-    
+
             // Appliquer un matÃ©riau Ã©missif rouge sur le bouton
             child.material = new THREE.MeshStandardMaterial({
               color: 0x00ff00, // Vert lumineux
@@ -281,14 +281,14 @@ const PlanetBackgroundClient = () => {
               emissive: new THREE.Color(0x00ff00), // Ã‰missif vert
               emissiveIntensity: 2, // IntensitÃ© Ã©missive pour plus de luminositÃ©
             });
-    
+
             // Assurer que le matÃ©riau soit mis Ã  jour
             child.material.needsUpdate = true;
-    
+
             child.userData.onClick = () => {
               console.log('Changing phone texture...');
               currentTextureIndex = (currentTextureIndex + 1) % texturesPhone.length; // Passe Ã  l'image suivante dans le tableau
-            
+
               textureLoader.load(texturesPhone[currentTextureIndex], (texture) => {
                 // VÃ©rifier si phoneRef.current existe avant d'accÃ©der Ã  son contenu
                 if (phoneRef.current) {
@@ -313,13 +313,13 @@ const PlanetBackgroundClient = () => {
               });
 
             };
-            
-    
+
+
             // CrÃ©er une lumiÃ¨re ponctuelle pour l'objet 'button003'
             const buttonLight = new THREE.PointLight(0x00ff00, 5, 1); // Couleur verte, intensitÃ© et portÃ©e
             buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Placer la lumiÃ¨re Ã  l'emplacement du bouton
             scene.add(buttonLight); // Ajouter la lumiÃ¨re Ã  la scÃ¨ne
-    
+
             // Animation de pulsation pour la lumiÃ¨re
             const animateLight = () => {
               const time = Date.now() * 0.005; // RÃ©cupÃ¨re l'heure pour une animation fluide
@@ -327,15 +327,15 @@ const PlanetBackgroundClient = () => {
               buttonLight.position.copy(child.getWorldPosition(new THREE.Vector3())); // Assure que la lumiÃ¨re suit le bouton
               requestAnimationFrame(animateLight); // Boucle d'animation
             };
-    
+
             animateLight(); // DÃ©marre l'animation
           }
         });
-    
+
         // Position cible et vitesse de l'animation
         let targetPosition = 400; // Position cible pour l'animation
         const speed = 0.05; // Vitesse de l'animation
-    
+
         // Ajouter un Ã©couteur pour le dÃ©filement de la page
         window.addEventListener('scroll', () => {
           if (remoteRef.current) {
@@ -346,7 +346,7 @@ const PlanetBackgroundClient = () => {
             }
           }
         });
-    
+
         // Animation progressive de la position
         const animatePosition = () => {
           if (remoteRef.current) {
@@ -354,26 +354,26 @@ const PlanetBackgroundClient = () => {
           }
           requestAnimationFrame(animatePosition);
         };
-    
+
         animatePosition(); // DÃ©marre l'animation
       }
     }, undefined, (error) => {
       console.error('Erreur lors du chargement du modÃ¨le phone :', error);
     });
-    
+
     // DÃ©claration de la fonction handleClick
     const handleClick = (event: MouseEvent) => {
       // Calculer la position de la souris dans l'espace normalisÃ© (-1 Ã  +1)
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    
+
       // CrÃ©er un rayon depuis la camÃ©ra vers la position de la souris
       raycaster.ray.origin.setFromMatrixPosition(camera.matrixWorld); // Origine du rayon depuis la camÃ©ra
       raycaster.ray.direction.set(mouse.x, mouse.y, 0.5).unproject(camera).sub(raycaster.ray.origin).normalize(); // Direction du rayon
-    
+
       // VÃ©rifier les objets intersectÃ©s dans la scÃ¨ne
       const intersects = raycaster.intersectObjects(scene.children, true);
-    
+
       for (let i = 0; i < intersects.length; i++) {
         const child = intersects[i].object;
         if (child.name === 'button003' && child instanceof THREE.Mesh) {
@@ -384,18 +384,18 @@ const PlanetBackgroundClient = () => {
         }
       }
     };
-    
+
     // Ajouter l'Ã©couteur d'Ã©vÃ©nements pour le clic
     window.addEventListener('click', handleClick);
-    
 
 
 
-    
+
+
     const monitorLoader = new GLTFLoader();
     monitorLoader.load('/ultrawide_monitor.glb', (gltf) => {
       monitorRef.current = gltf.scene;
-    
+
       if (monitorRef.current) {
         // Position et Ã©chelle de base
         monitorRef.current.position.set(-400, -130.5, -200);
@@ -403,10 +403,10 @@ const PlanetBackgroundClient = () => {
         monitorRef.current.rotation.x = THREE.MathUtils.degToRad(160);
         monitorRef.current.rotation.y = THREE.MathUtils.degToRad(180);
         scene.add(monitorRef.current);
-    
+
         // Charger et appliquer la texture
         const textureLoader = new THREE.TextureLoader();
-        textureLoader.load(texturesMonitor[currentTextureIndex], (texture) => { 
+        textureLoader.load(texturesMonitor[currentTextureIndex], (texture) => {
           if (monitorRef.current) {
             monitorRef.current.traverse((child) => {
               if (child instanceof THREE.Mesh && child.name.includes("Screen")) {
@@ -418,11 +418,11 @@ const PlanetBackgroundClient = () => {
             });
           }
         });
-    
+
         // Position cible et vitesse de l'animation
         let targetPosition = -400; // Position cible pour l'animation
         const speed = 0.03; // Vitesse de l'animation
-    
+
         // Ajouter un Ã©couteur pour le dÃ©filement de la page
         window.addEventListener('scroll', () => {
           if (monitorRef.current) {
@@ -433,7 +433,7 @@ const PlanetBackgroundClient = () => {
             }
           }
         });
-    
+
         // Animation progressive de la position
         const animatePosition = () => {
           if (monitorRef.current) {
@@ -442,7 +442,7 @@ const PlanetBackgroundClient = () => {
           }
           requestAnimationFrame(animatePosition);
         };
-    
+
         animatePosition(); // DÃ©marre l'animation
       }
     }, undefined, (error) => {
@@ -536,9 +536,10 @@ const PlanetBackgroundClient = () => {
     return () => {
       cancelAnimationFrame(animationId); // Annuler l'animation avec l'identifiant
       // Nettoyage des Ã©lÃ©ments
-      if (canvasRef.current) {
+      if (canvasRef.current && canvasRef.current.contains(renderer.domElement)) {
         canvasRef.current.removeChild(renderer.domElement);
       }
+      
 
       // Dispose du renderer
       if (rendererRef.current) {
@@ -637,7 +638,7 @@ const PlanetBackgroundClient = () => {
 
 
 
-  return <div ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex:'58', cursor:'pointer' }} />;
+  return <div ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: '58'}} />;
 };
 
 export default PlanetBackgroundClient;

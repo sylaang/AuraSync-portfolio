@@ -1,12 +1,15 @@
-"use client"; // Indique que ce composant doit être rendu côté client
+"use client";
 
 import { useEffect } from "react";
 
 const ParticlesBackgroundClient = () => {
   useEffect(() => {
-    const initParticles = async () => {
-      await import("particles.js");
-
+    // Charger le script particles.js depuis un CDN
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js";  // URL du CDN
+    script.async = true;
+    script.onload = () => {
+      // Initialiser particles.js après que le script soit chargé
       window.particlesJS("particles-js", {
         particles: {
           number: {
@@ -69,7 +72,12 @@ const ParticlesBackgroundClient = () => {
       });
     };
 
-    initParticles();
+    document.body.appendChild(script);  // Ajouter le script au body
+
+    return () => {
+      // Nettoyage du script lorsque le composant est démonté
+      document.body.removeChild(script);
+    };
   }, []);
 
   return <div id="particles-js"></div>;

@@ -20,7 +20,7 @@ const Presentation: React.FC = () => {
 
     useEffect(() => {
         AOS.init();
-
+    
         const welcomeObserver = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
@@ -29,14 +29,21 @@ const Presentation: React.FC = () => {
             },
             { threshold: 0.9 }
         );
-
-        if (welcomeRef.current) welcomeObserver.observe(welcomeRef.current);
-
+    
+        // Copier la valeur de welcomeRef.current dans une variable locale
+        const currentRef = welcomeRef.current;
+    
+        if (currentRef) {
+            welcomeObserver.observe(currentRef);
+        }
+    
         return () => {
-            if (welcomeRef.current) welcomeObserver.unobserve(welcomeRef.current);
+            // Utiliser la variable locale dans le nettoyage
+            if (currentRef) {
+                welcomeObserver.unobserve(currentRef);
+            }
         };
     }, []);
-
     const typeWriterEffect = (
         text: string,
         setText: React.Dispatch<React.SetStateAction<string>>,

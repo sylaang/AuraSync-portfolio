@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import './Logo.css';
 
 interface LogoProps {
@@ -42,11 +43,14 @@ const Logo: React.FC<LogoProps> = ({ sunPosition }) => {
       {isVisible && (
         <div className="logo-container">
           <div className="logo">
-            <img
-              className={`imgLogo ${animationClass}`} // Ajout de animationClass dynamiquement
-              src="/logo3.png"
-              alt="Logo"
-            />
+          <Image
+    className={`imgLogo ${animationClass}`}
+    src="/logo3.png"
+    alt="Logo"
+    width={300}
+    height={150}
+    priority
+/>
           </div>
         </div>
       )}

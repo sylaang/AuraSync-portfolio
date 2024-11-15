@@ -58,16 +58,28 @@ const LoadingPage: React.FC = React.memo(() => {
                     } else {
                         console.warn('Aucune animation trouvée dans le modèle.');
                     }
-                    setIsLoading(false); // Changement de l'état de chargement
+                    // Retirer le setIsLoading ici pour éviter qu'il se mette à false trop tôt
                     animate(composer, controls);
                 } else {
                     console.error('Le modèle GLTF est vide ou mal formé.');
+                    setIsLoading(false); // Modèle mal formé, on le marque comme chargé tout de suite
                 }
             },
-            undefined,
+            (xhr) => {
+                if (xhr.total > 0) {
+                    const percentage = (xhr.loaded / xhr.total) * 100;
+                    setLoadingPercentage(Math.round(percentage)); // Mise à jour en fonction de la progression du chargement
+                }
+    
+                // Vérifier si le chargement est terminé (quand on arrive à 100%)
+                if (xhr.loaded === xhr.total && loadingPercentage !== 100) {
+                    setLoadingPercentage(100); // Mettre le pourcentage à 100 une fois le modèle chargé
+                    setIsLoading(false); // Marquer que le chargement est terminé
+                }
+            },
             (error) => {
                 console.error('Une erreur est survenue lors du chargement du modèle :', error);
-                setIsLoading(false); // Changement de l'état de chargement en cas d'erreur
+                setIsLoading(false); // Erreur de chargement, on le marque comme terminé
             }
         );
     };
@@ -90,24 +102,28 @@ const LoadingPage: React.FC = React.memo(() => {
     useEffect(() => {
         const { scene, camera, renderer, controls, composer } = initScene();
         loadModel(scene, controls, composer, animate);
-
+    
         const resizeHandler = () => handleResize(camera, renderer, composer);
         window.addEventListener('resize', resizeHandler);
-
-                // Mettre à jour le pourcentage de chargement
-                const interval = setInterval(() => {
-                    setLoadingPercentage(prev => {
-                        if (prev >= 100) {
-                            clearInterval(interval);
-                            return prev;
-                        }
-                        return Math.min(prev + 2, 100); // Augmenter de 2 % à chaque intervalle
-                    });
-                }, 100); // Mettre à jour toutes les 100 ms
-
+    
+        // Mise à jour du pourcentage de chargement
+        const interval = setInterval(() => {
+            setLoadingPercentage(prev => {
+                if (prev >= 100) {
+                    clearInterval(interval);
+                    return prev;
+                }
+                return Math.min(prev + 2, 100);
+            });
+        }, 100); // Mettre à jour toutes les 100 ms
+    
+        // Copier la référence de `mountRef.current` dans une variable stable
+        const mountNode = mountRef.current;
+    
         return () => {
-            if (mountRef.current) {
-                mountRef.current.removeChild(renderer.domElement);
+            // Utiliser `mountNode` ici, qui est une référence stable
+            if (mountNode) {
+                mountNode.removeChild(renderer.domElement);
             }
             window.removeEventListener('resize', resizeHandler);
             renderer.dispose();
@@ -116,12 +132,20 @@ const LoadingPage: React.FC = React.memo(() => {
 
     return (
         <div ref={mountRef} style={{ position: 'relative', overflow: 'hidden' }}>
-            <h2 style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white', fontSize: '24px' }}>
-                Chargement... {Math.round(loadingPercentage)}%
-            </h2>
+            {isLoading ? (
+                <h2 style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white', fontSize: '24px' }}>
+                    Chargement... {Math.round(loadingPercentage)}%
+                </h2>
+            ) : (
+                // Tu peux ici afficher ton modèle ou ta scène une fois qu'il est chargé
+                <h2 style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white', fontSize: '24px' }}>
+                    Modèle chargé !
+                </h2>
+            )}
         </div>
-        
     );
 });
+
+LoadingPage.displayName = 'LoadingPage';
 
 export default LoadingPage;

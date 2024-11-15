@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from 'react'; // Import des hooks React nécessaires.
 import * as THREE from 'three'; // Import de la bibliothèque Three.js pour la création de graphiques 3D.
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'; // Import du chargeur GLTF pour charger des modèles 3D.
-  import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'; // Import pour la composition d'effets visuels.
-  import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'; // Import pour le rendu de scène.
-  import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'; // Import pour l'effet de lueur (bloom).
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'; // Import pour la composition d'effets visuels.
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'; // Import pour le rendu de scène.
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'; // Import pour l'effet de lueur (bloom).
 import Logo from './Logo'; // Import du composant Logo pour l'affichage du logo.
 
 const PlanetClient = () => {
@@ -111,7 +111,6 @@ const PlanetClient = () => {
             sunRef.current.position.copy(sunPositionVector);
             setSunPosition({ x, y, z });
 
-            // Cible et tolérance
             const targetPosition = { x: 571.2257063020214, y: -255.96388992494303, z: -759.0791740390174 };
             const secondTargetPosition = { x: -877.5570477604809, y: 59.67405581827602, z: -363.859351846162 };
             const tolerance = 0.1;
@@ -139,7 +138,6 @@ const PlanetClient = () => {
                 if (startTime === null) startTime = currentTime;
                 const elapsed = currentTime - startTime; // Temps écoulé depuis le début
             
-                // Calculez le progress pour déterminer la fraction du déplacement
                 const progress = Math.min(elapsed / duration, 1);
                 const easing = 0.5 - Math.cos(progress * Math.PI) / 2; // Fonction d'assouplissement (ease-in-out)
             
@@ -158,18 +156,15 @@ const PlanetClient = () => {
               hasScrolledRef.current = true; // Empêcher les défilements futurs
             }
           }
-          // console.log('Position de la scrollbar:', window.scrollY);
 
-          // Logic pour reprendre le mouvement en douceur
           if (isWheelUsedRef.current) {
-            isPausedRef.current = false; // Reprenez le mouvement du soleil
-            isWheelUsedRef.current = false; // Réinitialisez le flag de molette
-            angleRef.current -= 0.0028; // Ajustez ici pour contrôler la vitesse de mouvement
+            isPausedRef.current = false; 
+            isWheelUsedRef.current = false; 
+            angleRef.current -= 0.0028; 
           } else if (!isPausedRef.current) {
-            angleRef.current -= 0.0028; // Ajustez ici pour la vitesse de rotation
+            angleRef.current -= 0.0028; 
           }
 
-          // Mise à jour de la lumière directionnelle
           if (directionalLightRef.current) {
             directionalLightPositionVector.copy(sunRef.current.position);
             directionalLightRef.current.position.copy(directionalLightPositionVector);
@@ -180,28 +175,24 @@ const PlanetClient = () => {
       composer.render();
     };
 
-    // Ajouter l'écouteur d'événements pour la molette
     window.addEventListener('wheel', handleWheel);
 
     animate();
 
-    // Code de nettoyage lors du démontage du composant
     document.body.style.overflow = 'hidden';
 
     return () => {
       if (canvasRef.current) {
         canvasRef.current.removeChild(renderer.domElement);
       }
-      // Retirer l'écouteur d'événements lors du démontage du composant
       window.removeEventListener('wheel', handleWheel);
-      // Réinitialiser l'overflow du corps
       document.body.style.overflow = '';
     };
 
-  }, []); // Aucune dépendance car nous ne devons pas re-exécuter l'effet.
+  }, []);
 
   return (
-    <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',zIndex:'56' }}>
+    <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: '56' }}>
       <Logo sunPosition={sunPosition} />
     </div>
   );

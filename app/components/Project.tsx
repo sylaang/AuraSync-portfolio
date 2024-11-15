@@ -47,7 +47,6 @@ const Project: React.FC = () => {
     }}>
 
 
-      {/* Affiche "scroll/zoom" si afficherMessageScroll est true */}
       {afficherMessageScroll && (
         <span className='animate-charcter' style={{
           color: 'white',
@@ -61,16 +60,9 @@ const Project: React.FC = () => {
         </span>
       )}
       
-      {/* Affiche les projets si afficherProjectScroll est true */}
       {afficherProjectScroll && (
         <>
-              <h1 style={{ textAlign: 'center', color: 'white', fontSize: '50px', position: 'fixed', top: '5vh' }}>Projets</h1>
-          {/* <div style={{ background: 'white', height: '500px', width: '500px', position: 'fixed', top: '50vh', left: '5%', cursor: 'pointer' }}>
-          </div>
-          <div style={{ background: 'red', height: '500px', width: '500px', position: 'fixed', top: '50vh', left: '37%', cursor: 'pointer' }}>
-          </div>
-          <div style={{ background: 'purple', height: '500px', width: '500px', position: 'fixed', top: '50vh', right: '5%', cursor: 'pointer' }}>
-          </div> */}
+              <h3 style={{ textAlign: 'center', color: 'white', fontSize: '50px', position: 'fixed', top: '5vh' }}>Projets</h3>
         </>
       )}
     </div>

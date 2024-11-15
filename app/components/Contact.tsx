@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 const Contact: React.FC = () => {
-    const [afficherMessageScroll, setAfficherMessageScroll] = useState(false);
     const [afficherProjectScroll, setAfficherProjectScroll] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
             console.log('Position de défilement Y:', window.scrollY);
-
 
             // Affiche les projets lorsque scrollY est entre 5096 et 5296
             if (window.scrollY >= 5600) {
@@ -31,17 +30,16 @@ const Contact: React.FC = () => {
     }, []);
 
     return (
-        <div 
-        style={{
-            backgroundColor: 'white',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative',
-            zIndex: '59'
-        }}>
-
-
+        <div
+            style={{
+                backgroundColor: 'white',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+                zIndex: '59',
+            }}
+        >
             {/* Affiche les projets si afficherProjectScroll est true */}
             {afficherProjectScroll && (
                 <>
@@ -57,7 +55,7 @@ const Contact: React.FC = () => {
                             flexDirection: 'column',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            zIndex: 1
+                            zIndex: 1,
                         }}
                     >
                         <h1
@@ -87,63 +85,74 @@ const Contact: React.FC = () => {
                                         color: 'white',
                                         textDecoration: 'none',
                                         display: 'flex',
-                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
+                                        alignItems: 'center', // Aligne verticalement l'icône et le texte
                                     }}
                                 >
-                                    <img
+                                    <Image
                                         src="/icone/linkedin.png"
                                         alt="LinkedIn"
-                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
+                                        width={25}
+                                        height={25}
+                                        style={{ marginRight: '10px' }}
                                     />
                                     LinkedIn
                                 </a>
                             </p>
                             <p>
-                                <a href="https://github.com/sylaang/"
+                                <a
+                                    href="https://github.com/sylaang/"
                                     style={{
                                         color: 'white',
                                         textDecoration: 'none',
                                         display: 'flex',
-                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
+                                        alignItems: 'center', // Aligne verticalement l'icône et le texte
                                     }}
-                                    >
-                                         <img
+                                >
+                                    <Image
                                         src="/icone/github.png"
-                                        alt="LinkedIn"
-                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
+                                        alt="GitHub"
+                                        width={25}
+                                        height={25}
+                                        style={{ marginRight: '10px' }}
                                     />
                                     GitHub
                                 </a>
                             </p>
                             <p>
-                                <a href="mailto:mehdi.hachem.syl@gmail.com"
-                                     style={{
+                                <a
+                                    href="mailto:mehdi.hachem.syl@gmail.com"
+                                    style={{
                                         color: 'white',
                                         textDecoration: 'none',
                                         display: 'flex',
-                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
+                                        alignItems: 'center', // Aligne verticalement l'icône et le texte
                                     }}
-                                    >
-                                          <img
+                                >
+                                    <Image
                                         src="/icone/email.png"
-                                        alt="LinkedIn"
-                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
+                                        alt="Email"
+                                        width={25}
+                                        height={25}
+                                        style={{ marginRight: '10px' }}
                                     />
                                     mehdi.hachem.syl@gmail.com
                                 </a>
                             </p>
-                            <p  style={{
-                                        color: 'white',
-                                        textDecoration: 'none',
-                                        display: 'flex',
-                                        alignItems: 'center',  // Aligne verticalement l'icône et le texte
-                                    }}
-                                    >
-                                         <img
-                                        src="/icone/telephone.png"
-                                        alt="LinkedIn"
-                                        style={{ marginRight: '10px', width: '25px', height: '25px' }}
-                                    />
+                            <p
+                                style={{
+                                    color: 'white',
+                                    textDecoration: 'none',
+                                    display: 'flex',
+                                    alignItems: 'center', // Aligne verticalement l'icône et le texte
+                                }}
+                            >
+                                <Image
+                                    src="/icone/telephone.png"
+                                    alt="Téléphone"
+                                    width={25}
+                                    height={25}
+                                    style={{ marginRight: '10px' }}
+                                />
                                 07 78 35 68 35
                             </p>
                         </div>
