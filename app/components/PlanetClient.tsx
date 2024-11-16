@@ -213,11 +213,11 @@ const PlanetClient = () => {
       {isButtonVisible && (
         <button className='animate-charcter'
         style={{
-          position: 'fixed', // Position fixe pour qu'il reste visible à l'écran
+          position: 'absolute', // Position fixe pour qu'il reste visible à l'écran
           top: '60%',
           left: '50%',
           transform: 'translateX(-50%)', // Centrer le bouton horizontalement
-          zIndex: 9999, // Pour s'assurer qu'il est au-dessus de tout autre élément
+          zIndex: 57, // Pour s'assurer qu'il est au-dessus de tout autre élément
           backgroundColor: 'rgba(0, 0, 0, 0.1)', // Fond sombre pour contraste
           color: 'white',
           padding: '15px 30px', // Augmenter la taille du bouton
