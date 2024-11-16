@@ -8,24 +8,17 @@ const Project: React.FC = () => {
     const handleScroll = () => {
       // console.log('Position de défilement Y:', window.scrollY);
 
-      // Affiche le message "scroll/zoom" lorsque scrollY atteint 3600
       if (window.scrollY >= 3600) {
         setAfficherMessageScroll(true);
       } else {
         setAfficherMessageScroll(false);
       }
 
-      // Affiche les projets lorsque scrollY est entre 5096 et 5296
       if (window.scrollY >= 5096 && window.scrollY <= 5400) {
         setAfficherProjectScroll(true);
       } else {
         setAfficherProjectScroll(false);
       }
-
-      // Bloque temporairement le défilement lorsque scrollY est supérieur ou égal à 5096
-      // if (window.scrollY >= 5096) {
-      //   document.body.style.overflow = 'hidden';
-      // }
     };
 
     window.addEventListener('scroll', handleScroll);

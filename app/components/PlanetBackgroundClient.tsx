@@ -247,9 +247,9 @@ const PlanetBackgroundClient = () => {
 
             // Appliquer un matÃ©riau Ã©missif rouge sur le bouton
             child.material = new THREE.MeshStandardMaterial({
-              color: 0x00008b, // Vert lumineux
+              // color: 0x00008b, // Vert lumineux
               roughness: 0.5,
-              emissive: new THREE.Color(0x00ff00), // Ã‰missif vert
+              // emissive: new THREE.Color(0x00ff00), // Ã‰missif vert
               emissiveIntensity: 2, // IntensitÃ© Ã©missive pour plus de luminositÃ©
             });
 
@@ -589,10 +589,10 @@ const PlanetBackgroundClient = () => {
 
   // Gestion du dÃ©filement avec interpolation
   let targetY = 5;
-  const maxScrollY = 3600; // Limite de dÃ©filement maximale
-  const initialCameraZ = 10; // Position Z initiale de la camÃ©ra
-  const zoomFactor = 0.005; // Facteur de zoom pour un zoom plus lent
-  const maxZoomDistance = 10; // Distance de zoom maximale (ajustez selon vos besoins)
+  const maxScrollY = 3600;
+  const initialCameraZ = 10;
+  const zoomFactor = 0.005;
+  const maxZoomDistance = 10;
 
   useEffect(() => {
     const handleScroll = () => {
