@@ -11,7 +11,7 @@ const Contact: React.FC = () => {
             // Affiche les projets lorsque scrollY est entre 5096 et 5296
             if (window.scrollY >= 5600) {
                 setAfficherProjectScroll(true);
-            } else {
+            }else {
                 setAfficherProjectScroll(false);
             }
         };
