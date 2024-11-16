@@ -14,11 +14,6 @@ const Contact: React.FC = () => {
             } else {
                 setAfficherProjectScroll(false);
             }
-
-            // Bloque temporairement le défilement lorsque scrollY est supérieur ou égal à 5096
-            // if (window.scrollY >= 5096) {
-            //   document.body.style.overflow = 'hidden';
-            // }
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -40,7 +35,7 @@ const Contact: React.FC = () => {
                 zIndex: '59',
             }}
         >
-            {/* Affiche les projets si afficherProjectScroll est true */}
+            
             {afficherProjectScroll && (
                 <>
                     <div className='section hide-cursor'>
