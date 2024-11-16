@@ -1,4 +1,27 @@
+/* Importer la version Regular */
+@font-face {
+    font-family: 'Friz Quadrata';
+    src: url('/fonts/FrizQuadrata-Regular.ttf') format('truetype'),
+         url('/fonts/FrizQuadrata-StdMedium.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
 
+/* Importer la version Italic */
+@font-face {
+    font-family: 'Friz Quadrata';
+    src: url('/fonts/FrizQuadrata-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* Importer la version Bold */
+@font-face {
+    font-family: 'Friz Quadrata';
+    src: url('/fonts/FrizQuadrata-Bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
 
 
 
@@ -15,6 +38,7 @@
 
 *{
   list-style: none;
+  font-family: 'Friz Quadrata', sans-serif;
 }
 html, body {
   height: 100%;
