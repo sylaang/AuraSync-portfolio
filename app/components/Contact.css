@@ -72,8 +72,8 @@
       font-size: 2em;
   }
   .section {
-    background: white;
+    background: black;
     height: 100vh;
-    top: 510vh;
+    top: 550vh;
   }
 }
