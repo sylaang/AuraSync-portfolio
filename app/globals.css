@@ -217,6 +217,6 @@ body.light .switch-wrap p span:nth-child(1):before {
 
 @media (max-width: 769px) {
 	#app  {
-		min-height: 750vh;
+		min-height: 780vh;
 	}
   }
