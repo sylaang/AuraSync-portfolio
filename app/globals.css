@@ -214,3 +214,9 @@ body.light .switch-wrap p span:nth-child(2):before {
 body.light .switch-wrap p span:nth-child(1):before {
 	opacity: 0;
 }
+
+@media (max-width: 769px) {
+	#app  {
+		min-height: 710vh;
+	}
+  }

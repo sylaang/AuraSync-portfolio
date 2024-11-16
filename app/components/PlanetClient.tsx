@@ -217,7 +217,7 @@ const PlanetClient = () => {
           top: '60%',
           left: '50%',
           transform: 'translateX(-50%)', // Centrer le bouton horizontalement
-          zIndex: 1000, // Pour s'assurer qu'il est au-dessus de tout autre élément
+          zIndex: 9999, // Pour s'assurer qu'il est au-dessus de tout autre élément
           backgroundColor: 'rgba(0, 0, 0, 0.1)', // Fond sombre pour contraste
           color: 'white',
           padding: '15px 30px', // Augmenter la taille du bouton
