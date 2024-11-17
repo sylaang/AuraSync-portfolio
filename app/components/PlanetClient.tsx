@@ -23,7 +23,6 @@ const PlanetClient = () => {
   const sunPositionVector = new THREE.Vector3();
   const directionalLightPositionVector = new THREE.Vector3();
 
-  const isMobile = window.innerWidth < 768;
   const isIphone = /iPhone|iPod/.test(navigator.userAgent);
 
   useEffect(() => {
