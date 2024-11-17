@@ -89,8 +89,9 @@ const PlanetBackgroundClient = () => {
     );
 
     const loader = new GLTFLoader();
+    const modelPath = isMobile ? `/earthMobile.glb?nocache=${Date.now()}` : `/earth.glb?nocache=${Date.now()}`;
     loader.load(
-      `/earth.glb?nocache=${Date.now()}`,
+      modelPath,
       (gltf) => {
         earthRef.current = gltf.scene;
 
