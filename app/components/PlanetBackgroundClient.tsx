@@ -111,7 +111,6 @@ const PlanetBackgroundClient = () => {
 
         scene.add(earthRef.current);
 
-        // Ajout d'une animation si le modèle comporte des animations
         if (earthRef.current && gltf.animations.length > 0) {
           const mixer = new THREE.AnimationMixer(earthRef.current);
           earthMixerRef.current = mixer;
@@ -121,7 +120,6 @@ const PlanetBackgroundClient = () => {
             const action = mixer.clipAction(clip);
             action.play();
 
-            // Réduire la vitesse de l'animation pour une meilleure apparence
             action.timeScale = 0.2;
           });
         }

@@ -22,8 +22,7 @@ const PlanetClient = () => {
   const [isButtonVisible, setButtonVisible] = useState(false);
   const sunPositionVector = new THREE.Vector3();
   const directionalLightPositionVector = new THREE.Vector3();
-
-  const isIphone = /iPhone|iPod/.test(navigator.userAgent);
+  
 
   useEffect(() => {
     const scene = new THREE.Scene();
@@ -37,17 +36,14 @@ const PlanetClient = () => {
     const composer = new EffectComposer(renderer);
     const renderPass = new RenderPass(scene, camera);
     composer.addPass(renderPass);
-    
 
-    // Désactivation du bloom sur iPhone
-    const bloomPass = !isIphone ? new UnrealBloomPass(
+    const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
       1.5,
       1.4,
       0.85
-    ) : null;
-    
-    if (bloomPass) composer.addPass(bloomPass);
+    );
+    composer.addPass(bloomPass);
 
     if (canvasRef.current) {
       canvasRef.current.appendChild(renderer.domElement);
