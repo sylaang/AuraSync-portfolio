@@ -12,6 +12,7 @@ const LoadingPage: React.FC = React.memo(() => {
     const clock = useRef(new THREE.Clock()).current; 
     const [isLoading, setIsLoading] = useState(true); // État pour le chargement
     const [loadingPercentage, setLoadingPercentage] = useState(0);
+    const isMobile = window.innerWidth < 768;
 
     const initScene = (): { scene: THREE.Scene; camera: THREE.PerspectiveCamera; renderer: THREE.WebGLRenderer; controls: OrbitControls; composer: EffectComposer } => {
         const scene = new THREE.Scene();
@@ -44,8 +45,10 @@ const LoadingPage: React.FC = React.memo(() => {
 
     const loadModel = (scene: THREE.Scene, controls: OrbitControls, composer: EffectComposer, animate: (composer: EffectComposer, controls: OrbitControls) => void): void => {
         const loader = new GLTFLoader();
+        const modelPath = isMobile ? `/space_vaisseauMobile.glb?nocache=${Date.now()}` : `/space_vaisseau.glb?nocache=${Date.now()}`;
+
         loader.load(
-            'space_vaisseau.glb',
+            modelPath,
             (gltf) => {
                 if (gltf.scene) {
                     gltf.scene.scale.set(0.5, 0.5, 0.5);
