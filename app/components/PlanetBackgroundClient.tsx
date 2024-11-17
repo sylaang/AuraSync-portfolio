@@ -29,41 +29,63 @@ const PlanetBackgroundClient = () => {
 
 
   useEffect(() => {
+    // Création de la scène
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 2000);
+
+    const isMobile = window.innerWidth < 768;
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isSafariMobile = isMobile && isSafari;
+    const fov = window.innerWidth < 768 ? 75 : 50;
+    const camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.1, 2000);
     camera.position.set(0, 5, 10);
     camera.lookAt(0, 0, 0);
     cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    rendererRef.current = renderer; // Stocker le renderer dans la rÃ©fÃ©rence
+    // Initialiser le renderer avec un antialias activé uniquement pour les écrans larges (desktops)
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: window.innerWidth > 768 // Désactiver l'antialias pour les mobiles pour améliorer les performances
+    });
 
+    // Redimensionner le renderer selon la taille de la fenêtre
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Limiter le `pixelRatio` à 2 pour éviter une charge graphique trop élevée sur les mobiles
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    rendererRef.current = renderer;
+
+    // Ajouter le canvas du renderer dans le conteneur DOM s'il n'est pas déjà présent
     if (canvasRef.current && !canvasRef.current.contains(renderer.domElement)) {
       canvasRef.current.appendChild(renderer.domElement);
     }
 
+    // Ajouter une lumière ambiante pour éclairer toute la scène
     const ambientLight = new THREE.AmbientLight(0x404040, 2);
     scene.add(ambientLight);
 
+    // === Chargement du modèle 3D du Soleil ===
     const sunLoader = new GLTFLoader();
     sunLoader.load(
-      `/sun.glb?nocache=${Date.now()}`,
+      `/sun.glb?nocache=${Date.now()}`, // Utiliser `nocache` pour éviter la mise en cache pendant le développement
       (gltf) => {
         sunRef.current = gltf.scene;
+
+        // Ajuster l'échelle du modèle
         sunRef.current.scale.set(0.1, 0.1, 0.1);
         scene.add(sunRef.current);
+
+        // Position initiale du Soleil
         sunRef.current.position.set(6, 0, 10);
 
+        // Ajouter une lumière directionnelle pour simuler la lumière du Soleil
         directionalLightRef.current = new THREE.DirectionalLight(0xffddaa, 5.5);
         scene.add(directionalLightRef.current);
+
+        // Indiquer que le modèle est chargé
         modelsLoadedRef.current = true;
       },
       undefined,
-      (error) => {
-        console.error('Erreur lors du chargement du soleil :', error);
-      }
+      (error) => console.error('Erreur lors du chargement du Soleil :', error)
     );
 
     const loader = new GLTFLoader();
@@ -71,33 +93,42 @@ const PlanetBackgroundClient = () => {
       `/earth.glb?nocache=${Date.now()}`,
       (gltf) => {
         earthRef.current = gltf.scene;
-        earthRef.current.position.set(7, -20, 3);
-        earthRef.current.scale.set(1, 1, 1);
+
+        if (isSafariMobile) {
+          // Configuration spécifique pour Safari Mobile
+          earthRef.current.position.set(4, -22, 5);
+          earthRef.current.scale.set(0.7, 0.7, 0.7);
+        } else if (isMobile) {
+          // Configuration pour les autres mobiles
+          earthRef.current.position.set(3, -20, 3);
+          earthRef.current.scale.set(0.8, 0.8, 0.8);
+        } else {
+          // Configuration pour desktop
+          earthRef.current.position.set(7, -20, 3);
+          earthRef.current.scale.set(1, 1, 1);
+        }
+
         scene.add(earthRef.current);
 
-        // VÃ©rifiez que planetRef est bien dÃ©fini avant d'utiliser AnimationMixer
-        if (earthRef.current && gltf.animations && gltf.animations.length > 0) {
+        // Ajout d'une animation si le modèle comporte des animations
+        if (earthRef.current && gltf.animations.length > 0) {
           const mixer = new THREE.AnimationMixer(earthRef.current);
           earthMixerRef.current = mixer;
 
+          // Lecture des animations du modèle
           gltf.animations.forEach((clip) => {
             const action = mixer.clipAction(clip);
             action.play();
-            // console.log('Animation de la planÃ¨te dÃ©marrÃ©e.');
-            action.timeScale = 0.2; // Changez cette valeur pour ajuster la vitesse
+
+            // Réduire la vitesse de l'animation pour une meilleure apparence
+            action.timeScale = 0.2;
           });
-        } else {
-          // console.warn('Aucune animation trouvÃ©e pour le modÃ¨le earth');
         }
-        // console.log('Earth Ref:', earthRef.current);
-        // console.log('Earth Mixer Ref:', earthMixerRef.current);
-        // console.log('Animations:', gltf.animations);
+
         modelsLoadedRef.current = true;
       },
       undefined,
-      (error) => {
-        console.error('Erreur lors du chargement de la planÃ¨te :', error);
-      }
+      (error) => console.error('Erreur lors du chargement de la Terre :', error)
     );
 
     const additionalLoader = new GLTFLoader();
@@ -105,15 +136,15 @@ const PlanetBackgroundClient = () => {
       `/need_some_space.glb?nocache=${Date.now()}`,
       (gltf) => {
         nebularRef.current = gltf.scene;
-        nebularRef.current.position.set(-6, -38.5, 10); // Position initiale du modÃ¨le
-        nebularRef.current.scale.set(4, 4, 4); // Ã‰chelle du modÃ¨le
+
+        // Position et échelle du modèle supplémentaire
+        nebularRef.current.position.set(-6, -38.5, 10);
+        nebularRef.current.scale.set(4, 4, 4);
         scene.add(nebularRef.current);
         modelsLoadedRef.current = true;
       },
       undefined,
-      (error) => {
-        console.error('Erreur lors du chargement du modÃ¨le need_some_space :', error);
-      }
+      (error) => console.error('Erreur lors du chargement du modèle need_some_space :', error)
     );
 
     const stationLoader = new GLTFLoader();
@@ -539,7 +570,7 @@ const PlanetBackgroundClient = () => {
       if (canvasRef.current && canvasRef.current.contains(renderer.domElement)) {
         canvasRef.current.removeChild(renderer.domElement);
       }
-      
+
 
       // Dispose du renderer
       if (rendererRef.current) {
@@ -571,19 +602,27 @@ const PlanetBackgroundClient = () => {
 
       // ArrÃªtez l'animation
     };
+
+
   }, []);
 
   // Gestion du redimensionnement de la fenÃªtre
   useEffect(() => {
     const handleResize = () => {
       if (cameraRef.current && rendererRef.current) {
+        // Mise à jour de la taille du renderer
         rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+
+        // Mise à jour de l'aspect ratio de la caméra
         cameraRef.current.aspect = window.innerWidth / window.innerHeight;
         cameraRef.current.updateProjectionMatrix();
       }
     };
 
+    // Écouteur d'événement pour le redimensionnement
     window.addEventListener('resize', handleResize);
+
+    // Nettoyage : retirer l'écouteur lors du démontage
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -638,7 +677,7 @@ const PlanetBackgroundClient = () => {
 
 
 
-  return <div ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: '58'}} />;
+  return <div ref={canvasRef} style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: '58' }} />;
 };
 
 export default PlanetBackgroundClient;
