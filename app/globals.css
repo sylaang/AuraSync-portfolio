@@ -24,7 +24,18 @@
 }
 
 
-
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+  #particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #750000;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+  }
+}
 #particles-js {
   position: fixed;
   width: 100%;
