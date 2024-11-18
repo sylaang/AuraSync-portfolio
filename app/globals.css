@@ -263,8 +263,8 @@ body.light .switch-wrap p span:nth-child(1):before {
 }
 
 @media (max-width: 1440px) {
-  #particles-js {
-    background-color: #750000;
+  #app {
+    min-height: 980vh;
   }
 }
 
