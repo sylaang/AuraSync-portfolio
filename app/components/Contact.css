@@ -67,6 +67,17 @@
   }
 }
 
+@media (max-width: 1440px) {
+  .title-animated  {
+    font-size: 2em;
+}
+.section {
+  background: black;
+  height: 100vh;
+  top: 450vh;
+}
+}
+
 @media (max-width: 769px) {
   .title-animated  {
       font-size: 2em;
