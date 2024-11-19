@@ -72,7 +72,7 @@
     font-size: 2em;
 }
 .section {
-  background: white;
+  background: rgb(199, 0, 0);
   height: 100vh;
   top: 450vh;
 }
