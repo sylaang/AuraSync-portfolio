@@ -1,7 +1,6 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Progress } from "@/components/ui/progress"
 
 interface Skill {
   name: string
@@ -90,10 +89,12 @@ export default function Skills() {
                         <span className="font-medium">{skill.name}</span>
                         <span className="text-sm text-muted-foreground ml-2 flex-grow text-center">{skill.level}%</span>
                       </div>
-                      <Progress
-                        value={skill.level}
-                        className=" bg-muted"
-                      />
+                      <div className="relative h-1 w-3/5 rounded-full bg-muted overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-400 via-cyan-500 to-purple-600 transition-all led-effect"
+                          style={{ width: `${skill.level}%` }}
+                        ></div>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
