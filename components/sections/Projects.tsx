@@ -6,13 +6,12 @@ import ProjectCard from "@/components/common/ProjectCard"
 export default function Projects() {
   const projects = [
     {
-      title: "Tableau de bord EcoTrack",
-      description:
-        "Un tableau de bord interactif pour suivre les métriques environnementales avec une visualisation des données en temps réel.",
-      imageUrl: "https://images.pexels.com/photos/5412270/pexels-photo-5412270.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      tags: ["React", "D3.js", "Node.js", "MongoDB"],
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
+      title: "Boutique en ligne de parfums Aurasync",
+      description: "Un site de e-commerce élégant et moderne dédié à la vente de parfums, offrant une expérience de navigation fluide et une sélection de fragrances haut de gamme.",
+      imageUrl: "/images/projects/Essence.png",
+      tags: ["E-commerce"],
+      liveUrl: "https://aurasync-parfums.vercel.app",
+      githubUrl: "https://github.com/sylaang/aurasync-parfums",
     },
     {
       title: "Plateforme d'apprentissage Mindful",
@@ -102,7 +101,7 @@ export default function Projects() {
           <p className="text-muted-foreground">
             Intéressé par d'autres projets ? Découvrez mon{" "}
             <a
-              href="https://github.com"
+              href="https://github.com/sylaang/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Voir plus de projets sur mon profil GitHub"

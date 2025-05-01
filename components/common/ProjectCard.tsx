@@ -58,17 +58,16 @@ export default function ProjectCard({
                     <Github className="h-5 w-5" />
                   </a>
                 )}
-                {liveUrl && (
-                  <a
-                    href={liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-background/80 hover:bg-background p-2 rounded-full transition-colors"
-                    aria-label={`Visit ${title} live site`}
-                  >
-                    <ExternalLink className="h-5 w-5" />
-                  </a>
-                )}
+{liveUrl && (
+  <button
+    onClick={() => window.open(liveUrl, "_blank")}
+    className="bg-black text-white py-2 px-4 rounded-full relative overflow-hidden group"
+    aria-label={`Visit ${title} live site`}
+  >
+    Voir le site web
+    <span className="absolute inset-0 w-full h-full rounded-full border-2 border-transparent group-hover:animate-border-light"></span>
+  </button>
+)}
               </div>
             </div>
           </div>

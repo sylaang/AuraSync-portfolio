@@ -60,6 +60,46 @@
 
 
 
+
+
+
+
+
+@keyframes border-light {
+  0% {
+    transform: rotate(0deg);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); /* Lumière invisible au début */
+  }
+  25% {
+    transform: rotate(90deg);
+    box-shadow: 0 0 10px 2px rgba(38, 194, 129, 0.8), 0 0 10px 2px rgba(133, 87, 225, 0.8); /* Haut à droite (dégradé bleu-violet) */
+  }
+  50% {
+    transform: rotate(180deg);
+    box-shadow: 0 0 10px 2px rgba(38, 194, 129, 0.8), 0 0 10px 2px rgba(133, 87, 225, 0.8); /* Bas à droite */
+  }
+  75% {
+    transform: rotate(270deg);
+    box-shadow: 0 0 10px 2px rgba(38, 194, 129, 0.8), 0 0 10px 2px rgba(133, 87, 225, 0.8); /* Bas à gauche */
+  }
+  100% {
+    transform: rotate(360deg);
+    box-shadow: 0 0 10px 2px rgba(38, 194, 129, 0.8), 0 0 10px 2px rgba(133, 87, 225, 0.8); /* Retour au point de départ */
+  }
+}
+
+/* L'animation n'est activée que lors du survol */
+.group:hover .group-hover\:animate-border-light {
+  animation: border-light 1.5s linear forwards;
+}
+
+
+
+
+
+
+
+
 .led-effect {
   position: relative;
   overflow: hidden;
