@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   applicationName: 'Portfolio AuraSync',
   appleWebApp: {
     capable: true,
-    title: 'Portfolio AuraSync',
+    title: 'Portfolio | AuraSync - HACHEM Mehdi - Développeur Web',
   },
   robots: {
     index: true,
@@ -24,24 +24,25 @@ export const metadata: Metadata = {
     title: 'Portfolio | AuraSync - HACHEM Mehdi - Développeur Web',
     description:
       "Je suis HACHEM Mehdi, un développeur web passionné. Découvrez mes projets créés avec React, Node.js et d'autres technologies modernes.",
-    url: 'https://tonsite.com',
-    siteName: 'Portfolio AuraSync',
+    url: 'https://aurasync-sooty.vercel.app/',
+    siteName: 'AuraSync',
     type: 'website',
     images: [
       {
-        url: 'https://tonsite.com/images/auraSync-logo.png',
+        url: 'https://aurasync-sooty.vercel.app/images/og-home.png',
         width: 1200,
         height: 630,
-        alt: "Logo d'AuraSync - Portfolio Développeur Web",
+        alt: "Portfolio de HACHEM Mehdi - Développeur Web et fondateur de AuraSync",
       },
     ],
   },
+  metadataBase: new URL('https://aurasync-sooty.vercel.app'),
   twitter: {
     card: 'summary_large_image',
     title: 'Portfolio | AuraSync - HACHEM Mehdi - Développeur Web',
     description:
       "Découvrez des projets réalisés avec React, Vue.js, et Node.js. Voyez comment j'apporte des solutions web créatives et performantes.",
-    images: ['https://tonsite.com/images/preview-projets.png'],
+    images: ['https://aurasync-sooty.vercel.app/images/og-home.png'],
   },
 };
 
