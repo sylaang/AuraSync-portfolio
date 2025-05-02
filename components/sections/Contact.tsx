@@ -50,17 +50,17 @@ export default function Contact() {
     {
       icon: <Mail className="h-5 w-5 text-muted-foreground" />,
       label: "Email",
-      value: "contact@aurasync.dev",
+      value: "mehdi.hachem.syl@gmail.com",
     },
     {
       icon: <Phone className="h-5 w-5 text-muted-foreground" />,
       label: "Téléphone",
-      value: "+1 (123) 456-7890",
+      value: "07 78 35 68 35",
     },
     {
       icon: <MapPin className="h-5 w-5 text-muted-foreground" />,
       label: "Localisation",
-      value: "San Francisco, CA",
+      value: "Paris, FR",
     },
   ]
 
@@ -118,7 +118,7 @@ export default function Contact() {
               <h4 className="text-lg font-medium mb-4">Connectons-nous</h4>
               <div className="flex space-x-4">
                 <a 
-                  href="https://github.com" 
+                  href="https://github.com/sylaang/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
@@ -129,7 +129,7 @@ export default function Contact() {
                   </svg>
                 </a>
                 <a 
-                  href="https://linkedin.com" 
+                  href="https://www.linkedin.com/in/mehdi-hachem-54a8672b0/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
