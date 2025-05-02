@@ -14,13 +14,13 @@ export default function Projects() {
       githubUrl: "https://github.com/sylaang/aurasync-parfums",
     },
     {
-      title: "Plateforme d'apprentissage Mindful",
+      title: "Site d'architecture",
       description:
-        "Une plateforme éducative avec des parcours d'apprentissage personnalisés et un suivi des progrès pour les étudiants.",
-      imageUrl: "https://images.pexels.com/photos/5428264/pexels-photo-5428264.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      tags: ["Next.js", "Tailwind CSS", "Firebase", "GraphQL"],
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
+        "Un site vitrine moderne pour un cabinet d'architecture, avec design responsive, galerie d'images, et navigation fluide.",
+      imageUrl: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", // (tu peux remplacer par une vraie capture du site)
+      tags: ["Vitrine"],
+      liveUrl: "https://architect-web-coral.vercel.app/",
+      githubUrl: "https://github.com/sylaang/aurasync-architect-web",
     },
     {
       title: "Application TravelBuddy",
