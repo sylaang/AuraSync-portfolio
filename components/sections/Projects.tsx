@@ -6,30 +6,30 @@ import ProjectCard from "@/components/common/ProjectCard"
 export default function Projects() {
   const projects = [
     {
-      title: "Boutique en ligne de parfums Aurasync",
+      title: "Boutique en ligne de parfums",
       description: "Un site de e-commerce élégant et moderne dédié à la vente de parfums, offrant une expérience de navigation fluide et une sélection de fragrances haut de gamme.",
       imageUrl: "/images/projects/Essence.png",
-      tags: ["E-commerce"],
+      tags: ["E-commerce","Next.js", "React", "TypeScript", "Tailwind CSS", "Radix UI", "Framer Motion", "Zod", "React Hook Form", "Supabase", ],
       liveUrl: "https://aurasync-parfums.vercel.app",
       githubUrl: "https://github.com/sylaang/aurasync-parfums",
     },
     {
       title: "Site d'architecture",
       description:
-        "Un site vitrine moderne pour un cabinet d'architecture, avec design responsive, galerie d'images, et navigation fluide.",
-      imageUrl: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", // (tu peux remplacer par une vraie capture du site)
-      tags: ["Vitrine"],
+      "Un site vitrine moderne pour un cabinet d'architecture, avec design responsive, galerie d'images, et navigation fluide.", 
+      imageUrl: "/images/projects/ArchiStudio.png",
+      tags: ["Vitrine","Next.js", "React", "TypeScript", "tailwindcss", "Radix UI", "framer-motion"],
       liveUrl: "https://architect-web-coral.vercel.app/",
       githubUrl: "https://github.com/sylaang/aurasync-architect-web",
     },
     {
-      title: "Application TravelBuddy",
+      title: "Tableau de bord financier interactif",
       description:
-        "Une application web mobile-first pour les voyageurs afin de planifier, suivre et partager leurs aventures.",
-      imageUrl: "https://images.pexels.com/photos/4356144/pexels-photo-4356144.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      tags: ["React Native", "Redux", "Express", "PostgreSQL"],
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
+      "Un tableau de bord interactif permettant de suivre les dépenses, revenus, et profits, tout en offrant des prévisions financières. Il inclut un back-end avec Python/Django pour gérer les données via des APIs RESTful, et un front-end dynamique. Des visualisations graphiques interactives pour une analyse en temps réel.",
+      imageUrl: "/images/projects/dash-finance.png",
+      tags: ["Python", "Django", "Next.js", "React", "TypeScript", "D3.js"],
+      liveUrl: "https://aurasync-dashboard-finance.vercel.app",  
+      githubUrl: "https://github.com/sylaang/aurasync-dashboard-Finance",
     },
     {
       title: "Suivi de Fitness",
