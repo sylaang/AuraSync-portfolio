@@ -45,9 +45,9 @@ export default function Projects() {
       description:
         "Une plateforme de découverte de recettes avec des recommandations basées sur l'IA en fonction des préférences des utilisateurs et des restrictions alimentaires.",
       imageUrl: "https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      tags: ["React", "Python", "FastAPI", "TensorFlow"],
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
+      tags: ["React", "TypeScript", "Supabase", "Node.js"],
+      liveUrl: "https://aurasync-recette-hub.vercel.app/",
+      githubUrl: "https://github.com/sylaang/aurasync-RecetteHub",
     },
     {
       title: "Hub SmartHome",
