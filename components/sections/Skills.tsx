@@ -61,7 +61,7 @@ export default function Skills() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 ml-12">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-12 ml-12">
           {categories.map((category, categoryIndex) => (
             groupedSkills[category] && (
               <motion.div
@@ -101,7 +101,7 @@ export default function Skills() {
               </motion.div>
             )
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   )
