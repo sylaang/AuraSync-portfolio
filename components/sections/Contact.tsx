@@ -26,8 +26,8 @@ type ContactInfoItem = {
 
 const contactInfo: ContactInfoItem[] = [
   // Ajoute tes objets contactInfo ici
-  { icon: <svg>...</svg>, label: "Email", value: "example@example.com" },
-  { icon: <svg>...</svg>, label: "Téléphone", value: "+1234567890" }
+  { icon: <svg>...</svg>, label: "Email", value: "mehdi.hachem.syl@gmail.com" },
+  // { icon: <svg>...</svg>, label: "Téléphone", value: "+1234567890" }
 ]
 
 export default function Contact() {
@@ -36,10 +36,10 @@ export default function Contact() {
     email: "",
     message: ""
   })
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null) // <-- token reCAPTCHA
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null) // <-- token reCAPTCHA
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
@@ -50,61 +50,61 @@ export default function Contact() {
     })
   }
 
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault()
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
 
-   if (!recaptchaToken) {
+    if (!recaptchaToken) {
       alert("Merci de valider le captcha avant d'envoyer le formulaire.")
       return
     }
 
-  setIsSubmitting(true)
+    setIsSubmitting(true)
 
-  const now = new Date().toLocaleString("fr-FR", {
-    dateStyle: "full",
-    timeStyle: "short",
-  })
-  // ✅ Vérifie les variables d’environnement
-  console.log("Vérification EmailJS ENV :", {
-    service: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-    template: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-    publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-  })
+    const now = new Date().toLocaleString("fr-FR", {
+      dateStyle: "full",
+      timeStyle: "short",
+    })
+    // ✅ Vérifie les variables d’environnement
+    console.log("Vérification EmailJS ENV :", {
+      service: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+      template: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+      publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+    })
 
-  // ✅ Vérifie les données du formulaire
-  console.log("Données envoyées à EmailJS :", {
-    name: formState.name,
-    email: formState.email,
-    message: formState.message,
-  })
-  emailjs.send(
-    process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-    process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-    {
+    // ✅ Vérifie les données du formulaire
+    console.log("Données envoyées à EmailJS :", {
       name: formState.name,
       email: formState.email,
       message: formState.message,
-      time: now,
-      "g-recaptcha-response": recaptchaToken, // <-- envoi token au backend ou EmailJS si pris en charge
-    },
-    process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
-  )
-  .then(() => {
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setFormState({ name: "", email: "", message: "" })
-    setRecaptchaToken(null)
-    recaptchaRef.current?.reset()
+    })
+    emailjs.send(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+      {
+        name: formState.name,
+        email: formState.email,
+        message: formState.message,
+        time: now,
+        "g-recaptcha-response": recaptchaToken, // <-- envoi token au backend ou EmailJS si pris en charge
+      },
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+    )
+      .then(() => {
+        setIsSubmitting(false)
+        setIsSubmitted(true)
+        setFormState({ name: "", email: "", message: "" })
+        setRecaptchaToken(null)
+        recaptchaRef.current?.reset()
 
-    setTimeout(() => {
-      setIsSubmitted(false)
-    }, 5000)
-  })
-  .catch((error) => {
-    setIsSubmitting(false)
-    alert("Une erreur est survenue : " + error.text)
-  })
-}
+        setTimeout(() => {
+          setIsSubmitted(false)
+        }, 5000)
+      })
+      .catch((error) => {
+        setIsSubmitting(false)
+        alert("Une erreur est survenue : " + error.text)
+      })
+  }
 
   const onRecaptchaChange = (token: string | null) => {
     setRecaptchaToken(token)
@@ -122,7 +122,7 @@ const handleSubmit = (e: React.FormEvent) => {
         >
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Prenons contact</h2>
           <p className="text-lg text-muted-foreground">
-            Vous avez un projet en tête ou souhaitez discuter d'une collaboration ? J'aimerais beaucoup échanger avec vous.
+            Un projet web, une idée de site à concrétiser ou juste une question ? Je serais ravi d’échanger avec vous.
           </p>
         </motion.div>
 
@@ -136,8 +136,7 @@ const handleSubmit = (e: React.FormEvent) => {
           >
             <h3 className="text-2xl font-semibold">Informations de contact</h3>
             <p className="text-muted-foreground mb-8">
-              N'hésitez pas à me contacter par l'un des canaux suivants. Je réponds généralement sous 24 heures.
-            </p>
+Vous avez un projet web en tête ? N’hésitez pas à me contacter via l’un des canaux ci-dessous. Je réponds généralement sous 24 heures.            </p>
 
             <div className="space-y-6">
               {contactInfo.map((item, i) => (
@@ -163,9 +162,9 @@ const handleSubmit = (e: React.FormEvent) => {
             <div className="pt-8">
               <h4 className="text-lg font-medium mb-4">Connectons-nous</h4>
               <div className="flex space-x-4">
-                <a 
-                  href="https://github.com/sylaang/" 
-                  target="_blank" 
+                <a
+                  href="https://github.com/sylaang/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
                   aria-label="GitHub"
@@ -174,9 +173,9 @@ const handleSubmit = (e: React.FormEvent) => {
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                   </svg>
                 </a>
-                <a 
-                  href="https://www.linkedin.com/in/mehdi-hachem-54a8672b0/" 
-                  target="_blank" 
+                <a
+                  href="https://www.linkedin.com/in/mehdi-hachem-54a8672b0/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
                   aria-label="LinkedIn"
@@ -187,9 +186,9 @@ const handleSubmit = (e: React.FormEvent) => {
                     <circle cx="4" cy="4" r="2"></circle>
                   </svg>
                 </a>
-                <a 
-                  href="https://twitter.com" 
-                  target="_blank" 
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
                   aria-label="Twitter"
@@ -257,17 +256,17 @@ const handleSubmit = (e: React.FormEvent) => {
                     />
                   </div>
 
-                                  <div className="pt-4">
-                  <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} // ta clé publique reCAPTCHA
-                    onChange={onRecaptchaChange}
-                    ref={recaptchaRef}
-                  />
-                </div>
+                  <div className="pt-4">
+                    <ReCAPTCHA
+                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} // ta clé publique reCAPTCHA
+                      onChange={onRecaptchaChange}
+                      ref={recaptchaRef}
+                    />
+                  </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
+                  <Button
+                    type="submit"
+                    className="w-full"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
