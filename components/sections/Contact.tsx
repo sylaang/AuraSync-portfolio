@@ -5,11 +5,33 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Mail, MessageSquare, Phone, MapPin } from "lucide-react"
-import { useState } from "react"
+import { MessageSquare } from "lucide-react"
+import { useState, useRef } from "react"
+import emailjs from "emailjs-com"
+import ReCAPTCHA from "react-google-recaptcha"
+
+// Définir le type pour le state formState
+type FormState = {
+  name: string
+  email: string
+  message: string
+}
+
+// Définir le type pour contactInfo si nécessaire (je suppose que c'est un tableau d'objets)
+type ContactInfoItem = {
+  icon: JSX.Element
+  label: string
+  value: string
+}
+
+const contactInfo: ContactInfoItem[] = [
+  // Ajoute tes objets contactInfo ici
+  { icon: <svg>...</svg>, label: "Email", value: "example@example.com" },
+  { icon: <svg>...</svg>, label: "Téléphone", value: "+1234567890" }
+]
 
 export default function Contact() {
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<FormState>({
     name: "",
     email: "",
     message: ""
@@ -17,6 +39,9 @@ export default function Contact() {
   
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null) // <-- token reCAPTCHA
+
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({
@@ -25,44 +50,65 @@ export default function Contact() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    // Simulation de l'envoi du formulaire
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-      setFormState({
-        name: "",
-        email: "",
-        message: ""
-      })
-      
-      // Réinitialiser le message de succès après 5 secondes
-      setTimeout(() => {
-        setIsSubmitted(false)
-      }, 5000)
-    }, 1500)
-  }
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault()
 
-  const contactInfo = [
+   if (!recaptchaToken) {
+      alert("Merci de valider le captcha avant d'envoyer le formulaire.")
+      return
+    }
+
+  setIsSubmitting(true)
+
+  const now = new Date().toLocaleString("fr-FR", {
+    dateStyle: "full",
+    timeStyle: "short",
+  })
+  // ✅ Vérifie les variables d’environnement
+  console.log("Vérification EmailJS ENV :", {
+    service: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+    template: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+    publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+  })
+
+  // ✅ Vérifie les données du formulaire
+  console.log("Données envoyées à EmailJS :", {
+    name: formState.name,
+    email: formState.email,
+    message: formState.message,
+  })
+  emailjs.send(
+    process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+    process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
     {
-      icon: <Mail className="h-5 w-5 text-muted-foreground" />,
-      label: "Email",
-      value: "mehdi.hachem.syl@gmail.com",
+      name: formState.name,
+      email: formState.email,
+      message: formState.message,
+      time: now,
+      "g-recaptcha-response": recaptchaToken, // <-- envoi token au backend ou EmailJS si pris en charge
     },
-    {
-      icon: <Phone className="h-5 w-5 text-muted-foreground" />,
-      label: "Téléphone",
-      value: "07 78 35 68 35",
-    },
-    {
-      icon: <MapPin className="h-5 w-5 text-muted-foreground" />,
-      label: "Localisation",
-      value: "Paris, FR",
-    },
-  ]
+    process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+  )
+  .then(() => {
+    setIsSubmitting(false)
+    setIsSubmitted(true)
+    setFormState({ name: "", email: "", message: "" })
+    setRecaptchaToken(null)
+    recaptchaRef.current?.reset()
+
+    setTimeout(() => {
+      setIsSubmitted(false)
+    }, 5000)
+  })
+  .catch((error) => {
+    setIsSubmitting(false)
+    alert("Une erreur est survenue : " + error.text)
+  })
+}
+
+  const onRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token)
+  }
 
   return (
     <section id="contact" className="py-20 md:py-28">
@@ -210,6 +256,15 @@ export default function Contact() {
                       required
                     />
                   </div>
+
+                                  <div className="pt-4">
+                  <ReCAPTCHA
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} // ta clé publique reCAPTCHA
+                    onChange={onRecaptchaChange}
+                    ref={recaptchaRef}
+                  />
+                </div>
+
                   <Button 
                     type="submit" 
                     className="w-full" 

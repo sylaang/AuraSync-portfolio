@@ -49,15 +49,6 @@ export default function Projects() {
       liveUrl: "https://aurasync-recette-hub.vercel.app/",
       githubUrl: "https://github.com/sylaang/aurasync-RecetteHub",
     },
-    {
-      title: "Hub SmartHome",
-      description:
-        "Un système de contrôle central pour les appareils IoT avec des règles d'automatisation, un suivi énergétique et des commandes vocales.",
-      imageUrl: "https://images.pexels.com/photos/3985163/pexels-photo-3985163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      tags: ["Angular", "Node.js", "MQTT", "InfluxDB"],
-      liveUrl: "https://example.com",
-      githubUrl: "https://github.com",
-    },
   ]
 
   return (
