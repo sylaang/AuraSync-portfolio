@@ -1,13 +1,12 @@
-// /components/PlanetServer.tsx
-import dynamic from 'next/dynamic'; // Chargement dynamique
+import dynamic from 'next/dynamic';
 
-// Charger le composant client sans SSR (cÃ´tÃ© client uniquement)
+
 const PlanetClient = dynamic(() => import('./PlanetClient'), { ssr: false });
 
 const PlanetServer = () => {
   return (
     <div>
-      <PlanetClient /> {/* Rendu du composant PlanetClient cÃ´tÃ© client */}
+      <PlanetClient />
     </div>
   );
 };

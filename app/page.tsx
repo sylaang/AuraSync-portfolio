@@ -6,6 +6,7 @@ import Vision from '@/components/sections/Vision';
 import Skills from '@/components/sections/Skills';
 import Projects from '@/components/sections/Projects';
 import Contact from '@/components/sections/Contact';
+import TarifsTable from '@/components/sections/TarifsTable';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import PlanetServer from '@/components/PlanetServer';
@@ -50,6 +51,7 @@ export default function Home() {
         <About />
         <Vision />
         <Skills />
+        <TarifsTable />
         <section id="projects" aria-labelledby="projects-heading" className="py-20 md:py-28 bg-muted/50">
           <Projects />
         </section>

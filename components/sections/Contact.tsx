@@ -136,7 +136,7 @@ export default function Contact() {
           >
             <h3 className="text-2xl font-semibold">Informations de contact</h3>
             <p className="text-muted-foreground mb-8">
-Vous avez un projet web en tête ? N’hésitez pas à me contacter via l’un des canaux ci-dessous. Je réponds généralement sous 24 heures.            </p>
+              Vous avez un projet web en tête ? N’hésitez pas à me contacter via l’un des canaux ci-dessous. Je réponds généralement sous 24 heures.            </p>
 
             <div className="space-y-6">
               {contactInfo.map((item, i) => (
