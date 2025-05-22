@@ -12,6 +12,7 @@ import Footer from '@/components/layout/Footer';
 import PlanetServer from '@/components/PlanetServer';
 import ParticlesBackground from '../components/ParticlesBackground';
 import Head from 'next/head';
+import AOSProvider from '@/components/common/AOSInit';
 
 export default function Home() {
   useEffect(() => {
@@ -20,12 +21,14 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="relative min-h-screen">
-      <div style={{ minHeight: '100vh' }}>
-        <Head>
+    <>
+      <AOSProvider />
+      <main className="relative min-h-screen">
+        <div style={{ minHeight: '100vh' }}>
+          <Head>
 
-          <script type="application/ld+json">
-            {`
+            <script type="application/ld+json">
+              {`
             {
               "@context": "https://schema.org",
               "@type": "WebPage",
@@ -39,26 +42,27 @@ export default function Home() {
               }
             }
           `}
-          </script>
+            </script>
 
-          {/* Favicon */}
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <ParticlesBackground />
-        <PlanetServer />
-        <Navbar />
-        <Hero />
-        <About />
-        <Vision />
-        <Skills />
-        <TarifsTable />
-        <section id="projects" aria-labelledby="projects-heading" className="py-20 md:py-28 bg-muted/50">
-          <Projects />
-        </section>
+            {/* Favicon */}
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <ParticlesBackground />
+          <PlanetServer />
+          <Navbar />
+          <Hero />
+          <About />
+          <Vision />
+          <Skills />
+          <TarifsTable />
+          <section id="projects" aria-labelledby="projects-heading" className="py-20 md:py-28 bg-muted/50">
+            <Projects />
+          </section>
 
-        <Contact />
-      </div>
-      <Footer />
-    </main>
+          <Contact />
+        </div>
+        <Footer />
+      </main>
+    </>
   );
 }

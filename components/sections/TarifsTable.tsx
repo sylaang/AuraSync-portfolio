@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { tarifs } from "@/app/data/tarifsData";
 
 
+
 function useFocusTrap(active: boolean, containerRef: React.RefObject<HTMLDivElement>, onClose: () => void) {
     const prevFocused = useRef<HTMLElement | null>(null);
 
@@ -44,7 +45,7 @@ const TarifTable: React.FC = () => {
     useFocusTrap(openIndex !== null, drawerRef, () => setOpenIndex(null));
 
     return (
-        <div className="relative pb-12" role="region" aria-label="Tableau des tarifs">
+        <section id="tarif" className="relative pb-12 mt-10" role="region" aria-label="Tableau des tarifs">
             <div className="container px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -57,7 +58,6 @@ const TarifTable: React.FC = () => {
                 </motion.div>
             </div>
 
-            {/* Grille de services */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 max-w-6xl ml-7">
                 {tarifs.map(({ prestation }, idx) => (
                     <div
@@ -70,6 +70,21 @@ const TarifTable: React.FC = () => {
                         aria-expanded={openIndex === idx}
                         aria-controls={`tarif-details-${idx}`}
                         aria-haspopup="dialog"
+data-aos={
+  idx === 0 || idx === 3
+    ? "fade-down-right"
+    : idx === 1 || idx === 4
+    ? "fade-down"
+    : idx === 2 || idx === 5
+    ? "fade-down-left"
+    : idx === 6 || idx === 9
+    ? "fade-up-right"
+    : idx === 7 || idx === 10
+    ? "fade-up"
+    : idx === 8 || idx === 11
+    ? "fade-up-left"
+    : undefined
+}
                     >
                         {prestation}
                     </div>
@@ -85,7 +100,6 @@ const TarifTable: React.FC = () => {
                 />
             )}
 
-            {/* Drawer latéral */}
             <div
                 ref={drawerRef}
                 id={openIndex !== null ? `tarif-details-${openIndex}` : undefined}
@@ -96,7 +110,6 @@ const TarifTable: React.FC = () => {
                 className={`fixed top-0 right-0 h-full w-full sm:w-[35%] bg-gray-900 bg-opacity-95 text-white transform ${openIndex !== null ? "translate-x-0" : "translate-x-full"
                     } transition-transform duration-300 ease-in-out shadow-2xl overflow-auto z-50`}
             >
-                {/* Bouton fermer */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-white/20">
                     <button
                         onClick={() => setOpenIndex(null)}
@@ -111,7 +124,6 @@ const TarifTable: React.FC = () => {
                 <div className="px-6 py-4 space-y-6">
                     {openIndex !== null && (
                         <section>
-                            {/* Titre unique */}
                             <h2 id={`tarif-title-${openIndex}`} className="text-xl font-semibold mb-2">
                                 {tarifs[openIndex].prestation}
                             </h2>
@@ -202,7 +214,10 @@ const TarifTable: React.FC = () => {
                     )}
                 </div>
             </div>
-        </div>
+            <p className="text-sm text-white/70 mt-6 m-12">
+    Vous ne trouvez pas exactement ce que vous cherchez ? N'hésitez pas à me contacter via la <a href="#contact" className="underline underline-offset-2 hover:text-white">section contact</a> pour discuter d’un besoin spécifique ou d’un projet sur-mesure.
+</p>
+        </section>
     );
 };
 

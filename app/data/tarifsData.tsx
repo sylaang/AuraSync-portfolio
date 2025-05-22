@@ -1,4 +1,3 @@
-// data/tarifsData.tsx
 
 export const tarifs = [
   {

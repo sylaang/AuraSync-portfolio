@@ -1,23 +1,31 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { MessageSquare } from "lucide-react"
+import { MessageSquare, Github, Linkedin } from "lucide-react"
 import { useState, useRef } from "react"
 import emailjs from "emailjs-com"
 import ReCAPTCHA from "react-google-recaptcha"
 
-// Définir le type pour le state formState
-type FormState = {
-  name: string
-  email: string
-  message: string
-}
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
 
-// Définir le type pour contactInfo si nécessaire (je suppose que c'est un tableau d'objets)
+// Validation schema avec yup
+const schema = yup.object({
+  name: yup.string().required("Le nom est obligatoire"),
+  email: yup.string().email("Email invalide").required("L'email est obligatoire"),
+  confirmEmail: yup.string()
+    .oneOf([yup.ref('email')], "Les emails ne correspondent pas")
+    .required("Veuillez confirmer votre email"),
+  message: yup.string().required("Le message est obligatoire"),
+}).required()
+
+type FormInputs = yup.InferType<typeof schema>
+
 type ContactInfoItem = {
   icon: JSX.Element
   label: string
@@ -25,38 +33,46 @@ type ContactInfoItem = {
 }
 
 const contactInfo: ContactInfoItem[] = [
-  // Ajoute tes objets contactInfo ici
-  { icon: <svg>...</svg>, label: "Email", value: "mehdi.hachem.syl@gmail.com" },
-  // { icon: <svg>...</svg>, label: "Téléphone", value: "+1234567890" }
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="w-6 h-6 text-primary"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8m-18 8h18a2 2 0 002-2V8a2 2 0 00-2-2H3a2 2 0 00-2 2v6a2 2 0 002 2z" />
+      </svg>
+    ), label: "Email", value: "mehdi.hachem.syl@gmail.com"
+  },
+]
+
+const socialLinks = [
+  { icon: <Github className="w-6 h-6" />, label: "Github", url: "https://github.com/sylaang/" },
+  { icon: <Linkedin className="w-6 h-6" />, label: "LinkedIn", url: "https://www.linkedin.com/in/mehdi-hachem-54a8672b0/" },
 ]
 
 export default function Contact() {
-  const [formState, setFormState] = useState<FormState>({
-    name: "",
-    email: "",
-    message: ""
-  })
-
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null) // <-- token reCAPTCHA
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
+  const [captchaError, setCaptchaError] = useState<string | null>(null)  // <-- nouvel état pour erreur captcha
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormState({
-      ...formState,
-      [e.target.name]: e.target.value
-    })
-  }
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>({
+    resolver: yupResolver(schema),
+  })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-
+  const onSubmit = (data: FormInputs) => {
     if (!recaptchaToken) {
-      alert("Merci de valider le captcha avant d'envoyer le formulaire.")
+      // Remplace alert par un message visible
+      setCaptchaError("Merci de valider le captcha avant d'envoyer le formulaire.")
       return
     }
+    setCaptchaError(null) // reset erreur captcha si ok
 
     setIsSubmitting(true)
 
@@ -64,35 +80,23 @@ export default function Contact() {
       dateStyle: "full",
       timeStyle: "short",
     })
-    // ✅ Vérifie les variables d’environnement
-    console.log("Vérification EmailJS ENV :", {
-      service: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
-      template: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
-      publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-    })
 
-    // ✅ Vérifie les données du formulaire
-    console.log("Données envoyées à EmailJS :", {
-      name: formState.name,
-      email: formState.email,
-      message: formState.message,
-    })
     emailjs.send(
       process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
       process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
       {
-        name: formState.name,
-        email: formState.email,
-        message: formState.message,
+        name: data.name,
+        email: data.email,
+        message: data.message,
         time: now,
-        "g-recaptcha-response": recaptchaToken, // <-- envoi token au backend ou EmailJS si pris en charge
+        "g-recaptcha-response": recaptchaToken,
       },
       process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
     )
       .then(() => {
         setIsSubmitting(false)
         setIsSubmitted(true)
-        setFormState({ name: "", email: "", message: "" })
+        reset()
         setRecaptchaToken(null)
         recaptchaRef.current?.reset()
 
@@ -108,6 +112,7 @@ export default function Contact() {
 
   const onRecaptchaChange = (token: string | null) => {
     setRecaptchaToken(token)
+    if (token) setCaptchaError(null) // clear erreur dès que captcha validé
   }
 
   return (
@@ -136,7 +141,8 @@ export default function Contact() {
           >
             <h3 className="text-2xl font-semibold">Informations de contact</h3>
             <p className="text-muted-foreground mb-8">
-              Vous avez un projet web en tête ? N’hésitez pas à me contacter via l’un des canaux ci-dessous. Je réponds généralement sous 24 heures.            </p>
+              Vous avez un projet web en tête ? N’hésitez pas à me contacter via l’un des canaux ci-dessous. Je réponds généralement sous 24 heures.
+            </p>
 
             <div className="space-y-6">
               {contactInfo.map((item, i) => (
@@ -162,41 +168,18 @@ export default function Contact() {
             <div className="pt-8">
               <h4 className="text-lg font-medium mb-4">Connectons-nous</h4>
               <div className="flex space-x-4">
-                <a
-                  href="https://github.com/sylaang/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
-                  aria-label="GitHub"
-                >
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                  </svg>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/mehdi-hachem-54a8672b0/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
-                  aria-label="LinkedIn"
-                >
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
-                <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted transition-colors"
-                  aria-label="Twitter"
-                >
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                  </svg>
-                </a>
+                {socialLinks.map(({ icon, label, url }) => (
+                  <a
+                    key={label}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="text-muted-foreground hover:text-primary transition"
+                  >
+                    {icon}
+                  </a>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -213,66 +196,107 @@ export default function Contact() {
                 Envoyez-moi un message
               </h3>
 
-              {isSubmitted ? (
-                <div className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 p-4 rounded-md">
-                  <p className="font-medium">Message envoyé avec succès !</p>
-                  <p className="text-sm">Merci de nous avoir contacté. Je reviendrai vers vous dès que possible.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Nom</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      placeholder="Votre nom"
-                      value={formState.name}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="Votre email"
-                      value={formState.email}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      placeholder="Votre message"
-                      rows={5}
-                      value={formState.message}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="pt-4">
-                    <ReCAPTCHA
-                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} // ta clé publique reCAPTCHA
-                      onChange={onRecaptchaChange}
-                      ref={recaptchaRef}
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={isSubmitting}
+              <AnimatePresence mode="wait">
+                {isSubmitted ? (
+                  <motion.div
+                    key="success-message"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4 }}
+                    className="bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 p-4 rounded-md"
                   >
-                    {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
-                  </Button>
-                </form>
-              )}
+                    <p className="font-medium">Message envoyé avec succès !</p>
+                    <p className="text-sm">Merci de nous avoir contacté. Je reviendrai vers vous dès que possible.</p>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="contact-form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="space-y-4"
+                    noValidate
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Nom</Label>
+                      <Input
+                        id="name"
+                        {...register("name")}
+                        placeholder="Votre nom"
+                        aria-invalid={errors.name ? "true" : "false"}
+                      />
+                      {errors.name && (
+                        <p role="alert" className="text-red-600 text-sm mt-1">{errors.name.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        {...register("email")}
+                        placeholder="Votre email"
+                        aria-invalid={errors.email ? "true" : "false"}
+                      />
+                      {errors.email && (
+                        <p role="alert" className="text-red-600 text-sm mt-1">{errors.email.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmEmail">Confirmer l'email</Label>
+                      <Input
+                        id="confirmEmail"
+                        type="email"
+                        {...register("confirmEmail")}
+                        placeholder="Confirmez votre email"
+                        aria-invalid={errors.confirmEmail ? "true" : "false"}
+                      />
+                      {errors.confirmEmail && (
+                        <p role="alert" className="text-red-600 text-sm mt-1">{errors.confirmEmail.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="message">Message</Label>
+                      <Textarea
+                        id="message"
+                        {...register("message")}
+                        placeholder="Votre message"
+                        rows={5}
+                        aria-invalid={errors.message ? "true" : "false"}
+                      />
+                      {errors.message && (
+                        <p role="alert" className="text-red-600 text-sm mt-1">{errors.message.message}</p>
+                      )}
+                    </div>
+
+                    <div className="pt-4">
+                      <ReCAPTCHA
+                        sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                        onChange={onRecaptchaChange}
+                        ref={recaptchaRef}
+                      />
+                      {/* Message d'erreur captcha visible sous le captcha */}
+                      {captchaError && (
+                        <p role="alert" className="text-red-600 text-sm mt-2">{captchaError}</p>
+                      )}
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+                    </Button>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>
