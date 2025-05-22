@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Portfolio | AuraSync - HACHEM Mehdi - Développeur Web',
     description:
-      "Je suis HACHEM Mehdi, un développeur web passionné. Découvrez mes projets créés avec React, Node.js et d'autres technologies modernes.",
+      " Boostez votre activité avec un site web sur-mesure, moderne et performant. Je suis HACHEM Mehdi, développeur web, prêt à transformer vos idées en solutions digitales innovantes et adaptées. ",
     url: 'https://aurasync-sooty.vercel.app/',
     siteName: 'AuraSync',
     type: 'website',

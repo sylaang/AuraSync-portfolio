@@ -34,7 +34,7 @@ export default function Home() {
               "@type": "WebPage",
               "name": "Développeur Web | Mon Portfolio | HACHEM Mehdi",
               "description": "Découvrez une sélection de mes projets en développement web, allant de sites dynamiques à des applications web interactives.",
-              "url": "https://tonsite.com", // L'URL de la page d'accueil
+              "url": "https://aurasync-sooty.vercel.app/", // L'URL de la page d'accueil
               "image": "https://tonsite.com/images/preview-projets.png", // L'image de ton portfolio ou de ta page d'accueil
               "author": {
                 "@type": "Person",
