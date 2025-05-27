@@ -118,7 +118,6 @@ const PlanetClient = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          console.log("Hero visible ?", entry.isIntersecting);
           setIsHeroVisible(entry.isIntersecting);
         });
       },
