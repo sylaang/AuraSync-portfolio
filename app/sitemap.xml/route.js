@@ -1,4 +1,3 @@
-// app/sitemap.xml/route.js
 export async function GET() {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -13,8 +12,10 @@ export async function GET() {
   </urlset>`;
 
   return new Response(sitemap, {
+    status: 200,
     headers: {
-      "Content-Type": "application/xml",
+      'Content-Type': 'application/xml',
+      'Cache-Control': 'public, max-age=86400',
     },
   });
 }
