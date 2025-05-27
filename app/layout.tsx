@@ -64,6 +64,8 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href={SITE_URL} />
 
+        <meta name="google-site-verification" content="tkuceJZzEh_7T6m7uqrtjHBkrwYzXKVvhv-hUSbrb8E" />
+
         {/* Open Graph tags */}
         <meta property="og:title" content="Portfolio | AuraSync - HACHEM Mehdi - Développeur Web" />
         <meta property="og:description" content="Boostez votre activité avec un site web sur-mesure, moderne et performant. Je suis HACHEM Mehdi, développeur web, prêt à transformer vos idées en solutions digitales innovantes et adaptées." />
