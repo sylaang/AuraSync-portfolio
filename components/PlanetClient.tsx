@@ -14,9 +14,8 @@ const PlanetClient = () => {
   const [isHeroVisible, setIsHeroVisible] = useState(true);
   const isHeroVisibleRef = useRef(true);
   const requestIdRef = useRef<number | undefined>();
-  const dynamicLightRef = useRef<THREE.DirectionalLight | null>(null); // Lumière dynamique
+  const dynamicLightRef = useRef<THREE.DirectionalLight | null>(null);
 
-  // Fonction pour gérer le redimensionnement de la fenêtre
   const onResize = () => {
     if (canvasRef.current && cameraRef.current && rendererRef.current) {
       const width = canvasRef.current.clientWidth;
@@ -27,7 +26,6 @@ const PlanetClient = () => {
     }
   };
 
-  // Séparation de l'initialisation de Three.js
   const initThree = (scene: THREE.Scene) => {
     const camera = new THREE.PerspectiveCamera(
       50,
@@ -50,13 +48,11 @@ const PlanetClient = () => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
 
-    // Lumière directionnelle qui suit la caméra
     const dynamicLight = new THREE.DirectionalLight(0xffaa00, 2); 
     scene.add(dynamicLight);
     dynamicLightRef.current = dynamicLight;
   };
 
-  // Met à jour la position de la lumière dynamique en fonction de la caméra
   const updateLightPosition = () => {
     if (cameraRef.current && dynamicLightRef.current) {
       dynamicLightRef.current.position.set(cameraRef.current.position.x + 3, cameraRef.current.position.y + 2, cameraRef.current.position.z + 3);
@@ -79,7 +75,6 @@ const PlanetClient = () => {
       cameraRef.current.position.lerp(targetPosition, 0.005);
     }
 
-    // Mise à jour de l'éclairage dynamique
     updateLightPosition();
 
     if (cameraRef.current && rendererRef.current) {
@@ -91,7 +86,7 @@ const PlanetClient = () => {
     const scene = new THREE.Scene();
     scene.background = null;
     
-    initThree(scene); // Appeler la fonction initThree avec la scène
+    initThree(scene);
 
     const loader = new GLTFLoader();
     loader.load(
@@ -111,8 +106,8 @@ const PlanetClient = () => {
           mixerRef.current = mixer;
         }
 
-        // Ne commencer l'animation que lorsque le modèle est chargé
-        animate(scene); // Passer la scène ici
+
+        animate(scene);
       },
       undefined,
       (error) => {
@@ -135,7 +130,6 @@ const PlanetClient = () => {
       observer.observe(heroSection);
     }
 
-    // Ajout de l'écouteur d'événements
     window.addEventListener("resize", onResize);
 
     return () => {
@@ -146,7 +140,7 @@ const PlanetClient = () => {
         rendererRef.current.dispose(); // Nettoyage mémoire
       }
 
-      window.removeEventListener("resize", onResize); // Retrait de l'écouteur d'événements
+      window.removeEventListener("resize", onResize);
 
       if (heroSection) {
         observer.unobserve(heroSection);
@@ -159,7 +153,7 @@ const PlanetClient = () => {
       mixerRef.current?.stopAllAction();
       mixerRef.current?.uncacheRoot(modelRef.current as THREE.Object3D);
     };
-  }, []); // Le useEffect principal se déclenche une seule fois au chargement
+  }, []);
 
   useEffect(() => {
     isHeroVisibleRef.current = isHeroVisible;

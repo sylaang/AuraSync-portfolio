@@ -20,12 +20,18 @@
 
 
 
+html,
+body {
+  overflow-x: hidden;
+}
+
+
 
 
 
 
 ::-webkit-scrollbar {
-  width: 5px; /* Taille de la scrollbar */
+  width: 5px;
 }
 
 ::-webkit-scrollbar-thumb {

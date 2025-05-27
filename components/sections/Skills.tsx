@@ -4,7 +4,6 @@ import { motion } from "framer-motion"
 import { skills, Skill } from "@/app/data/skillsData"
 
 export default function Skills() {
-  // Regroupement des compétences (non utilisé ici, mais peut servir plus tard)
   const groupedSkills = skills.reduce((acc, skill) => {
     if (!acc[skill.category]) {
       acc[skill.category] = []
@@ -21,10 +20,10 @@ export default function Skills() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center mb-16"
+          className="max-w-full sm:max-w-3xl mx-auto text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Mes compétences</h2>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground leading-relaxed break-words">
             Développeur web freelance basé à Paris, j’accompagne entreprises et agences en Île-de-France et à distance dans la création de sites et d’applications web performants, responsives et orientés utilisateur.
             Spécialisé en développement full stack, je maîtrise des technologies modernes comme JavaScript, TypeScript, React, Next.js, Node.js et Symfony, ainsi que l’intégration de bases de données (PostgreSQL, MongoDB) et d’outils DevOps (Docker, AWS).
             Mon approche centrée sur l’expérience utilisateur (UX) et la performance garantit des interfaces intuitives, accessibles et adaptées à tous les supports.

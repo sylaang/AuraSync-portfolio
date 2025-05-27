@@ -63,35 +63,35 @@ const TarifTable: React.FC = () => {
                     <div
                         key={idx}
                         onClick={() => setOpenIndex(idx)}
-                        className="cursor-pointer rounded bg-white/10 hover:bg-white/20 transition-colors p-6 text-white font-semibold text-center"
+                        className="cursor-pointer rounded bg-black/60 hover:bg-black/80 backdrop-blur transition-colors p-6 text-gray-400 hover:text-white active:text-white font-semibold text-center"
+
                         role="button"
                         tabIndex={0}
                         onKeyDown={e => { if (e.key === "Enter" || e.key === " ") setOpenIndex(idx); }}
                         aria-expanded={openIndex === idx}
                         aria-controls={`tarif-details-${idx}`}
                         aria-haspopup="dialog"
-data-aos={
-  idx === 0 || idx === 3
-    ? "fade-down-right"
-    : idx === 1 || idx === 4
-    ? "fade-down"
-    : idx === 2 || idx === 5
-    ? "fade-down-left"
-    : idx === 6 || idx === 9
-    ? "fade-up-right"
-    : idx === 7 || idx === 10
-    ? "fade-up"
-    : idx === 8 || idx === 11
-    ? "fade-up-left"
-    : undefined
-}
+                        data-aos={
+                            idx === 0 || idx === 3
+                                ? "fade-down-right"
+                                : idx === 1 || idx === 4
+                                    ? "fade-down"
+                                    : idx === 2 || idx === 5
+                                        ? "fade-down-left"
+                                        : idx === 6 || idx === 9
+                                            ? "fade-up-right"
+                                            : idx === 7 || idx === 10
+                                                ? "fade-up"
+                                                : idx === 8 || idx === 11
+                                                    ? "fade-up-left"
+                                                    : undefined
+                        }
                     >
                         {prestation}
                     </div>
                 ))}
             </div>
 
-            {/* Overlay */}
             {openIndex !== null && (
                 <div
                     className="fixed inset-0 bg-black/50 z-40"
@@ -120,7 +120,6 @@ data-aos={
                     </button>
                 </div>
 
-                {/* Détail des offres */}
                 <div className="px-6 py-4 space-y-6">
                     {openIndex !== null && (
                         <section>
@@ -128,7 +127,6 @@ data-aos={
                                 {tarifs[openIndex].prestation}
                             </h2>
 
-                            {/* Descriptions SEO */}
                             {openIndex === 0 && (
                                 <p className="text-sm text-white/80 mb-4">
                                     Un site vitrine est idéal pour présenter votre activité en ligne de manière professionnelle. Je propose des formules de 1 à 10 pages, optimisées pour le SEO, avec des fonctionnalités modernes comme un blog, un formulaire de contact ou des animations.
@@ -215,8 +213,8 @@ data-aos={
                 </div>
             </div>
             <p className="text-sm text-white/70 mt-6 m-12">
-    Vous ne trouvez pas exactement ce que vous cherchez ? N'hésitez pas à me contacter via la <a href="#contact" className="underline underline-offset-2 hover:text-white">section contact</a> pour discuter d’un besoin spécifique ou d’un projet sur-mesure.
-</p>
+                Vous ne trouvez pas exactement ce que vous cherchez ? N'hésitez pas à me contacter via la <a href="#contact" className="underline underline-offset-2 hover:text-white">section contact</a> pour discuter d’un besoin spécifique ou d’un projet sur-mesure.
+            </p>
         </section>
     );
 };
