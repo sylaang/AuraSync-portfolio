@@ -13,6 +13,7 @@ import PlanetServer from '@/components/PlanetServer';
 import ParticlesBackground from '../components/ParticlesBackground';
 import Head from 'next/head';
 import AOSProvider from '@/components/common/AOSInit';
+import { LazyMotionWrapper } from "@/lib/motion"
 
 export default function Home() {
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function Home() {
   return (
     <>
       <AOSProvider />
+<LazyMotionWrapper>
       <main className="relative min-h-screen max-w-full">
         <div className="min-h-screen">
           <Head>
@@ -43,6 +45,7 @@ export default function Home() {
         </div>
         <Footer />
       </main>
+      </LazyMotionWrapper>
     </>
   );
 }

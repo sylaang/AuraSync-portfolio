@@ -1,14 +1,13 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
+import { motion } from '@/lib/motion'
 import Link from "next/link"
 import { ArrowDown } from "lucide-react"
 
 export default function Hero() {
   return (
     <section id="hero-section" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Animated background elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-500/20 rounded-full filter blur-3xl animate-blob"></div>
         <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full filter blur-3xl animate-blob animation-delay-2000"></div>
@@ -28,19 +27,19 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6"
           >
-            Créer des expériences{" "}
+            Développeur web & créateur {" "}
             <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-            Numériques
+              d’expériences numériques
             </span>
           </motion.h1>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            Développeur web à part entière spécialisé dans la création d'expériences numériques esthétiques, 
+            Développeur web à part entière spécialisé dans la création d'expériences numériques esthétiques,
             fonctionnelles et centrées sur l'utilisateur.
           </motion.p>
 
@@ -76,7 +75,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-10 w-full flex justify-center animate-bounce">
         <Button
           variant="ghost"
           size="icon"

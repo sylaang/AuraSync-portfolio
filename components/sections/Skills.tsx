@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion } from '@/lib/motion'
 import { skills, Skill } from "@/app/data/skillsData"
 
 export default function Skills() {
