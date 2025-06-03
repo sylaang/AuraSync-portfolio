@@ -23,6 +23,8 @@ export default function Home() {
   return (
     <>
       <AOSProvider />
+      <div className="cursor"></div>
+      <div className="cursor2"></div>
 <LazyMotionWrapper>
       <main className="relative min-h-screen max-w-full">
         <div className="min-h-screen">

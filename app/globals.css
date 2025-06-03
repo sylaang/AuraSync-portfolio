@@ -16,19 +16,140 @@
   }
 }
 
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
+* {
+  cursor: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body, html {
+  width: 100%;
+  height: 100%;
+}
 
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+a {
+  font-family: Montserrat;
+  position: relative;
+  text-decoration: none;
+}
+
+a:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 0px;
+  left: 0%;
+  background: black;
+  transition: width .3s ease;
+}
+
+a:hover:after{
+  width: 100%;
+  left: 0%;
+  background: black;
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px #3b82f6,
+                0 0 10px #3b82f6,
+                0 0 20px #3b82f6;
+    border-color: #3b82f6;
+  }
+  50% {
+    box-shadow: 0 0 10px #8b5cf6,
+                0 0 20px #8b5cf6,
+                0 0 40px #8b5cf6;
+    border-color: #8b5cf6;
+  }
+  100% {
+    box-shadow: 0 0 5px #3b82f6,
+                0 0 10px #3b82f6,
+                0 0 20px #3b82f6;
+    border-color: #3b82f6;
+  }
+}
+
+@keyframes gradientRotate {
+  0% {
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  }
+  50% {
+    background: linear-gradient(225deg, #8b5cf6, #3b82f6);
+  }
+  100% {
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  }
+}
+
+.cursor {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 1px solid #3b82f6;
+  transition: all 200ms ease-out;
+  position: fixed;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  transform: translate(calc(-50% + 15px), -50%);
+  z-index: 9999;
+  animation: neonPulse 2s infinite;
+}
+
+.cursor::after {
+  content: '';
+  width: 46px;
+  height: 46px;
+  position: absolute;
+  border-radius: 50%;
+  background: transparent;
+  left: 2px;
+  top: 2px;
+}
+
+.cursor2 {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  opacity: .3;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: width .3s, height .3s, opacity .3s;
+  z-index: 9999;
+  animation: gradientRotate 2s infinite;
+}
+
+.hover {
+  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  opacity: 0.5;
+}
+
+.cursorinnerhover {
+  width: 50px;
+  height: 50px;
+  opacity: .5;
+}
 
 html,
 body {
   overflow-x: hidden;
 }
-
-
-
-
-
 
 ::-webkit-scrollbar {
   width: 5px;
@@ -61,16 +182,6 @@ body {
   border-radius: 5px;
 }
 
-
-
-
-
-
-
-
-
-
-
 @keyframes border-light {
   0% {
     transform: rotate(0deg);
@@ -98,13 +209,6 @@ body {
 .group:hover .group-hover\:animate-border-light {
   animation: border-light 1.5s linear forwards;
 }
-
-
-
-
-
-
-
 
 .led-effect {
   position: relative;
@@ -135,12 +239,6 @@ body {
     left: 100%;
   }
 }
-
-
-
-
-
-
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 3px; /* Taille de la scrollbar */
@@ -186,8 +284,6 @@ body {
   }
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 0%; /* Fond noir pur */
@@ -205,17 +301,16 @@ body {
     --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 100% 30%; /* Rouge destructif très clair */
-    --destructive-foreground: 0 0% 100%; /* Texte d’action destructif en blanc cassé */
+    --destructive-foreground: 0 0% 100%; /* Texte d'action destructif en blanc cassé */
     --border: 0 0% 10%; /* Bordures très sombres mais visibles */
     --input: 0 0% 10%; /* Fond d'input sombre */
-    --ring: 240 60% 40%; /* Anneaux d’interaction légèrement plus lumineux pour les éléments focus */
+    --ring: 240 60% 40%; /* Anneaux d'interaction légèrement plus lumineux pour les éléments focus */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-  
   
   .dark {
     /* --background: 0 0% 0%; 
@@ -292,4 +387,16 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Media query pour mobile */
+@media (max-width: 768px) {
+  * {
+    cursor: auto !important;
+  }
+
+  .cursor,
+  .cursor2 {
+    display: none !important;
+  }
 }
