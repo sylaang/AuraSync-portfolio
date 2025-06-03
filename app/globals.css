@@ -16,134 +16,20 @@
   }
 }
 
-@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
-
-* {
+/* Ajout de la règle pour cacher le curseur par défaut */
+body {
   cursor: none;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
 
-body, html {
-  width: 100%;
-  height: 100%;
-}
-
-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  flex-direction: column;
-}
-
-a {
-  font-family: Montserrat;
-  position: relative;
-  text-decoration: none;
-}
-
-a:after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  display: block;
-  margin-top: 0px;
-  left: 0%;
-  background: black;
-  transition: width .3s ease;
-}
-
-a:hover:after{
-  width: 100%;
-  left: 0%;
-  background: black;
-}
-
-@keyframes neonPulse {
-  0% {
-    box-shadow: 0 0 5px #3b82f6,
-                0 0 10px #3b82f6,
-                0 0 20px #3b82f6;
-    border-color: #3b82f6;
-  }
-  50% {
-    box-shadow: 0 0 10px #8b5cf6,
-                0 0 20px #8b5cf6,
-                0 0 40px #8b5cf6;
-    border-color: #8b5cf6;
-  }
-  100% {
-    box-shadow: 0 0 5px #3b82f6,
-                0 0 10px #3b82f6,
-                0 0 20px #3b82f6;
-    border-color: #3b82f6;
-  }
-}
-
-@keyframes gradientRotate {
-  0% {
-    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-  }
-  50% {
-    background: linear-gradient(225deg, #8b5cf6, #3b82f6);
-  }
-  100% {
-    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-  }
-}
-
-.cursor {
-  width: 50px;
-  height: 50px;
-  border-radius: 100%;
-  border: 1px solid #3b82f6;
-  transition: all 200ms ease-out;
-  position: fixed;
-  pointer-events: none;
-  left: 0;
-  top: 0;
-  transform: translate(calc(-50% + 15px), -50%);
-  z-index: 9999;
-  animation: neonPulse 2s infinite;
-}
-
-.cursor::after {
-  content: '';
-  width: 46px;
-  height: 46px;
-  position: absolute;
-  border-radius: 50%;
-  background: transparent;
-  left: 2px;
-  top: 2px;
-}
-
-.cursor2 {
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-  opacity: .3;
-  position: fixed;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  transition: width .3s, height .3s, opacity .3s;
-  z-index: 9999;
-  animation: gradientRotate 2s infinite;
-}
-
-.hover {
-  background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-  opacity: 0.5;
-}
-
-.cursorinnerhover {
-  width: 50px;
-  height: 50px;
-  opacity: .5;
+/* Suppression du curseur pointer sur les éléments interactifs */
+a, 
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+.clickable,
+[onclick] {
+  cursor: none !important;
 }
 
 html,
@@ -156,17 +42,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #3b82f6, #8b5cf6); /* Bleu → Violet */
+  background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
   border-radius: 5px;
   position: relative;
   box-shadow: 0 0 6px #8b5cf6, 0 0 12px #3b82f6;
 }
 
-/* Élément animé blanc dans le thumb */
+
 ::-webkit-scrollbar-thumb::before {
   content: "";
   position: absolute;
-  top: -50%; /* Départ de l'animation depuis le haut */
+  top: -50%;
   left: 0;
   width: 100%;
   height: 50%;
@@ -210,6 +96,13 @@ body {
   animation: border-light 1.5s linear forwards;
 }
 
+
+
+
+
+
+
+
 .led-effect {
   position: relative;
   overflow: hidden;
@@ -240,6 +133,12 @@ body {
   }
 }
 
+
+
+
+
+
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 3px; /* Taille de la scrollbar */
 }
@@ -255,43 +154,45 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb::before {
   content: "";
   position: absolute;
-  top: -50%; /* Départ de l'animation depuis le haut */
+  top: -50%;
   left: 0;
   width: 100%;
   height: 50%;
-  background: linear-gradient(to bottom, transparent, white, transparent); /* Lumière blanche */
+  background: linear-gradient(to bottom, transparent, white, transparent);
   opacity: 0.7;
-  animation: moveWhiteLight 1s linear infinite; /* Animation de la lumière blanche */
-  pointer-events: none; /* Empêche les interactions avec l'élément animé */
+  animation: moveWhiteLight 1s linear infinite; 
+  pointer-events: none;
 }
 
 /* Track transparent */
 .custom-scrollbar::-webkit-scrollbar-track {
-  background-color: transparent; /* Transparent */
+  background-color: transparent;
   border-radius: 3px;
 }
 
 /* Animation : la lumière blanche qui descend */
 @keyframes moveWhiteLight {
   0% {
-    top: -50%; /* Départ au-dessus du thumb */
+    top: -50%;
   }
   50% {
-    top: 50%; /* Milieu du thumb */
+    top: 50%;
   }
   100% {
-    top: 150%; /* En bas du thumb */
+    top: 150%;
   }
 }
 
+
+
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Fond noir pur */
-    --foreground: 0 0% 100%; /* Texte clair pour une bonne lisibilité */
-    --card: 0 0% 2%; /* Cartes avec un noir profond mais légèrement différent pour les différencier */
-    --card-foreground: 0 0% 95%; /* Texte des cartes en blanc cassé, pour contraster avec le fond sombre */
-    --popover: 0 0% 5%; /* Popover un peu plus clair que le fond */
-    --popover-foreground: 0 0% 95%; /* Texte du popover clair */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 2%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 95%;
     --primary: 0 0% 98%;
     --primary-foreground: 0 0% 9%;
     --secondary: 0 0% 14.9%;
@@ -300,17 +201,18 @@ body {
     --muted-foreground: 0 0% 63.9%;
     --accent: 0 0% 14.9%;
     --accent-foreground: 0 0% 98%;
-    --destructive: 0 100% 30%; /* Rouge destructif très clair */
-    --destructive-foreground: 0 0% 100%; /* Texte d'action destructif en blanc cassé */
-    --border: 0 0% 10%; /* Bordures très sombres mais visibles */
-    --input: 0 0% 10%; /* Fond d'input sombre */
-    --ring: 240 60% 40%; /* Anneaux d'interaction légèrement plus lumineux pour les éléments focus */
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
+    --ring: 240 60% 40%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  
   
   .dark {
     /* --background: 0 0% 0%; 
@@ -389,9 +291,158 @@ html {
   scroll-behavior: smooth;
 }
 
+
+
+a {
+  font-family: Montserrat;
+  position: relative;
+  text-decoration: none;
+}
+
+a:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 0px;
+  left: 0%;
+  background: black;
+  transition: width .3s ease;
+}
+
+a:hover:after{
+  width: 100%;
+  left: 0%;
+  background: black;
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 2px #3b82f6,
+                0 0 5px #3b82f6,
+                0 0 10px #3b82f6;
+    border-color: #3b82f6;
+  }
+  50% {
+    box-shadow: 0 0 5px #8b5cf6,
+                0 0 10px #8b5cf6,
+                0 0 20px #8b5cf6;
+    border-color: #8b5cf6;
+  }
+  100% {
+    box-shadow: 0 0 2px #3b82f6,
+                0 0 5px #3b82f6,
+                0 0 10px #3b82f6;
+    border-color: #3b82f6;
+  }
+}
+
+@keyframes gradientRotate {
+  0% {
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  }
+  50% {
+    background: linear-gradient(225deg, #8b5cf6, #3b82f6);
+  }
+  100% {
+    background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+  }
+}
+
+.cursor {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 0.5px solid #3b82f6;
+  transition: all 200ms ease-out;
+  position: fixed;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  transform: translate(calc(-50% + 15px), -50%);
+  z-index: 9999;
+  animation: neonPulse 2s infinite;
+}
+
+.cursor::after {
+  content: '';
+  width: 46px;
+  height: 46px;
+  position: absolute;
+  border-radius: 50%;
+  background: transparent;
+  left: 2px;
+  top: 2px;
+}
+
+.cursor2 {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background: white;
+  opacity: .3;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: width .3s, height .3s, opacity .3s;
+  z-index: 9999;
+  animation: gradientRotate 2s infinite;
+}
+
+.hover {
+  background: white;
+  opacity: 0.5;
+  mix-blend-mode: difference;
+  transition: all 0.3s ease;
+}
+
+.cursorinnerhover {
+  width: 30px;
+  height: 30px;
+  opacity: 1;
+  background: white;
+  transition: all 0.3s ease-out;
+  mix-blend-mode: difference;
+}
+
+/* Styles spécifiques pour les éléments interactifs */
+a:hover ~ .cursor,
+button:hover ~ .cursor,
+[role="button"]:hover ~ .cursor {
+  transform: translate(calc(-50% + 15px), -50%) scale(1.5);
+  background: white;
+  opacity: 0.3;
+}
+
+a:hover ~ .cursor2,
+button:hover ~ .cursor2,
+[role="button"]:hover ~ .cursor2 {
+  opacity: 1;
+  background: white;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* Animation pour le hover */
+@keyframes cursorHover {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cursor.hovered {
+  animation: cursorHover 1s infinite;
+}
+
 /* Media query pour mobile */
 @media (max-width: 768px) {
-  * {
+  body {
     cursor: auto !important;
   }
 

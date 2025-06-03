@@ -45,8 +45,8 @@ const TarifTable: React.FC = () => {
     useFocusTrap(openIndex !== null, drawerRef, () => setOpenIndex(null));
 
     return (
-        <section id="tarif" className="relative pb-12 mt-10" role="region" aria-label="Tableau des tarifs">
-            <div className="container px-4">
+        <section id="tarif" className="relative py-20 w-full bg-transparent" role="region" aria-label="Tableau des tarifs">
+            <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -54,11 +54,11 @@ const TarifTable: React.FC = () => {
                     transition={{ duration: 0.6 }}
                     className="max-w-3xl mx-auto text-center mb-16"
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Tarifs & Offres</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">Tarifs & Offres</h2>
                 </motion.div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 max-w-6xl ml-7">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-6xl mx-auto px-4">
                 {tarifs.map(({ prestation }, idx) => (
                     <div
                         key={idx}
@@ -139,7 +139,7 @@ const TarifTable: React.FC = () => {
                             )}
                             {openIndex === 2 && (
                                 <p className="text-sm text-white/80 mb-4">
-                                    Ne laissez pas votre site devenir vulnérable ou obsolète ! Avec mes formules de maintenance, je m’occupe de tout pour que votre site reste rapide, sécurisé et toujours à jour. Choisissez l’offre qui vous convient, du suivi de base aux interventions prioritaires, pour garder l’esprit tranquille et concentrer votre énergie sur votre business.
+                                    Ne laissez pas votre site devenir vulnérable ou obsolète ! Avec mes formules de maintenance, je m'occupe de tout pour que votre site reste rapide, sécurisé et toujours à jour. Choisissez l'offre qui vous convient, du suivi de base aux interventions prioritaires, pour garder l'esprit tranquille et concentrer votre énergie sur votre business.
                                 </p>
                             )}
                             {openIndex === 3 && (
@@ -150,25 +150,25 @@ const TarifTable: React.FC = () => {
                             {openIndex === 4 && (
                                 <p className="text-sm text-white/80 mb-4">
                                     Boostez votre visibilité avec une rédaction web optimisée SEO adaptée à vos besoins.
-                                    Que ce soit une optimisation simple d’une page, un travail approfondi sur les mots-clés et la structure, ou une rédaction complète avec recherche et stratégie de liens internes, je vous aide à mieux vous positionner sur Google et à convaincre vos visiteurs.
+                                    Que ce soit une optimisation simple d'une page, un travail approfondi sur les mots-clés et la structure, ou une rédaction complète avec recherche et stratégie de liens internes, je vous aide à mieux vous positionner sur Google et à convaincre vos visiteurs.
                                 </p>
                             )}
                             {openIndex === 5 && (
                                 <p className="text-sm text-white/80 mb-4">
-                                    Améliorez l’expérience de vos utilisateurs grâce à des tests et un retour UX personnalisés.
+                                    Améliorez l'expérience de vos utilisateurs grâce à des tests et un retour UX personnalisés.
                                     Que ce soit une analyse rapide pour détecter les points clés, des tests utilisateurs approfondis avec un rapport clair, ou un audit complet avec recommandations et suivi, je vous accompagne pour rendre votre site plus simple, agréable et efficace.
                                 </p>
                             )}
                             {openIndex === 6 && (
                                 <p className="text-sm text-white/80 mb-4">
-                                    Facilitez la collecte d’informations avec des formulaires adaptés à vos besoins.
-                                    Qu’il s’agisse d’un formulaire simple pour contacter vos clients, d’un formulaire interactif avec étapes et conditions, ou d’un outil complexe intégrant calculs, quiz et connexions API, je crée des solutions sur-mesure pour optimiser vos échanges.
+                                    Facilitez la collecte d'informations avec des formulaires adaptés à vos besoins.
+                                    Qu'il s'agisse d'un formulaire simple pour contacter vos clients, d'un formulaire interactif avec étapes et conditions, ou d'un outil complexe intégrant calculs, quiz et connexions API, je crée des solutions sur-mesure pour optimiser vos échanges.
                                 </p>
                             )}
                             {openIndex === 7 && (
                                 <p className="text-sm text-white/80 mb-4">
-                                    Apportez du dynamisme et de l’élégance à votre site grâce à des animations sur-mesure.
-                                    Qu’il s’agisse d’effets discrets pour rendre la navigation plus agréable ou d’animations complexes qui racontent votre histoire, je crée des expériences visuelles captivantes pour mettre en valeur votre contenu et retenir l’attention de vos visiteurs.
+                                    Apportez du dynamisme et de l'élégance à votre site grâce à des animations sur-mesure.
+                                    Qu'il s'agisse d'effets discrets pour rendre la navigation plus agréable ou d'animations complexes qui racontent votre histoire, je crée des expériences visuelles captivantes pour mettre en valeur votre contenu et retenir l'attention de vos visiteurs.
                                 </p>
                             )}
                             {openIndex === 8 && (
@@ -180,19 +180,19 @@ const TarifTable: React.FC = () => {
                             {openIndex === 9 && (
                                 <p className="text-sm text-white/80 mb-4">
                                     Donnez vie à vos idées avec une application web personnalisée qui simplifie vos processus et engage vos utilisateurs.
-                                    De l’outil simple comme un calculateur à une application complète avec gestion utilisateur, je crée des solutions sur-mesure adaptées à vos besoins pour booster votre efficacité.
+                                    De l'outil simple comme un calculateur à une application complète avec gestion utilisateur, je crée des solutions sur-mesure adaptées à vos besoins pour booster votre efficacité.
                                 </p>
                             )}
                             {openIndex === 10 && (
                                 <p className="text-sm text-white/80 mb-4">
                                     Offrez à vos utilisateurs un espace sécurisé et intuitif, parfaitement adapté à leurs besoins.
-                                    De la connexion simple au tableau de bord complet avec gestion avancée, je conçois des espaces membres sur-mesure pour faciliter l’interaction, le suivi et la gestion de votre communauté.
+                                    De la connexion simple au tableau de bord complet avec gestion avancée, je conçois des espaces membres sur-mesure pour faciliter l'interaction, le suivi et la gestion de votre communauté.
                                 </p>
                             )}
                             {openIndex === 11 && (
                                 <p className="text-sm text-white/80 mb-4">
                                     Gérez facilement votre contenu et vos données grâce à un back-office sur-mesure, adapté à vos besoins spécifiques.
-                                    Du tableau de bord simple à l’interface avancée avec automatisations et contrôle des accès, je crée des outils d’administration pratiques et faciles à utiliser pour optimiser votre gestion au quotidien.
+                                    Du tableau de bord simple à l'interface avancée avec automatisations et contrôle des accès, je crée des outils d'administration pratiques et faciles à utiliser pour optimiser votre gestion au quotidien.
                                 </p>
                             )}
 
@@ -213,7 +213,7 @@ const TarifTable: React.FC = () => {
                 </div>
             </div>
             <p className="text-sm text-white/70 mt-6 m-12">
-                Vous ne trouvez pas exactement ce que vous cherchez ? N'hésitez pas à me contacter via la <a href="#contact" className="underline underline-offset-2 hover:text-white">section contact</a> pour discuter d’un besoin spécifique ou d’un projet sur-mesure.
+                Vous ne trouvez pas exactement ce que vous cherchez ? N'hésitez pas à me contacter via la <a href="#contact" className="underline underline-offset-2 hover:text-white">section contact</a> pour discuter d'un besoin spécifique ou d'un projet sur-mesure.
             </p>
         </section>
     );

@@ -6,7 +6,6 @@ const CustomCursor = () => {
   useEffect(() => {
     const cursor = document.querySelector('.cursor');
     const cursorinner = document.querySelector('.cursor2');
-    const a = document.querySelectorAll('a');
 
     const moveCursor = (e: MouseEvent) => {
       if (cursor instanceof HTMLElement) {
@@ -31,26 +30,44 @@ const CustomCursor = () => {
       cursorinner?.classList.remove('cursorinnerhover');
     };
 
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.matches('a') || 
+        target.matches('button') || 
+        target.getAttribute('role') === 'button'
+      ) {
+        cursor?.classList.add('hover');
+      }
+    };
+
+    const handleMouseOut = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.matches('a') || 
+        target.matches('button') || 
+        target.getAttribute('role') === 'button'
+      ) {
+        cursor?.classList.remove('hover');
+      }
+    };
+
     document.addEventListener('mousemove', moveCursor);
     document.addEventListener('mousemove', moveInnerCursor);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
 
-    a.forEach(item => {
-      item.addEventListener('mouseover', () => cursor?.classList.add('hover'));
-      item.addEventListener('mouseleave', () => cursor?.classList.remove('hover'));
-    });
+    document.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('mouseout', handleMouseOut);
 
     return () => {
       document.removeEventListener('mousemove', moveCursor);
       document.removeEventListener('mousemove', moveInnerCursor);
       document.removeEventListener('mousedown', handleMouseDown);
       document.removeEventListener('mouseup', handleMouseUp);
-      
-      a.forEach(item => {
-        item.removeEventListener('mouseover', () => cursor?.classList.add('hover'));
-        item.removeEventListener('mouseleave', () => cursor?.classList.remove('hover'));
-      });
+
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseout', handleMouseOut);
     };
   }, []);
 
@@ -62,4 +79,4 @@ const CustomCursor = () => {
   );
 };
 
-export default CustomCursor; 
+export default CustomCursor;
