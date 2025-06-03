@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import SeoSchemas from '@/components/SeoSchemas';
-import CustomCursor from '@/components/CustomCursor'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -86,7 +85,6 @@ export default function RootLayout({
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" />
       </head>
       <body className={inter.className}>
-        <CustomCursor />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

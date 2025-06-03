@@ -14,6 +14,8 @@ import ParticlesBackground from '../components/ParticlesBackground';
 import Head from 'next/head';
 import AOSProvider from '@/components/common/AOSInit';
 import { LazyMotionWrapper } from "@/lib/motion"
+import CustomCursor from '@/components/CustomCursor'
+
 
 export default function Home() {
   useEffect(() => {
@@ -23,8 +25,8 @@ export default function Home() {
   return (
     <>
       <AOSProvider />
-      <div className="cursor"></div>
-      <div className="cursor2"></div>
+      <CustomCursor />
+
 <LazyMotionWrapper>
       <main className="relative min-h-screen max-w-full">
         <div className="min-h-screen">
