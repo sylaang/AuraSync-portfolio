@@ -8,41 +8,60 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay } from "swiper/modules"
 import "swiper/css"
 import "swiper/css/navigation"
-import { services } from "@/app/data/aboutData";
-
+import { services } from "@/app/data/aboutData"
+import Image from "next/image"
 
 export default function About() {
-
   const progressRef = useRef<HTMLDivElement>(null)
 
   return (
     <section id="about" className="py-20 md:py-28">
       <div className="container px-4">
+        <div className="flex flex-col lg:flex-row items-center gap-12">
+          {/* Photo Section */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex-shrink-0 mx-auto lg:mx-0"
+          >
+            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
+              <Image
+                src="/about/photoProfil.png"
+                alt="Hachem Mehdi"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            </div>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto text-center mb-16 px-4 sm:px-6 lg:px-8"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-primary">
-            À propos de moi
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Je suis un développeur web passionné, spécialisé dans la création de sites web réactifs et performants. Mon expertise couvre les technologies modernes telles que React, Vue.js, et Symfony, et je m'assure que chaque projet est optimisé pour l'expérience utilisateur (UX) et la performance. Grâce à mon sens du design et mon approche centrée sur l'utilisateur, je transforme des défis techniques en solutions élégantes et efficaces pour des sites web conviviaux, accessibles et adaptés aux besoins des utilisateurs.
-          </p>
-        </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl text-center lg:text-left"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-primary">
+              À propos de moi
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Je suis un développeur web passionné, spécialisé dans la création de sites web réactifs et performants. Mon expertise couvre les technologies modernes telles que React, Vue.js, et Symfony, et je m'assure que chaque projet est optimisé pour l'expérience utilisateur (UX) et la performance. Grâce à mon sens du design et mon approche centrée sur l'utilisateur, je transforme des défis techniques en solutions élégantes et efficaces pour des sites web conviviaux, accessibles et adaptés aux besoins des utilisateurs.
+            </p>
+          </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="w-full relative ml-8"
+          className="w-full relative mt-16"
         >
-
-
           <Swiper
             aria-label="Liste des services proposés"
             modules={[Autoplay]}
@@ -105,6 +124,5 @@ export default function About() {
         </div>
       </div>
     </section>
-
   )
 }
