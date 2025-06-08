@@ -338,6 +338,7 @@ a:hover:after{
   }
 }
 
+
 @keyframes gradientRotate {
   0% {
     background: linear-gradient(45deg, #3b82f6, #8b5cf6);

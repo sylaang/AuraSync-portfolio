@@ -5,6 +5,7 @@ import { MoonIcon, SunIcon, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTheme } from 'next-themes'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const navItems = [
   { name: 'À propos', href: '#about' },
@@ -39,13 +40,16 @@ export default function Navbar() {
       scrolled ? 'bg-background/80 backdrop-blur-md border-b' : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4 py-3 md:py-4 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent">
-            AuraSync
-          </span>
-        </Link>
+      <Link href="/" className="flex items-center">
+      <Image
+  src="/logo/AuraSyncLogo.svg"
+  alt="AuraSync - Développement web et design sur mesure en France - Votre univers digital"
+  width={150}
+  height={150}
+  priority
+/>
+</Link>
 
-        {/* Navigation de bureau */}
         <nav className="hidden md:flex items-center gap-x-8">
           {navItems.map((item) => (
             <Link 
@@ -75,7 +79,6 @@ export default function Navbar() {
         <div className="flex items-center gap-x-4">
 
 
-          {/* Bouton du menu mobile */}
           <Button
             variant="ghost"
             size="icon"
@@ -88,7 +91,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Menu mobile */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-lg border-b">
           <nav className="container mx-auto py-4 px-4 flex flex-col gap-y-4">

@@ -30,9 +30,6 @@ export default function Home() {
 <LazyMotionWrapper>
       <main className="relative min-h-screen max-w-full">
         <div className="min-h-screen">
-          <Head>
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
 
           <ParticlesBackground />
           <PlanetServer />

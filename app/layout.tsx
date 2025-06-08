@@ -74,6 +74,15 @@ export default function RootLayout({
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="AuraSync" />
 
+        {/* Format d'image optimisé pour WhatsApp */}
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/png" /> 
+
+        {/* Fallback pour WhatsApp (certaines versions) */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={`${SITE_URL}/images/og-home.png`} />
+
         {/* Twitter Card tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Portfolio | AuraSync - HACHEM Mehdi - Développeur Web" />
@@ -83,6 +92,10 @@ export default function RootLayout({
         <SeoSchemas />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" />
+
+        <link rel="icon" href="/logo/AuraSyncIcon.ico" 
+      />
+
       </head>
       <body className={inter.className}>
         <ThemeProvider
