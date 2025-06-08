@@ -2,8 +2,7 @@
 
 import { motion } from '@/lib/motion'
 import { useRef } from "react"
-import { Code, Compass, Laptop, Sparkles } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Autoplay } from "swiper/modules"
 import "swiper/css"
@@ -18,7 +17,6 @@ export default function About() {
     <section id="about" className="py-20 md:py-28">
       <div className="container px-4">
         <div className="flex flex-col lg:flex-row items-center gap-12">
-          {/* Photo Section */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -29,7 +27,7 @@ export default function About() {
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
               <Image
                 src="/about/photoProfil.png"
-                alt="Hachem Mehdi"
+                alt="Portrait professionnel de Hachem Mehdi, Directeur Technique et Développeur Fullstack"
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
