@@ -10,7 +10,8 @@ import { MessageSquare, Github, Linkedin } from "lucide-react"
 import { useState, useRef } from "react"
 import emailjs from "emailjs-com"
 import ReCAPTCHA from "react-google-recaptcha"
-import { usePrefetchOnHover } from "@/hooks/usePrefetchOnHover"
+import { socialLinks } from "@/constants/socialLinks";
+import { usePrefetchOnHover } from "@/hooks/usePrefetchOnHover";
 
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -49,11 +50,6 @@ const contactInfo: ContactInfoItem[] = [
       </svg>
     ), label: "Email", value: "mehdi.hachem.syl@gmail.com"
   },
-]
-
-const socialLinks = [
-  { icon: <Github className="w-6 h-6" />, label: "Github", url: "https://github.com/sylaang/" },
-  { icon: <Linkedin className="w-6 h-6" />, label: "LinkedIn", url: "https://www.linkedin.com/in/mehdi-hachem-54a8672b0/" },
 ]
 
 export default function Contact() {
@@ -169,21 +165,21 @@ export default function Contact() {
             <div className="pt-8">
               <h4 className="text-lg font-medium mb-4">Connectons-nous</h4>
               <div className="flex space-x-4">
-                {socialLinks.map(({ icon, label, url }) => {
-                  const prefetch = usePrefetchOnHover(url)
+                {socialLinks.map(({ IconComponent, label, url, rel, target }) => {
+                  const prefetch = usePrefetchOnHover(url);
                   return (
                     <a
                       key={label}
                       href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target={target}
+                      rel={rel}
                       aria-label={label}
                       className="text-muted-foreground hover:text-primary transition"
                       onMouseEnter={prefetch}
                     >
-                      {icon}
+                      <IconComponent className="w-6 h-6" />
                     </a>
-                  )
+                  );
                 })}
               </div>
             </div>

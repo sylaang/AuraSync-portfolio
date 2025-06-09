@@ -1,6 +1,9 @@
+import { usePrefetchOnHover } from "@/hooks/usePrefetchOnHover";
+import { socialLinks } from "@/constants/socialLinks";
+
 export default function Footer() {
   return (
-    <footer className="border-t bg-background">
+    <footer className="border-t bg-background" role="contentinfo">
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
@@ -14,23 +17,31 @@ export default function Footer() {
             </p>
           </div>
           <div className="flex flex-col md:items-end justify-between gap-4">
-            <div className="flex space-x-4">
-              <a href="https://github.com/sylaang/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                GitHub
-              </a>
-              <a href="https://www.linkedin.com/in/mehdi-hachem-54a8672b0/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                LinkedIn
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">
-                Twitter
-              </a>
-            </div>
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} AuraSync. Tous droits réservés.
             </p>
+            <div className="flex space-x-4">
+              {socialLinks.map(({ IconComponent, label, url, rel, target }) => {
+                const prefetch = usePrefetchOnHover(url);
+                return (
+                  <a
+                    key={label}
+                    href={url}
+                    target={target}
+                    rel={rel}
+                    aria-label={label}
+                    className="flex items-center space-x-2 text-muted-foreground hover:text-primary transition"
+                    onMouseEnter={prefetch}
+                  >
+                    <IconComponent className="w-5 h-5" />
+                    <span className="text-sm">{label}</span>
+                  </a>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
