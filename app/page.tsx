@@ -1,4 +1,5 @@
 "use client"
+
 import { useEffect } from 'react';
 import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
@@ -11,7 +12,6 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import PlanetServer from '@/components/PlanetServer';
 import ParticlesBackground from '../components/ParticlesBackground';
-import Head from 'next/head';
 import AOSProvider from '@/components/common/AOSInit';
 import { LazyMotionWrapper } from "@/lib/motion"
 import CustomCursor from '@/components/CustomCursor'

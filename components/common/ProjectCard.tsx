@@ -14,6 +14,8 @@ interface ProjectCardProps {
   liveUrl?: string
   githubUrl?: string
   index: number
+  onLiveHover?: () => void
+  onGithubHover?: () => void
 }
 
 export default function ProjectCard({
@@ -24,6 +26,8 @@ export default function ProjectCard({
   liveUrl,
   githubUrl,
   index,
+  onLiveHover,
+  onGithubHover,
 }: ProjectCardProps) {
   return (
     <motion.div role="listitem"
@@ -42,6 +46,8 @@ export default function ProjectCard({
               src={imageUrl}
               alt={`${title} - image`}
               fill
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               style={{ objectFit: "cover" }}
               className="transition-transform duration-500 hover:scale-105"
             />
@@ -54,20 +60,26 @@ export default function ProjectCard({
                     rel="noopener noreferrer"
                     className="bg-background/80 hover:bg-background p-2 rounded-full transition-colors"
                     aria-label={`View ${title} GitHub repository`}
+                    onMouseEnter={onGithubHover}
+                    onFocus={onGithubHover} // 👈 ici !
                   >
                     <Github className="h-5 w-5" />
                   </a>
                 )}
-{liveUrl && (
-  <button
-    onClick={() => window.open(liveUrl, "_blank")}
-    className="bg-black text-white py-2 px-4 rounded-full relative overflow-hidden group"
-    aria-label={`Visit ${title} live site`}
-  >
-    Voir le site web
-    <span className="absolute inset-0 w-full h-full rounded-full border-2 border-transparent group-hover:animate-border-light"></span>
-  </button>
-)}
+                {liveUrl && (
+                  <a
+                    href={liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-black text-white py-2 px-4 rounded-full relative overflow-hidden group"
+                    aria-label={`Visit ${title} live site`}
+                    onMouseEnter={onLiveHover}
+                    onFocus={onLiveHover}
+                  >
+                    Voir le site web
+                    <span className="absolute inset-0 w-full h-full rounded-full border-2 border-transparent group-hover:animate-border-light"></span>
+                  </a>
+                )}
               </div>
             </div>
           </div>

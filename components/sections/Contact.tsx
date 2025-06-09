@@ -10,6 +10,7 @@ import { MessageSquare, Github, Linkedin } from "lucide-react"
 import { useState, useRef } from "react"
 import emailjs from "emailjs-com"
 import ReCAPTCHA from "react-google-recaptcha"
+import { usePrefetchOnHover } from "@/hooks/usePrefetchOnHover"
 
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -59,7 +60,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
-  const [captchaError, setCaptchaError] = useState<string | null>(null)  // <-- nouvel état pour erreur captcha
+  const [captchaError, setCaptchaError] = useState<string | null>(null)
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
@@ -69,11 +70,10 @@ export default function Contact() {
 
   const onSubmit = (data: FormInputs) => {
     if (!recaptchaToken) {
-      // Remplace alert par un message visible
       setCaptchaError("Merci de valider le captcha avant d'envoyer le formulaire.")
       return
     }
-    setCaptchaError(null) // reset erreur captcha si ok
+    setCaptchaError(null)
 
     setIsSubmitting(true)
 
@@ -113,7 +113,7 @@ export default function Contact() {
 
   const onRecaptchaChange = (token: string | null) => {
     setRecaptchaToken(token)
-    if (token) setCaptchaError(null) // clear erreur dès que captcha validé
+    if (token) setCaptchaError(null)
   }
 
   return (
@@ -169,18 +169,22 @@ export default function Contact() {
             <div className="pt-8">
               <h4 className="text-lg font-medium mb-4">Connectons-nous</h4>
               <div className="flex space-x-4">
-                {socialLinks.map(({ icon, label, url }) => (
-                  <a
-                    key={label}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={label}
-                    className="text-muted-foreground hover:text-primary transition"
-                  >
-                    {icon}
-                  </a>
-                ))}
+                {socialLinks.map(({ icon, label, url }) => {
+                  const prefetch = usePrefetchOnHover(url)
+                  return (
+                    <a
+                      key={label}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className="text-muted-foreground hover:text-primary transition"
+                      onMouseEnter={prefetch}
+                    >
+                      {icon}
+                    </a>
+                  )
+                })}
               </div>
             </div>
           </motion.div>
@@ -281,8 +285,12 @@ export default function Contact() {
                         sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
                         onChange={onRecaptchaChange}
                         ref={recaptchaRef}
+                        size="normal"
+                        theme="dark"
+                        hl="fr"
+                        badge="bottomleft"
+                        className="my-custom-class"
                       />
-                      {/* Message d'erreur captcha visible sous le captcha */}
                       {captchaError && (
                         <p role="alert" className="text-red-600 text-sm mt-2">{captchaError}</p>
                       )}
